@@ -6,5 +6,5 @@ names:
 
 ```
 sbt stage
-./standalone
+./standalone -Dlog4j.configurationFile=log4j2.xml
 ```
