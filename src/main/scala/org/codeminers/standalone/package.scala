@@ -9,6 +9,15 @@ package object standalone {
   implicit def toStandaloneStarters(cpg: Cpg): StandaloneStarters =
     new StandaloneStarters(cpg)
 
+  implicit class MynodetypeSteps(val traversal: Traversal[Mynodetype]) extends AnyVal {
+
+    def myCustomStep: Traversal[Mynodetype] = {
+      println("custom step executed")
+      traversal
+    }
+
+  }
+
 }
 
 class StandaloneStarters(cpg: Cpg) {

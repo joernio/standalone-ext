@@ -22,6 +22,7 @@ object Main extends App {
       println("Running a custom pass to add some custom nodes")
       new MyPass(cpg).createAndApply()
       cpg.mynodetype.foreach(println)
+      cpg.mynodetype.myCustomStep.l
 
     case Failure(exception) =>
       println(exception)
