@@ -8,7 +8,6 @@ import io.shiftleft.passes.SimpleCpgPass
 import io.shiftleft.semanticcpg.language._
 import overflowdb.BatchedUpdate
 
-import scala.jdk.CollectionConverters._
 import scala.util.{Failure, Success}
 
 object Main extends App {
@@ -22,7 +21,7 @@ object Main extends App {
 
       println("Running a custom pass to add some custom nodes")
       new MyPass(cpg).createAndApply()
-      cpg.graph.nodes().asScala.toList.foreach(println)
+      cpg.mynodetype.foreach(println)
 
     case Failure(exception) =>
       println(exception)
