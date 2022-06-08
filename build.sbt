@@ -25,6 +25,7 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.1.1" % Test
 )
 
+
 ThisBuild/Compile/scalacOptions ++= Seq(
   "-feature",
   "-deprecation",

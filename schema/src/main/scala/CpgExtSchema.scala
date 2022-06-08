@@ -6,6 +6,14 @@ class CpgExtSchema(builder: SchemaBuilder, cpgSchema: CpgSchema) {
 
   // Add node types, edge types, and properties here
 
+  val myProperty = builder
+    .addProperty(name = "MYPROPERTY", valueType = ValueType.String)
+    .mandatory("")
+
+  val myNodeType = builder
+    .addNodeType("MYNODETYPE")
+    .addProperty(myProperty)
+
 }
 
 object CpgExtSchema {
