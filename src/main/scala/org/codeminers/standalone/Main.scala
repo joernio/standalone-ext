@@ -10,26 +10,36 @@ import overflowdb.BatchedUpdate
 
 import scala.util.{Failure, Success}
 
+/** Example program that makes use of Joern as a library
+  */
 object Main extends App {
-  val config = Config(inputPaths = Set("testprogram"))
-  JavaSrc2Cpg().createCpg(config) match {
-    case Success(cpg) =>
-      applyDefaultOverlays(cpg)
 
+  println("Hello Joern")
+  print("Creating CPG... ")
+  val directory      = "testprogram"
+  val config         = Config(inputPaths = Set(directory))
+  val cpgOrException = JavaSrc2Cpg().createCpg(config)
+
+  cpgOrException match {
+    case Success(cpg) =>
+      println("[DONE]")
+      println("Applying default overlays")
+      applyDefaultOverlays(cpg)
       println("Printing all methods:")
       cpg.method.name.foreach(println)
-
       println("Running a custom pass to add some custom nodes")
       new MyPass(cpg).createAndApply()
+      println("Running custom queries")
       cpg.mynodetype.foreach(println)
       cpg.mynodetype.myCustomStep.l
-
     case Failure(exception) =>
+      println("[FAILED]")
       println(exception)
   }
-  println("Hello Joern")
 }
 
+/** Example of a custom pass that creates and stores a node in the CPG.
+  */
 class MyPass(cpg: Cpg) extends SimpleCpgPass(cpg) {
   override def run(builder: BatchedUpdate.DiffGraphBuilder): Unit = {
     val n = NewMynodetype().myproperty("foo")
