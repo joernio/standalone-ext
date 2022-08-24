@@ -7,9 +7,9 @@ val cpgVersion = "1.3.537"
 val joernVersion = "1.1.873"
 val overflowdbVersion = "1.127"
 
-lazy val schema = project.in(file("schema"))
-lazy val domainClasses = project.in(file("domain-classes"))
-lazy val schemaExtender = project.in(file("schema-extender"))
+lazy val schema = Projects.schema
+lazy val domainClasses = Projects.domainClasses
+lazy val schemaExtender = Projects.schemaExtender
 
 dependsOn(domainClasses)
 
@@ -41,3 +41,7 @@ Global/onChangedBuildSource := ReloadOnSourceChanges
 ThisBuild/resolvers ++= Seq(
   Resolver.mavenLocal,
   "Sonatype OSS" at "https://oss.sonatype.org/content/repositories/public")
+
+
+sources in (Compile, doc) := Seq.empty
+publishArtifact in (Compile, packageDoc) := false
