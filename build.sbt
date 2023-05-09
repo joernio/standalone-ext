@@ -1,11 +1,11 @@
 name := "standalone"
 ThisBuild/organization := "org.codeminers"
-ThisBuild/scalaVersion := "2.13.7"
+ThisBuild/scalaVersion := "2.13.8"
 
 // parsed by project/Versions.scala, updated by updateDependencies.sh
-val cpgVersion = "1.3.537"
-val joernVersion = "1.1.873"
-val overflowdbVersion = "1.127"
+val cpgVersion = "1.3.600"
+val joernVersion = "1.1.1696"
+val overflowdbVersion = "1.171"
 
 lazy val schema = Projects.schema
 lazy val domainClasses = Projects.domainClasses
@@ -14,15 +14,15 @@ lazy val schemaExtender = Projects.schemaExtender
 dependsOn(domainClasses)
 
 libraryDependencies ++= Seq(
-  "com.github.pathikrit" %% "better-files" % "3.9.1",
-  "com.github.scopt" %% "scopt" % "3.7.1",
-  "org.apache.logging.log4j" % "log4j-slf4j-impl" % "2.17.1" % Runtime,
+  "com.github.pathikrit" %% "better-files" % "3.9.2",
+  "com.github.scopt" %% "scopt" % "4.1.0",
+  "org.apache.logging.log4j" % "log4j-slf4j2-impl" % "2.20.0" % Optional,
   "io.joern" %% "x2cpg" % Versions.joern,
   "io.joern" %% "javasrc2cpg" % Versions.joern,
   "io.joern" %% "joern-cli" % Versions.joern,
   "io.joern" %% "semanticcpg" % Versions.joern,
   "io.joern" %% "semanticcpg" % Versions.joern % Test classifier "tests",
-  "org.scalatest" %% "scalatest" % "3.1.1" % Test
+  "org.scalatest" %% "scalatest" % "3.2.15" % Test
 )
 
 
@@ -38,10 +38,12 @@ ThisBuild/licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/L
 
 Global/onChangedBuildSource := ReloadOnSourceChanges
 
-ThisBuild/resolvers ++= Seq(
+ThisBuild / resolvers ++= Seq(
   Resolver.mavenLocal,
-  "Sonatype OSS" at "https://oss.sonatype.org/content/repositories/public")
+  "Sonatype OSS" at "https://oss.sonatype.org/content/repositories/public",
+  "Atlassian" at "https://packages.atlassian.com/mvn/maven-atlassian-external",
+  "Gradle Releases" at "https://repo.gradle.org/gradle/libs-releases/"
+)
 
-
-sources in (Compile, doc) := Seq.empty
-publishArtifact in (Compile, packageDoc) := false
+Compile/doc/sources := Seq.empty
+Compile/packageDoc/publishArtifact := false
