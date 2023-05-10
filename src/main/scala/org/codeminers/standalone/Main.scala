@@ -17,7 +17,7 @@ object Main extends App {
   println("Hello Joern")
   print("Creating CPG... ")
   val directory      = "testprogram"
-  val config         = Config(inputPaths = Set(directory))
+  val config         = Config(inputPath = directory)
   val cpgOrException = JavaSrc2Cpg().createCpg(config)
 
   cpgOrException match {
