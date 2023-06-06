@@ -3,9 +3,9 @@ ThisBuild/organization := "org.codeminers"
 ThisBuild/scalaVersion := "2.13.8"
 
 // parsed by project/Versions.scala, updated by updateDependencies.sh
-val cpgVersion = "1.3.600"
-val joernVersion = "1.1.1696"
-val overflowdbVersion = "1.171"
+val cpgVersion = "1.3.612"
+val joernVersion = "1.2.3"
+val overflowdbVersion = "1.179"
 
 lazy val schema = Projects.schema
 lazy val domainClasses = Projects.domainClasses

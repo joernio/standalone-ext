@@ -3,6 +3,7 @@ package org.codeminers
 import io.shiftleft.codepropertygraph.generated.{Cpg, NodeTypes}
 import io.shiftleft.codepropertygraph.generated.nodes.Mynodetype
 import overflowdb.traversal._
+import scala.jdk.CollectionConverters.IteratorHasAsScala
 
 package object standalone {
 
@@ -25,5 +26,5 @@ package object standalone {
   */
 class StandaloneStarters(cpg: Cpg) {
   def mynodetype: Traversal[Mynodetype] =
-    cpg.graph.nodes(NodeTypes.MYNODETYPE).cast[Mynodetype]
+    cpg.graph.nodes(NodeTypes.MYNODETYPE).asScala.cast[Mynodetype]
 }
