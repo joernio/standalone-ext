@@ -25,6 +25,26 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.2.15" % Test
 )
 
+// mostly so that `sbt assembly` works, but also to ensure that we don't end up
+// with unexpected shadowing in jar hell
+// example:we forked javaparser-core and use it (transitively) under the `io.joern` namespace...
+excludeDependencies ++= Seq(
+  ExclusionRule("com.github.javaparser", "javaparser-core"),
+  ExclusionRule("org.jline", "jline-reader"),
+  ExclusionRule("org.jline", "jline-terminal"),
+  ExclusionRule("org.jline", "jline-terminal-jna"),
+  ExclusionRule("io.shiftleft", "codepropertygraph-domain-classes_2.13"),
+)
+
+assembly/assemblyMergeStrategy := {
+  case "log4j2.xml" => MergeStrategy.first
+  case "module-info.class" => MergeStrategy.first
+  case "META-INF/versions/9/module-info.class" => MergeStrategy.first
+  case "io/github/retronym/java9rtexport/Export.class" => MergeStrategy.first
+  case x =>
+    val oldStrategy = (ThisBuild / assemblyMergeStrategy).value
+    oldStrategy(x)
+}
 
 ThisBuild/Compile/scalacOptions ++= Seq(
   "-feature",
