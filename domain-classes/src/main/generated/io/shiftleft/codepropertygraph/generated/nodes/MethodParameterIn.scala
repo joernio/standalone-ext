@@ -18,6 +18,7 @@ object MethodParameterIn {
     val LineNumber              = "LINE_NUMBER"
     val Name                    = "NAME"
     val Order                   = "ORDER"
+    val PossibleTypes           = "POSSIBLE_TYPES"
     val TypeFullName            = "TYPE_FULL_NAME"
     val all: Set[String] = Set(
       Code,
@@ -29,6 +30,7 @@ object MethodParameterIn {
       LineNumber,
       Name,
       Order,
+      PossibleTypes,
       TypeFullName
     )
     val allAsJava: java.util.Set[String] = all.asJava
@@ -44,6 +46,7 @@ object MethodParameterIn {
     val LineNumber              = new overflowdb.PropertyKey[Integer]("LINE_NUMBER")
     val Name                    = new overflowdb.PropertyKey[String]("NAME")
     val Order                   = new overflowdb.PropertyKey[scala.Int]("ORDER")
+    val PossibleTypes           = new overflowdb.PropertyKey[IndexedSeq[String]]("POSSIBLE_TYPES")
     val TypeFullName            = new overflowdb.PropertyKey[String]("TYPE_FULL_NAME")
 
   }
@@ -65,22 +68,20 @@ object MethodParameterIn {
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.EvalType.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ParameterLink.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.PointsTo.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.TaggedBy.layoutInformation
     ).asJava,
     List(
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Cfg.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.PointsTo.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation
     ).asJava
   )
 
   object Edges {
-    val Out: Array[String] = Array("AST", "EVAL_TYPE", "PARAMETER_LINK", "POINTS_TO", "REACHING_DEF", "TAGGED_BY")
-    val In: Array[String]  = Array("AST", "CFG", "POINTS_TO", "REACHING_DEF", "REF")
+    val Out: Array[String] = Array("AST", "EVAL_TYPE", "PARAMETER_LINK", "REACHING_DEF", "TAGGED_BY")
+    val In: Array[String]  = Array("AST", "CFG", "REACHING_DEF", "REF")
   }
 
   val factory = new NodeFactory[MethodParameterInDb] {
@@ -105,6 +106,8 @@ trait MethodParameterInBase extends AbstractNode with AstNodeBase with CfgNodeBa
   def lineNumber: Option[Integer]
   def name: String
   def order: scala.Int
+
+  def possibleTypes: IndexedSeq[String]
   def typeFullName: String
 
 }
@@ -125,7 +128,9 @@ class MethodParameterIn(graph_4762: Graph, id_4762: Long /*cf https://github.com
   override def lineNumber: Option[Integer]                 = get().lineNumber
   override def name: String                                = get().name
   override def order: scala.Int                            = get().order
-  override def typeFullName: String                        = get().typeFullName
+
+  override def possibleTypes: IndexedSeq[String] = get().possibleTypes
+  override def typeFullName: String              = get().typeFullName
   override def propertyDefaultValue(propertyKey: String) =
     propertyKey match {
       case "CODE"                => MethodParameterIn.PropertyDefaults.Code
@@ -166,9 +171,6 @@ class MethodParameterIn(graph_4762: Graph, id_4762: Long /*cf https://github.com
   /** Traverse to corresponding formal output parameter */
   @overflowdb.traversal.help.Doc(info = """Traverse to corresponding formal output parameter""")
   def asOutput: overflowdb.traversal.Traversal[MethodParameterOut] = get().asOutput
-
-  def pointsToOut: Iterator[CfgNode] = get().pointsToOut
-  override def _pointsToOut          = get()._pointsToOut
 
   def reachingDefOut: Iterator[CfgNode] = get().reachingDefOut
   override def _reachingDefOut          = get()._reachingDefOut
@@ -221,9 +223,6 @@ class MethodParameterIn(graph_4762: Graph, id_4762: Long /*cf https://github.com
   def cfgIn: Iterator[CfgNode] = get().cfgIn
   override def _cfgIn          = get()._cfgIn
 
-  def pointsToIn: Iterator[CfgNode] = get().pointsToIn
-  override def _pointsToIn          = get()._pointsToIn
-
   def reachingDefIn: Iterator[Method] = get().reachingDefIn
   override def _reachingDefIn         = get()._reachingDefIn
 
@@ -272,7 +271,8 @@ class MethodParameterIn(graph_4762: Graph, id_4762: Long /*cf https://github.com
       case 7  => "lineNumber"
       case 8  => "name"
       case 9  => "order"
-      case 10 => "typeFullName"
+      case 10 => "possibleTypes"
+      case 11 => "typeFullName"
     }
 
   override def productElement(n: Int): Any =
@@ -287,11 +287,13 @@ class MethodParameterIn(graph_4762: Graph, id_4762: Long /*cf https://github.com
       case 7  => lineNumber
       case 8  => name
       case 9  => order
-      case 10 => typeFullName
+      case 10 => possibleTypes
+      case 11 => typeFullName
     }
 
   override def productPrefix = "MethodParameterIn"
-  override def productArity  = 11
+
+  override def productArity = 12
 }
 
 class MethodParameterInDb(ref: NodeRef[NodeDb])
@@ -322,8 +324,12 @@ class MethodParameterInDb(ref: NodeRef[NodeDb])
   def name: String                                         = _name
   private var _order: scala.Int                            = MethodParameterIn.PropertyDefaults.Order
   def order: scala.Int                                     = _order
-  private var _typeFullName: String                        = MethodParameterIn.PropertyDefaults.TypeFullName
-  def typeFullName: String                                 = _typeFullName
+
+  private var _possibleTypes: IndexedSeq[String] = collection.immutable.ArraySeq.empty
+
+  def possibleTypes: IndexedSeq[String] = _possibleTypes
+  private var _typeFullName: String     = MethodParameterIn.PropertyDefaults.TypeFullName
+  def typeFullName: String              = _typeFullName
 
   /** faster than the default implementation */
   override def propertiesMap: java.util.Map[String, Any] = {
@@ -339,6 +345,9 @@ class MethodParameterInDb(ref: NodeRef[NodeDb])
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     properties.put("NAME", name)
     properties.put("ORDER", order)
+    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) {
+      properties.put("POSSIBLE_TYPES", possibleTypes)
+    }
     properties.put("TYPE_FULL_NAME", typeFullName)
 
     properties
@@ -358,6 +367,9 @@ class MethodParameterInDb(ref: NodeRef[NodeDb])
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     if (!(("<empty>") == name)) { properties.put("NAME", name) }
     if (!((-1: Int) == order)) { properties.put("ORDER", order) }
+    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) {
+      properties.put("POSSIBLE_TYPES", possibleTypes)
+    }
     if (!(("<empty>") == typeFullName)) { properties.put("TYPE_FULL_NAME", typeFullName) }
 
     properties
@@ -384,11 +396,9 @@ class MethodParameterInDb(ref: NodeRef[NodeDb])
   override def _parameterLinkOut                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
   def asOutput: overflowdb.traversal.Traversal[MethodParameterOut] = parameterLinkOut.collectAll[MethodParameterOut]
 
-  def pointsToOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](3)
-  override def _pointsToOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
+  def reachingDefOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](3)
 
-  def reachingDefOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](4)
-  override def _reachingDefOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
+  override def _reachingDefOut = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
   def _callViaReachingDefOut: overflowdb.traversal.Traversal[Call]             = reachingDefOut.collectAll[Call]
   def _identifierViaReachingDefOut: overflowdb.traversal.Traversal[Identifier] = reachingDefOut.collectAll[Identifier]
   def _literalViaReachingDefOut: overflowdb.traversal.Traversal[Literal]       = reachingDefOut.collectAll[Literal]
@@ -398,12 +408,14 @@ class MethodParameterInDb(ref: NodeRef[NodeDb])
   def _returnViaReachingDefOut: overflowdb.traversal.Traversal[Return]       = reachingDefOut.collectAll[Return]
   def _typeRefViaReachingDefOut: overflowdb.traversal.Traversal[TypeRef]     = reachingDefOut.collectAll[TypeRef]
 
-  def taggedByOut: Iterator[Tag]                              = createAdjacentNodeScalaIteratorByOffSet[Tag](5)
-  override def _taggedByOut                                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
+  def taggedByOut: Iterator[Tag] = createAdjacentNodeScalaIteratorByOffSet[Tag](4)
+
+  override def _taggedByOut                                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
   def _tagViaTaggedByOut: overflowdb.traversal.Traversal[Tag] = taggedByOut.collectAll[Tag]
 
-  def astIn: Iterator[Method] = createAdjacentNodeScalaIteratorByOffSet[Method](6)
-  override def _astIn         = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
+  def astIn: Iterator[Method] = createAdjacentNodeScalaIteratorByOffSet[Method](5)
+
+  override def _astIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
   def method: Method = try { astIn.collectAll[Method].next() }
   catch {
     case e: java.util.NoSuchElementException =>
@@ -413,18 +425,18 @@ class MethodParameterInDb(ref: NodeRef[NodeDb])
       )
   }
 
-  def cfgIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](7)
-  override def _cfgIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
+  def cfgIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](6)
 
-  def pointsToIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](8)
-  override def _pointsToIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
+  override def _cfgIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
 
-  def reachingDefIn: Iterator[Method] = createAdjacentNodeScalaIteratorByOffSet[Method](9)
-  override def _reachingDefIn         = createAdjacentNodeScalaIteratorByOffSet[StoredNode](9)
+  def reachingDefIn: Iterator[Method] = createAdjacentNodeScalaIteratorByOffSet[Method](7)
+
+  override def _reachingDefIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
   def _methodViaReachingDefIn: overflowdb.traversal.Traversal[Method] = reachingDefIn.collectAll[Method]
 
-  def refIn: Iterator[StoredNode] = createAdjacentNodeScalaIteratorByOffSet[StoredNode](10)
-  override def _refIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](10)
+  def refIn: Iterator[StoredNode] = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
+
+  override def _refIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
   def _closureBindingViaRefIn: overflowdb.traversal.Traversal[ClosureBinding] = refIn.collectAll[ClosureBinding]
   def referencingIdentifiers: overflowdb.traversal.Traversal[Identifier]      = refIn.collectAll[Identifier]
 
@@ -444,7 +456,8 @@ class MethodParameterInDb(ref: NodeRef[NodeDb])
       case 7  => "lineNumber"
       case 8  => "name"
       case 9  => "order"
-      case 10 => "typeFullName"
+      case 10 => "possibleTypes"
+      case 11 => "typeFullName"
     }
 
   override def productElement(n: Int): Any =
@@ -459,11 +472,13 @@ class MethodParameterInDb(ref: NodeRef[NodeDb])
       case 7  => lineNumber
       case 8  => name
       case 9  => order
-      case 10 => typeFullName
+      case 10 => possibleTypes
+      case 11 => typeFullName
     }
 
   override def productPrefix = "MethodParameterIn"
-  override def productArity  = 11
+
+  override def productArity = 12
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[MethodParameterInDb]
 
@@ -478,6 +493,7 @@ class MethodParameterInDb(ref: NodeRef[NodeDb])
       case "LINE_NUMBER"                 => this._lineNumber
       case "NAME"                        => this._name
       case "ORDER"                       => this._order
+      case "POSSIBLE_TYPES"              => this._possibleTypes
       case "TYPE_FULL_NAME"              => this._typeFullName
 
       case _ => null
@@ -512,7 +528,25 @@ class MethodParameterInDb(ref: NodeRef[NodeDb])
       case "LINE_NUMBER"         => this._lineNumber = value.asInstanceOf[Integer]
       case "NAME"                => this._name = value.asInstanceOf[String]
       case "ORDER"               => this._order = value.asInstanceOf[scala.Int]
-      case "TYPE_FULL_NAME"      => this._typeFullName = value.asInstanceOf[String]
+      case "POSSIBLE_TYPES" =>
+        this._possibleTypes = value match {
+          case null                                             => collection.immutable.ArraySeq.empty
+          case singleValue: String                              => collection.immutable.ArraySeq(singleValue)
+          case coll: IterableOnce[Any] if coll.iterator.isEmpty => collection.immutable.ArraySeq.empty
+          case arr: Array[_] if arr.isEmpty                     => collection.immutable.ArraySeq.empty
+          case arr: Array[_] => collection.immutable.ArraySeq.unsafeWrapArray(arr).asInstanceOf[IndexedSeq[String]]
+          case jCollection: java.lang.Iterable[_] =>
+            if (jCollection.iterator.hasNext) {
+              collection.immutable.ArraySeq.unsafeWrapArray(
+                jCollection.asInstanceOf[java.util.Collection[String]].iterator.asScala.toArray
+              )
+            } else collection.immutable.ArraySeq.empty
+          case iter: Iterable[_] =>
+            if (iter.nonEmpty) {
+              collection.immutable.ArraySeq.unsafeWrapArray(iter.asInstanceOf[Iterable[String]].toArray)
+            } else collection.immutable.ArraySeq.empty
+        }
+      case "TYPE_FULL_NAME" => this._typeFullName = value.asInstanceOf[String]
 
       case _ => PropertyErrorRegister.logPropertyErrorIfFirst(getClass, key)
     }
@@ -540,6 +574,10 @@ class MethodParameterInDb(ref: NodeRef[NodeDb])
     this._lineNumber = newNode.asInstanceOf[NewMethodParameterIn].lineNumber.orNull
     this._name = newNode.asInstanceOf[NewMethodParameterIn].name
     this._order = newNode.asInstanceOf[NewMethodParameterIn].order
+    this._possibleTypes =
+      if (newNode.asInstanceOf[NewMethodParameterIn].possibleTypes != null)
+        newNode.asInstanceOf[NewMethodParameterIn].possibleTypes
+      else collection.immutable.ArraySeq.empty
     this._typeFullName = newNode.asInstanceOf[NewMethodParameterIn].typeFullName
 
   }

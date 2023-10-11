@@ -16,9 +16,19 @@ object Literal {
     val DynamicTypeHintFullName = "DYNAMIC_TYPE_HINT_FULL_NAME"
     val LineNumber              = "LINE_NUMBER"
     val Order                   = "ORDER"
+    val PossibleTypes           = "POSSIBLE_TYPES"
     val TypeFullName            = "TYPE_FULL_NAME"
-    val all: Set[String] =
-      Set(ArgumentIndex, ArgumentName, Code, ColumnNumber, DynamicTypeHintFullName, LineNumber, Order, TypeFullName)
+    val all: Set[String] = Set(
+      ArgumentIndex,
+      ArgumentName,
+      Code,
+      ColumnNumber,
+      DynamicTypeHintFullName,
+      LineNumber,
+      Order,
+      PossibleTypes,
+      TypeFullName
+    )
     val allAsJava: java.util.Set[String] = all.asJava
   }
 
@@ -30,6 +40,7 @@ object Literal {
     val DynamicTypeHintFullName = new overflowdb.PropertyKey[IndexedSeq[String]]("DYNAMIC_TYPE_HINT_FULL_NAME")
     val LineNumber              = new overflowdb.PropertyKey[Integer]("LINE_NUMBER")
     val Order                   = new overflowdb.PropertyKey[scala.Int]("ORDER")
+    val PossibleTypes           = new overflowdb.PropertyKey[IndexedSeq[String]]("POSSIBLE_TYPES")
     val TypeFullName            = new overflowdb.PropertyKey[String]("TYPE_FULL_NAME")
 
   }
@@ -46,11 +57,11 @@ object Literal {
     PropertyNames.allAsJava,
     List(
       io.shiftleft.codepropertygraph.generated.edges.Argument.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Cdg.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Cfg.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Dominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.EvalType.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.PointsTo.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.PostDominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.TaggedBy.layoutInformation
@@ -63,7 +74,6 @@ object Literal {
       io.shiftleft.codepropertygraph.generated.edges.Condition.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Contains.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Dominate.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.PointsTo.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.PostDominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Receiver.layoutInformation
@@ -71,17 +81,8 @@ object Literal {
   )
 
   object Edges {
-    val Out: Array[String] = Array(
-      "ARGUMENT",
-      "CDG",
-      "CFG",
-      "DOMINATE",
-      "EVAL_TYPE",
-      "POINTS_TO",
-      "POST_DOMINATE",
-      "REACHING_DEF",
-      "TAGGED_BY"
-    )
+    val Out: Array[String] =
+      Array("ARGUMENT", "AST", "CDG", "CFG", "DOMINATE", "EVAL_TYPE", "POST_DOMINATE", "REACHING_DEF", "TAGGED_BY")
     val In: Array[String] = Array(
       "ARGUMENT",
       "AST",
@@ -90,7 +91,6 @@ object Literal {
       "CONDITION",
       "CONTAINS",
       "DOMINATE",
-      "POINTS_TO",
       "POST_DOMINATE",
       "REACHING_DEF",
       "RECEIVER"
@@ -117,6 +117,8 @@ trait LiteralBase extends AbstractNode with ExpressionBase {
   def dynamicTypeHintFullName: IndexedSeq[String]
   def lineNumber: Option[Integer]
   def order: scala.Int
+
+  def possibleTypes: IndexedSeq[String]
   def typeFullName: String
 
 }
@@ -133,7 +135,9 @@ class Literal(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug
   override def dynamicTypeHintFullName: IndexedSeq[String] = get().dynamicTypeHintFullName
   override def lineNumber: Option[Integer]                 = get().lineNumber
   override def order: scala.Int                            = get().order
-  override def typeFullName: String                        = get().typeFullName
+
+  override def possibleTypes: IndexedSeq[String] = get().possibleTypes
+  override def typeFullName: String              = get().typeFullName
   override def propertyDefaultValue(propertyKey: String) =
     propertyKey match {
       case "ARGUMENT_INDEX" => Literal.PropertyDefaults.ArgumentIndex
@@ -145,6 +149,14 @@ class Literal(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug
 
   def argumentOut: Iterator[TemplateDom] = get().argumentOut
   override def _argumentOut              = get()._argumentOut
+
+  def astOut: Iterator[Annotation] = get().astOut
+
+  override def _astOut = get()._astOut
+
+  /** Traverse to ANNOTATION via AST OUT edge.
+    */
+  def _annotationViaAstOut: overflowdb.traversal.Traversal[Annotation] = get()._annotationViaAstOut
 
   def cdgOut: Iterator[CfgNode] = get().cdgOut
   override def _cdgOut          = get()._cdgOut
@@ -263,9 +275,6 @@ class Literal(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug
   /** Traverse to TYPE via EVAL_TYPE OUT edge.
     */
   def _typeViaEvalTypeOut: overflowdb.traversal.Traversal[Type] = get()._typeViaEvalTypeOut
-
-  def pointsToOut: Iterator[CfgNode] = get().pointsToOut
-  override def _pointsToOut          = get()._pointsToOut
 
   def postDominateOut: Iterator[CfgNode] = get().postDominateOut
   override def _postDominateOut          = get()._postDominateOut
@@ -511,9 +520,6 @@ class Literal(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug
     */
   def _unknownViaDominateIn: overflowdb.traversal.Traversal[Unknown] = get()._unknownViaDominateIn
 
-  def pointsToIn: Iterator[CfgNode] = get().pointsToIn
-  override def _pointsToIn          = get()._pointsToIn
-
   def postDominateIn: Iterator[CfgNode] = get().postDominateIn
   override def _postDominateIn          = get()._postDominateIn
 
@@ -651,7 +657,8 @@ class Literal(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug
       case 5 => "dynamicTypeHintFullName"
       case 6 => "lineNumber"
       case 7 => "order"
-      case 8 => "typeFullName"
+      case 8 => "possibleTypes"
+      case 9 => "typeFullName"
     }
 
   override def productElement(n: Int): Any =
@@ -664,11 +671,13 @@ class Literal(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug
       case 5 => dynamicTypeHintFullName
       case 6 => lineNumber
       case 7 => order
-      case 8 => typeFullName
+      case 8 => possibleTypes
+      case 9 => typeFullName
     }
 
   override def productPrefix = "Literal"
-  override def productArity  = 9
+
+  override def productArity = 10
 }
 
 class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Expression with LiteralBase {
@@ -689,8 +698,12 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def lineNumber: Option[Integer]                          = Option(_lineNumber)
   private var _order: scala.Int                            = Literal.PropertyDefaults.Order
   def order: scala.Int                                     = _order
-  private var _typeFullName: String                        = Literal.PropertyDefaults.TypeFullName
-  def typeFullName: String                                 = _typeFullName
+
+  private var _possibleTypes: IndexedSeq[String] = collection.immutable.ArraySeq.empty
+
+  def possibleTypes: IndexedSeq[String] = _possibleTypes
+  private var _typeFullName: String     = Literal.PropertyDefaults.TypeFullName
+  def typeFullName: String              = _typeFullName
 
   /** faster than the default implementation */
   override def propertiesMap: java.util.Map[String, Any] = {
@@ -704,6 +717,9 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
     }
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     properties.put("ORDER", order)
+    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) {
+      properties.put("POSSIBLE_TYPES", possibleTypes)
+    }
     properties.put("TYPE_FULL_NAME", typeFullName)
 
     properties
@@ -721,6 +737,9 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
     }
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     if (!((-1: Int) == order)) { properties.put("ORDER", order) }
+    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) {
+      properties.put("POSSIBLE_TYPES", possibleTypes)
+    }
     if (!(("<empty>") == typeFullName)) { properties.put("TYPE_FULL_NAME", typeFullName) }
 
     properties
@@ -730,8 +749,15 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def argumentOut: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](0)
   override def _argumentOut              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
 
-  def cdgOut: Iterator[CfgNode]                              = createAdjacentNodeScalaIteratorByOffSet[CfgNode](1)
-  override def _cdgOut                                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
+  def astOut: Iterator[Annotation] = createAdjacentNodeScalaIteratorByOffSet[Annotation](1)
+
+  override def _astOut = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
+
+  def _annotationViaAstOut: overflowdb.traversal.Traversal[Annotation] = astOut.collectAll[Annotation]
+
+  def cdgOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](2)
+
+  override def _cdgOut                                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
   def _blockViaCdgOut: overflowdb.traversal.Traversal[Block] = cdgOut.collectAll[Block]
   def _callViaCdgOut: overflowdb.traversal.Traversal[Call]   = cdgOut.collectAll[Call]
   def _controlStructureViaCdgOut: overflowdb.traversal.Traversal[ControlStructure] = cdgOut.collectAll[ControlStructure]
@@ -745,12 +771,14 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def _typeRefViaCdgOut: overflowdb.traversal.Traversal[TypeRef]                   = cdgOut.collectAll[TypeRef]
   def _unknownViaCdgOut: overflowdb.traversal.Traversal[Unknown]                   = cdgOut.collectAll[Unknown]
 
-  def cfgOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](2)
-  override def _cfgOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
+  def cfgOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](3)
+
+  override def _cfgOut = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
   def _cfgNodeViaCfgOut: overflowdb.traversal.Traversal[CfgNode] = cfgOut.collectAll[CfgNode]
 
-  def dominateOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](3)
-  override def _dominateOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
+  def dominateOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](4)
+
+  override def _dominateOut = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
   def _blockViaDominateOut: overflowdb.traversal.Traversal[Block] = dominateOut.collectAll[Block]
   def _callViaDominateOut: overflowdb.traversal.Traversal[Call]   = dominateOut.collectAll[Call]
   def _controlStructureViaDominateOut: overflowdb.traversal.Traversal[ControlStructure] =
@@ -766,12 +794,10 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def _typeRefViaDominateOut: overflowdb.traversal.Traversal[TypeRef]           = dominateOut.collectAll[TypeRef]
   def _unknownViaDominateOut: overflowdb.traversal.Traversal[Unknown]           = dominateOut.collectAll[Unknown]
 
-  def evalTypeOut: Iterator[Type]                               = createAdjacentNodeScalaIteratorByOffSet[Type](4)
-  override def _evalTypeOut                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
-  def _typeViaEvalTypeOut: overflowdb.traversal.Traversal[Type] = evalTypeOut.collectAll[Type]
+  def evalTypeOut: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](5)
 
-  def pointsToOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](5)
-  override def _pointsToOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
+  override def _evalTypeOut                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
+  def _typeViaEvalTypeOut: overflowdb.traversal.Traversal[Type] = evalTypeOut.collectAll[Type]
 
   def postDominateOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](6)
   override def _postDominateOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
@@ -868,11 +894,9 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def _typeRefViaDominateIn: overflowdb.traversal.Traversal[TypeRef]       = dominateIn.collectAll[TypeRef]
   def _unknownViaDominateIn: overflowdb.traversal.Traversal[Unknown]       = dominateIn.collectAll[Unknown]
 
-  def pointsToIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](16)
-  override def _pointsToIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](16)
+  def postDominateIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](16)
 
-  def postDominateIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](17)
-  override def _postDominateIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](17)
+  override def _postDominateIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](16)
   def _blockViaPostDominateIn: overflowdb.traversal.Traversal[Block] = postDominateIn.collectAll[Block]
   def _callViaPostDominateIn: overflowdb.traversal.Traversal[Call]   = postDominateIn.collectAll[Call]
   def _controlStructureViaPostDominateIn: overflowdb.traversal.Traversal[ControlStructure] =
@@ -889,8 +913,9 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def _typeRefViaPostDominateIn: overflowdb.traversal.Traversal[TypeRef] = postDominateIn.collectAll[TypeRef]
   def _unknownViaPostDominateIn: overflowdb.traversal.Traversal[Unknown] = postDominateIn.collectAll[Unknown]
 
-  def reachingDefIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](18)
-  override def _reachingDefIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](18)
+  def reachingDefIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](17)
+
+  override def _reachingDefIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](17)
   def _blockViaReachingDefIn: overflowdb.traversal.Traversal[Block] = reachingDefIn.collectAll[Block]
   def _callViaReachingDefIn: overflowdb.traversal.Traversal[Call]   = reachingDefIn.collectAll[Call]
   def _controlStructureViaReachingDefIn: overflowdb.traversal.Traversal[ControlStructure] =
@@ -906,8 +931,9 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def _typeRefViaReachingDefIn: overflowdb.traversal.Traversal[TypeRef]     = reachingDefIn.collectAll[TypeRef]
   def _unknownViaReachingDefIn: overflowdb.traversal.Traversal[Unknown]     = reachingDefIn.collectAll[Unknown]
 
-  def receiverIn: Iterator[Call]       = createAdjacentNodeScalaIteratorByOffSet[Call](19)
-  override def _receiverIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](19)
+  def receiverIn: Iterator[Call] = createAdjacentNodeScalaIteratorByOffSet[Call](18)
+
+  override def _receiverIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](18)
   def _callViaReceiverIn: Option[Call] = receiverIn.collectAll[Call].nextOption()
 
   override def label: String = {
@@ -924,7 +950,8 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
       case 5 => "dynamicTypeHintFullName"
       case 6 => "lineNumber"
       case 7 => "order"
-      case 8 => "typeFullName"
+      case 8 => "possibleTypes"
+      case 9 => "typeFullName"
     }
 
   override def productElement(n: Int): Any =
@@ -937,11 +964,13 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
       case 5 => dynamicTypeHintFullName
       case 6 => lineNumber
       case 7 => order
-      case 8 => typeFullName
+      case 8 => possibleTypes
+      case 9 => typeFullName
     }
 
   override def productPrefix = "Literal"
-  override def productArity  = 9
+
+  override def productArity = 10
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[LiteralDb]
 
@@ -954,6 +983,7 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
       case "DYNAMIC_TYPE_HINT_FULL_NAME" => this._dynamicTypeHintFullName
       case "LINE_NUMBER"                 => this._lineNumber
       case "ORDER"                       => this._order
+      case "POSSIBLE_TYPES"              => this._possibleTypes
       case "TYPE_FULL_NAME"              => this._typeFullName
 
       case _ => null
@@ -984,8 +1014,26 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
               collection.immutable.ArraySeq.unsafeWrapArray(iter.asInstanceOf[Iterable[String]].toArray)
             } else collection.immutable.ArraySeq.empty
         }
-      case "LINE_NUMBER"    => this._lineNumber = value.asInstanceOf[Integer]
-      case "ORDER"          => this._order = value.asInstanceOf[scala.Int]
+      case "LINE_NUMBER" => this._lineNumber = value.asInstanceOf[Integer]
+      case "ORDER"       => this._order = value.asInstanceOf[scala.Int]
+      case "POSSIBLE_TYPES" =>
+        this._possibleTypes = value match {
+          case null                                             => collection.immutable.ArraySeq.empty
+          case singleValue: String                              => collection.immutable.ArraySeq(singleValue)
+          case coll: IterableOnce[Any] if coll.iterator.isEmpty => collection.immutable.ArraySeq.empty
+          case arr: Array[_] if arr.isEmpty                     => collection.immutable.ArraySeq.empty
+          case arr: Array[_] => collection.immutable.ArraySeq.unsafeWrapArray(arr).asInstanceOf[IndexedSeq[String]]
+          case jCollection: java.lang.Iterable[_] =>
+            if (jCollection.iterator.hasNext) {
+              collection.immutable.ArraySeq.unsafeWrapArray(
+                jCollection.asInstanceOf[java.util.Collection[String]].iterator.asScala.toArray
+              )
+            } else collection.immutable.ArraySeq.empty
+          case iter: Iterable[_] =>
+            if (iter.nonEmpty) {
+              collection.immutable.ArraySeq.unsafeWrapArray(iter.asInstanceOf[Iterable[String]].toArray)
+            } else collection.immutable.ArraySeq.empty
+        }
       case "TYPE_FULL_NAME" => this._typeFullName = value.asInstanceOf[String]
 
       case _ => PropertyErrorRegister.logPropertyErrorIfFirst(getClass, key)
@@ -1012,6 +1060,9 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
       else collection.immutable.ArraySeq.empty
     this._lineNumber = newNode.asInstanceOf[NewLiteral].lineNumber.orNull
     this._order = newNode.asInstanceOf[NewLiteral].order
+    this._possibleTypes =
+      if (newNode.asInstanceOf[NewLiteral].possibleTypes != null) newNode.asInstanceOf[NewLiteral].possibleTypes
+      else collection.immutable.ArraySeq.empty
     this._typeFullName = newNode.asInstanceOf[NewLiteral].typeFullName
 
   }

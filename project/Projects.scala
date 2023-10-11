@@ -1,4 +1,4 @@
-import sbt._
+import sbt.*
 
 object Projects {
   lazy val schema = project.in(file("schema"))

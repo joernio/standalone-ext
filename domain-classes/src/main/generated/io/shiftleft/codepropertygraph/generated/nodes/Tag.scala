@@ -29,12 +29,12 @@ object Tag {
   val layoutInformation = new NodeLayoutInformation(
     Label,
     PropertyNames.allAsJava,
-    List().asJava,
+    List(io.shiftleft.codepropertygraph.generated.edges.TaggedBy.layoutInformation).asJava,
     List(io.shiftleft.codepropertygraph.generated.edges.TaggedBy.layoutInformation).asJava
   )
 
   object Edges {
-    val Out: Array[String] = Array()
+    val Out: Array[String] = Array("TAGGED_BY")
     val In: Array[String]  = Array("TAGGED_BY")
   }
 
@@ -69,8 +69,15 @@ class Tag(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/iss
       case _       => super.propertyDefaultValue(propertyKey)
     }
 
-  def taggedByIn: Iterator[AstNode] = get().taggedByIn
-  override def _taggedByIn          = get()._taggedByIn
+  def taggedByOut: Iterator[Tag] = get().taggedByOut
+  override def _taggedByOut      = get()._taggedByOut
+
+  /** Traverse to TAG via TAGGED_BY OUT edge.
+    */
+  def _tagViaTaggedByOut: overflowdb.traversal.Traversal[Tag] = get()._tagViaTaggedByOut
+
+  def taggedByIn: Iterator[StoredNode] = get().taggedByIn
+  override def _taggedByIn             = get()._taggedByIn
 
   /** Traverse to BLOCK via TAGGED_BY IN edge.
     */
@@ -97,6 +104,10 @@ class Tag(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/iss
   /** Traverse to IDENTIFIER via TAGGED_BY IN edge.
     */
   def _identifierViaTaggedByIn: overflowdb.traversal.Traversal[Identifier] = get()._identifierViaTaggedByIn
+
+  /** Traverse to IMPORT via TAGGED_BY IN edge.
+    */
+  def _importViaTaggedByIn: overflowdb.traversal.Traversal[Import] = get()._importViaTaggedByIn
 
   /** Traverse to JUMP_TARGET via TAGGED_BY IN edge.
     */
@@ -139,6 +150,10 @@ class Tag(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/iss
   /** Traverse to RETURN via TAGGED_BY IN edge.
     */
   def _returnViaTaggedByIn: overflowdb.traversal.Traversal[Return] = get()._returnViaTaggedByIn
+
+  /** Traverse to TAG via TAGGED_BY IN edge.
+    */
+  def _tagViaTaggedByIn: overflowdb.traversal.Traversal[Tag] = get()._tagViaTaggedByIn
 
   /** Traverse to TEMPLATE_DOM via TAGGED_BY IN edge.
     */
@@ -214,8 +229,12 @@ class TagDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with TagBa
   }
 
   import overflowdb.traversal._
-  def taggedByIn: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](0)
-  override def _taggedByIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
+  def taggedByOut: Iterator[Tag]                              = createAdjacentNodeScalaIteratorByOffSet[Tag](0)
+  override def _taggedByOut                                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
+  def _tagViaTaggedByOut: overflowdb.traversal.Traversal[Tag] = taggedByOut.collectAll[Tag]
+
+  def taggedByIn: Iterator[StoredNode] = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
+  override def _taggedByIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
   def _blockViaTaggedByIn: overflowdb.traversal.Traversal[Block] = taggedByIn.collectAll[Block]
   def _callViaTaggedByIn: overflowdb.traversal.Traversal[Call]   = taggedByIn.collectAll[Call]
   def _controlStructureViaTaggedByIn: overflowdb.traversal.Traversal[ControlStructure] =
@@ -224,6 +243,7 @@ class TagDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with TagBa
     taggedByIn.collectAll[FieldIdentifier]
   def _fileViaTaggedByIn: overflowdb.traversal.Traversal[File]             = taggedByIn.collectAll[File]
   def _identifierViaTaggedByIn: overflowdb.traversal.Traversal[Identifier] = taggedByIn.collectAll[Identifier]
+  def _importViaTaggedByIn: overflowdb.traversal.Traversal[Import]         = taggedByIn.collectAll[Import]
   def _jumpTargetViaTaggedByIn: overflowdb.traversal.Traversal[JumpTarget] = taggedByIn.collectAll[JumpTarget]
   def _literalViaTaggedByIn: overflowdb.traversal.Traversal[Literal]       = taggedByIn.collectAll[Literal]
   def _localViaTaggedByIn: overflowdb.traversal.Traversal[Local]           = taggedByIn.collectAll[Local]
@@ -236,6 +256,7 @@ class TagDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with TagBa
   def _methodRefViaTaggedByIn: overflowdb.traversal.Traversal[MethodRef]       = taggedByIn.collectAll[MethodRef]
   def _methodReturnViaTaggedByIn: overflowdb.traversal.Traversal[MethodReturn] = taggedByIn.collectAll[MethodReturn]
   def _returnViaTaggedByIn: overflowdb.traversal.Traversal[Return]             = taggedByIn.collectAll[Return]
+  def _tagViaTaggedByIn: overflowdb.traversal.Traversal[Tag]                   = taggedByIn.collectAll[Tag]
   def _templateDomViaTaggedByIn: overflowdb.traversal.Traversal[TemplateDom]   = taggedByIn.collectAll[TemplateDom]
   def _typeRefViaTaggedByIn: overflowdb.traversal.Traversal[TypeRef]           = taggedByIn.collectAll[TypeRef]
   def _unknownViaTaggedByIn: overflowdb.traversal.Traversal[Unknown]           = taggedByIn.collectAll[Unknown]

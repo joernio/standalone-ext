@@ -7,7 +7,7 @@ joernInstallPath := baseDirectory.value / "../joern-inst/joern-cli"
 val replaceDomainClassesInJoern = taskKey[Unit]("generates new domain classes based on the given schema, and installs them in the joern distribution")
 
 replaceDomainClassesInJoern := {
-  import java.nio.file._
+  import java.nio.file.*
   val newDomainClassesJar = (Projects.domainClasses/Compile/packageBin).value
 
   val targetFile = joernInstallPath.value / "lib" / s"io.shiftleft.codepropertygraph-domain-classes_2.13-${Versions.cpg}.jar"

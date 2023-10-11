@@ -17,6 +17,7 @@ object MethodRef {
     val LineNumber              = "LINE_NUMBER"
     val MethodFullName          = "METHOD_FULL_NAME"
     val Order                   = "ORDER"
+    val PossibleTypes           = "POSSIBLE_TYPES"
     val TypeFullName            = "TYPE_FULL_NAME"
     val all: Set[String] = Set(
       ArgumentIndex,
@@ -27,6 +28,7 @@ object MethodRef {
       LineNumber,
       MethodFullName,
       Order,
+      PossibleTypes,
       TypeFullName
     )
     val allAsJava: java.util.Set[String] = all.asJava
@@ -41,6 +43,7 @@ object MethodRef {
     val LineNumber              = new overflowdb.PropertyKey[Integer]("LINE_NUMBER")
     val MethodFullName          = new overflowdb.PropertyKey[String]("METHOD_FULL_NAME")
     val Order                   = new overflowdb.PropertyKey[scala.Int]("ORDER")
+    val PossibleTypes           = new overflowdb.PropertyKey[IndexedSeq[String]]("POSSIBLE_TYPES")
     val TypeFullName            = new overflowdb.PropertyKey[String]("TYPE_FULL_NAME")
 
   }
@@ -58,12 +61,12 @@ object MethodRef {
     PropertyNames.allAsJava,
     List(
       io.shiftleft.codepropertygraph.generated.edges.Argument.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Capture.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Cdg.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Cfg.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Dominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.EvalType.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.PointsTo.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.PostDominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation,
@@ -77,7 +80,6 @@ object MethodRef {
       io.shiftleft.codepropertygraph.generated.edges.Condition.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Contains.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Dominate.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.PointsTo.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.PostDominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Receiver.layoutInformation
@@ -87,12 +89,12 @@ object MethodRef {
   object Edges {
     val Out: Array[String] = Array(
       "ARGUMENT",
+      "AST",
       "CAPTURE",
       "CDG",
       "CFG",
       "DOMINATE",
       "EVAL_TYPE",
-      "POINTS_TO",
       "POST_DOMINATE",
       "REACHING_DEF",
       "REF",
@@ -106,7 +108,6 @@ object MethodRef {
       "CONDITION",
       "CONTAINS",
       "DOMINATE",
-      "POINTS_TO",
       "POST_DOMINATE",
       "REACHING_DEF",
       "RECEIVER"
@@ -134,6 +135,8 @@ trait MethodRefBase extends AbstractNode with ExpressionBase {
   def lineNumber: Option[Integer]
   def methodFullName: String
   def order: scala.Int
+
+  def possibleTypes: IndexedSeq[String]
   def typeFullName: String
 
 }
@@ -151,7 +154,9 @@ class MethodRef(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/b
   override def lineNumber: Option[Integer]                 = get().lineNumber
   override def methodFullName: String                      = get().methodFullName
   override def order: scala.Int                            = get().order
-  override def typeFullName: String                        = get().typeFullName
+
+  override def possibleTypes: IndexedSeq[String] = get().possibleTypes
+  override def typeFullName: String              = get().typeFullName
   override def propertyDefaultValue(propertyKey: String) =
     propertyKey match {
       case "ARGUMENT_INDEX"   => MethodRef.PropertyDefaults.ArgumentIndex
@@ -164,6 +169,14 @@ class MethodRef(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/b
 
   def argumentOut: Iterator[TemplateDom] = get().argumentOut
   override def _argumentOut              = get()._argumentOut
+
+  def astOut: Iterator[Annotation] = get().astOut
+
+  override def _astOut = get()._astOut
+
+  /** Traverse to ANNOTATION via AST OUT edge.
+    */
+  def _annotationViaAstOut: overflowdb.traversal.Traversal[Annotation] = get()._annotationViaAstOut
 
   def captureOut: Iterator[ClosureBinding] = get().captureOut
   override def _captureOut                 = get()._captureOut
@@ -293,9 +306,6 @@ class MethodRef(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/b
   /** Traverse to TYPE via EVAL_TYPE OUT edge.
     */
   def _typeViaEvalTypeOut: overflowdb.traversal.Traversal[Type] = get()._typeViaEvalTypeOut
-
-  def pointsToOut: Iterator[CfgNode] = get().pointsToOut
-  override def _pointsToOut          = get()._pointsToOut
 
   def postDominateOut: Iterator[CfgNode] = get().postDominateOut
   override def _postDominateOut          = get()._postDominateOut
@@ -542,9 +552,6 @@ class MethodRef(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/b
     */
   def _unknownViaDominateIn: overflowdb.traversal.Traversal[Unknown] = get()._unknownViaDominateIn
 
-  def pointsToIn: Iterator[CfgNode] = get().pointsToIn
-  override def _pointsToIn          = get()._pointsToIn
-
   def postDominateIn: Iterator[CfgNode] = get().postDominateIn
   override def _postDominateIn          = get()._postDominateIn
 
@@ -678,34 +685,37 @@ class MethodRef(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/b
 
   override def productElementName(n: Int): String =
     n match {
-      case 0 => "id"
-      case 1 => "argumentIndex"
-      case 2 => "argumentName"
-      case 3 => "code"
-      case 4 => "columnNumber"
-      case 5 => "dynamicTypeHintFullName"
-      case 6 => "lineNumber"
-      case 7 => "methodFullName"
-      case 8 => "order"
-      case 9 => "typeFullName"
+      case 0  => "id"
+      case 1  => "argumentIndex"
+      case 2  => "argumentName"
+      case 3  => "code"
+      case 4  => "columnNumber"
+      case 5  => "dynamicTypeHintFullName"
+      case 6  => "lineNumber"
+      case 7  => "methodFullName"
+      case 8  => "order"
+      case 9  => "possibleTypes"
+      case 10 => "typeFullName"
     }
 
   override def productElement(n: Int): Any =
     n match {
-      case 0 => id
-      case 1 => argumentIndex
-      case 2 => argumentName
-      case 3 => code
-      case 4 => columnNumber
-      case 5 => dynamicTypeHintFullName
-      case 6 => lineNumber
-      case 7 => methodFullName
-      case 8 => order
-      case 9 => typeFullName
+      case 0  => id
+      case 1  => argumentIndex
+      case 2  => argumentName
+      case 3  => code
+      case 4  => columnNumber
+      case 5  => dynamicTypeHintFullName
+      case 6  => lineNumber
+      case 7  => methodFullName
+      case 8  => order
+      case 9  => possibleTypes
+      case 10 => typeFullName
     }
 
   override def productPrefix = "MethodRef"
-  override def productArity  = 10
+
+  override def productArity = 11
 }
 
 class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Expression with MethodRefBase {
@@ -728,8 +738,12 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   def methodFullName: String                               = _methodFullName
   private var _order: scala.Int                            = MethodRef.PropertyDefaults.Order
   def order: scala.Int                                     = _order
-  private var _typeFullName: String                        = MethodRef.PropertyDefaults.TypeFullName
-  def typeFullName: String                                 = _typeFullName
+
+  private var _possibleTypes: IndexedSeq[String] = collection.immutable.ArraySeq.empty
+
+  def possibleTypes: IndexedSeq[String] = _possibleTypes
+  private var _typeFullName: String     = MethodRef.PropertyDefaults.TypeFullName
+  def typeFullName: String              = _typeFullName
 
   /** faster than the default implementation */
   override def propertiesMap: java.util.Map[String, Any] = {
@@ -744,6 +758,9 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     properties.put("METHOD_FULL_NAME", methodFullName)
     properties.put("ORDER", order)
+    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) {
+      properties.put("POSSIBLE_TYPES", possibleTypes)
+    }
     properties.put("TYPE_FULL_NAME", typeFullName)
 
     properties
@@ -762,6 +779,9 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     if (!(("<empty>") == methodFullName)) { properties.put("METHOD_FULL_NAME", methodFullName) }
     if (!((-1: Int) == order)) { properties.put("ORDER", order) }
+    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) {
+      properties.put("POSSIBLE_TYPES", possibleTypes)
+    }
     if (!(("<empty>") == typeFullName)) { properties.put("TYPE_FULL_NAME", typeFullName) }
 
     properties
@@ -771,13 +791,21 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   def argumentOut: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](0)
   override def _argumentOut              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
 
-  def captureOut: Iterator[ClosureBinding] = createAdjacentNodeScalaIteratorByOffSet[ClosureBinding](1)
-  override def _captureOut                 = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
+  def astOut: Iterator[Annotation] = createAdjacentNodeScalaIteratorByOffSet[Annotation](1)
+
+  override def _astOut = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
+
+  def _annotationViaAstOut: overflowdb.traversal.Traversal[Annotation] = astOut.collectAll[Annotation]
+
+  def captureOut: Iterator[ClosureBinding] = createAdjacentNodeScalaIteratorByOffSet[ClosureBinding](2)
+
+  override def _captureOut = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
   def _closureBindingViaCaptureOut: overflowdb.traversal.Traversal[ClosureBinding] =
     captureOut.collectAll[ClosureBinding]
 
-  def cdgOut: Iterator[CfgNode]                              = createAdjacentNodeScalaIteratorByOffSet[CfgNode](2)
-  override def _cdgOut                                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
+  def cdgOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](3)
+
+  override def _cdgOut                                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
   def _blockViaCdgOut: overflowdb.traversal.Traversal[Block] = cdgOut.collectAll[Block]
   def _callViaCdgOut: overflowdb.traversal.Traversal[Call]   = cdgOut.collectAll[Call]
   def _controlStructureViaCdgOut: overflowdb.traversal.Traversal[ControlStructure] = cdgOut.collectAll[ControlStructure]
@@ -791,13 +819,15 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   def _typeRefViaCdgOut: overflowdb.traversal.Traversal[TypeRef]                   = cdgOut.collectAll[TypeRef]
   def _unknownViaCdgOut: overflowdb.traversal.Traversal[Unknown]                   = cdgOut.collectAll[Unknown]
 
-  def cfgOut: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](3)
-  override def _cfgOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
+  def cfgOut: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](4)
+
+  override def _cfgOut = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
   def _cfgNodeViaCfgOut: overflowdb.traversal.Traversal[CfgNode]           = cfgOut.collectAll[CfgNode]
   def _methodReturnViaCfgOut: overflowdb.traversal.Traversal[MethodReturn] = cfgOut.collectAll[MethodReturn]
 
-  def dominateOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](4)
-  override def _dominateOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
+  def dominateOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](5)
+
+  override def _dominateOut = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
   def _blockViaDominateOut: overflowdb.traversal.Traversal[Block] = dominateOut.collectAll[Block]
   def _callViaDominateOut: overflowdb.traversal.Traversal[Call]   = dominateOut.collectAll[Call]
   def _controlStructureViaDominateOut: overflowdb.traversal.Traversal[ControlStructure] =
@@ -813,12 +843,10 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   def _typeRefViaDominateOut: overflowdb.traversal.Traversal[TypeRef]           = dominateOut.collectAll[TypeRef]
   def _unknownViaDominateOut: overflowdb.traversal.Traversal[Unknown]           = dominateOut.collectAll[Unknown]
 
-  def evalTypeOut: Iterator[Type]                               = createAdjacentNodeScalaIteratorByOffSet[Type](5)
-  override def _evalTypeOut                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
-  def _typeViaEvalTypeOut: overflowdb.traversal.Traversal[Type] = evalTypeOut.collectAll[Type]
+  def evalTypeOut: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](6)
 
-  def pointsToOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](6)
-  override def _pointsToOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
+  override def _evalTypeOut                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
+  def _typeViaEvalTypeOut: overflowdb.traversal.Traversal[Type] = evalTypeOut.collectAll[Type]
 
   def postDominateOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](7)
   override def _postDominateOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
@@ -924,11 +952,9 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   def _typeRefViaDominateIn: overflowdb.traversal.Traversal[TypeRef]       = dominateIn.collectAll[TypeRef]
   def _unknownViaDominateIn: overflowdb.traversal.Traversal[Unknown]       = dominateIn.collectAll[Unknown]
 
-  def pointsToIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](18)
-  override def _pointsToIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](18)
+  def postDominateIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](18)
 
-  def postDominateIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](19)
-  override def _postDominateIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](19)
+  override def _postDominateIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](18)
   def _blockViaPostDominateIn: overflowdb.traversal.Traversal[Block] = postDominateIn.collectAll[Block]
   def _callViaPostDominateIn: overflowdb.traversal.Traversal[Call]   = postDominateIn.collectAll[Call]
   def _controlStructureViaPostDominateIn: overflowdb.traversal.Traversal[ControlStructure] =
@@ -945,8 +971,9 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   def _typeRefViaPostDominateIn: overflowdb.traversal.Traversal[TypeRef] = postDominateIn.collectAll[TypeRef]
   def _unknownViaPostDominateIn: overflowdb.traversal.Traversal[Unknown] = postDominateIn.collectAll[Unknown]
 
-  def reachingDefIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](20)
-  override def _reachingDefIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](20)
+  def reachingDefIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](19)
+
+  override def _reachingDefIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](19)
   def _blockViaReachingDefIn: overflowdb.traversal.Traversal[Block] = reachingDefIn.collectAll[Block]
   def _callViaReachingDefIn: overflowdb.traversal.Traversal[Call]   = reachingDefIn.collectAll[Call]
   def _controlStructureViaReachingDefIn: overflowdb.traversal.Traversal[ControlStructure] =
@@ -963,8 +990,9 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   def _typeRefViaReachingDefIn: overflowdb.traversal.Traversal[TypeRef]     = reachingDefIn.collectAll[TypeRef]
   def _unknownViaReachingDefIn: overflowdb.traversal.Traversal[Unknown]     = reachingDefIn.collectAll[Unknown]
 
-  def receiverIn: Iterator[Call]       = createAdjacentNodeScalaIteratorByOffSet[Call](21)
-  override def _receiverIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](21)
+  def receiverIn: Iterator[Call] = createAdjacentNodeScalaIteratorByOffSet[Call](20)
+
+  override def _receiverIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](20)
   def _callViaReceiverIn: Option[Call] = receiverIn.collectAll[Call].nextOption()
 
   override def label: String = {
@@ -973,34 +1001,37 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
 
   override def productElementName(n: Int): String =
     n match {
-      case 0 => "id"
-      case 1 => "argumentIndex"
-      case 2 => "argumentName"
-      case 3 => "code"
-      case 4 => "columnNumber"
-      case 5 => "dynamicTypeHintFullName"
-      case 6 => "lineNumber"
-      case 7 => "methodFullName"
-      case 8 => "order"
-      case 9 => "typeFullName"
+      case 0  => "id"
+      case 1  => "argumentIndex"
+      case 2  => "argumentName"
+      case 3  => "code"
+      case 4  => "columnNumber"
+      case 5  => "dynamicTypeHintFullName"
+      case 6  => "lineNumber"
+      case 7  => "methodFullName"
+      case 8  => "order"
+      case 9  => "possibleTypes"
+      case 10 => "typeFullName"
     }
 
   override def productElement(n: Int): Any =
     n match {
-      case 0 => id
-      case 1 => argumentIndex
-      case 2 => argumentName
-      case 3 => code
-      case 4 => columnNumber
-      case 5 => dynamicTypeHintFullName
-      case 6 => lineNumber
-      case 7 => methodFullName
-      case 8 => order
-      case 9 => typeFullName
+      case 0  => id
+      case 1  => argumentIndex
+      case 2  => argumentName
+      case 3  => code
+      case 4  => columnNumber
+      case 5  => dynamicTypeHintFullName
+      case 6  => lineNumber
+      case 7  => methodFullName
+      case 8  => order
+      case 9  => possibleTypes
+      case 10 => typeFullName
     }
 
   override def productPrefix = "MethodRef"
-  override def productArity  = 10
+
+  override def productArity = 11
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[MethodRefDb]
 
@@ -1014,6 +1045,7 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
       case "LINE_NUMBER"                 => this._lineNumber
       case "METHOD_FULL_NAME"            => this._methodFullName
       case "ORDER"                       => this._order
+      case "POSSIBLE_TYPES"              => this._possibleTypes
       case "TYPE_FULL_NAME"              => this._typeFullName
 
       case _ => null
@@ -1047,7 +1079,25 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
       case "LINE_NUMBER"      => this._lineNumber = value.asInstanceOf[Integer]
       case "METHOD_FULL_NAME" => this._methodFullName = value.asInstanceOf[String]
       case "ORDER"            => this._order = value.asInstanceOf[scala.Int]
-      case "TYPE_FULL_NAME"   => this._typeFullName = value.asInstanceOf[String]
+      case "POSSIBLE_TYPES" =>
+        this._possibleTypes = value match {
+          case null                                             => collection.immutable.ArraySeq.empty
+          case singleValue: String                              => collection.immutable.ArraySeq(singleValue)
+          case coll: IterableOnce[Any] if coll.iterator.isEmpty => collection.immutable.ArraySeq.empty
+          case arr: Array[_] if arr.isEmpty                     => collection.immutable.ArraySeq.empty
+          case arr: Array[_] => collection.immutable.ArraySeq.unsafeWrapArray(arr).asInstanceOf[IndexedSeq[String]]
+          case jCollection: java.lang.Iterable[_] =>
+            if (jCollection.iterator.hasNext) {
+              collection.immutable.ArraySeq.unsafeWrapArray(
+                jCollection.asInstanceOf[java.util.Collection[String]].iterator.asScala.toArray
+              )
+            } else collection.immutable.ArraySeq.empty
+          case iter: Iterable[_] =>
+            if (iter.nonEmpty) {
+              collection.immutable.ArraySeq.unsafeWrapArray(iter.asInstanceOf[Iterable[String]].toArray)
+            } else collection.immutable.ArraySeq.empty
+        }
+      case "TYPE_FULL_NAME" => this._typeFullName = value.asInstanceOf[String]
 
       case _ => PropertyErrorRegister.logPropertyErrorIfFirst(getClass, key)
     }
@@ -1074,6 +1124,9 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
     this._lineNumber = newNode.asInstanceOf[NewMethodRef].lineNumber.orNull
     this._methodFullName = newNode.asInstanceOf[NewMethodRef].methodFullName
     this._order = newNode.asInstanceOf[NewMethodRef].order
+    this._possibleTypes =
+      if (newNode.asInstanceOf[NewMethodRef].possibleTypes != null) newNode.asInstanceOf[NewMethodRef].possibleTypes
+      else collection.immutable.ArraySeq.empty
     this._typeFullName = newNode.asInstanceOf[NewMethodRef].typeFullName
 
   }
