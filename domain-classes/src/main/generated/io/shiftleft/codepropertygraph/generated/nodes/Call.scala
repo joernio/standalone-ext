@@ -19,6 +19,7 @@ object Call {
     val MethodFullName          = "METHOD_FULL_NAME"
     val Name                    = "NAME"
     val Order                   = "ORDER"
+    val PossibleTypes           = "POSSIBLE_TYPES"
     val Signature               = "SIGNATURE"
     val TypeFullName            = "TYPE_FULL_NAME"
     val all: Set[String] = Set(
@@ -32,6 +33,7 @@ object Call {
       MethodFullName,
       Name,
       Order,
+      PossibleTypes,
       Signature,
       TypeFullName
     )
@@ -49,6 +51,7 @@ object Call {
     val MethodFullName          = new overflowdb.PropertyKey[String]("METHOD_FULL_NAME")
     val Name                    = new overflowdb.PropertyKey[String]("NAME")
     val Order                   = new overflowdb.PropertyKey[scala.Int]("ORDER")
+    val PossibleTypes           = new overflowdb.PropertyKey[IndexedSeq[String]]("POSSIBLE_TYPES")
     val Signature               = new overflowdb.PropertyKey[String]("SIGNATURE")
     val TypeFullName            = new overflowdb.PropertyKey[String]("TYPE_FULL_NAME")
 
@@ -77,7 +80,6 @@ object Call {
       io.shiftleft.codepropertygraph.generated.edges.Dominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.EvalType.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.IsCallForImport.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.PointsTo.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.PostDominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Receiver.layoutInformation,
@@ -92,7 +94,6 @@ object Call {
       io.shiftleft.codepropertygraph.generated.edges.Condition.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Contains.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Dominate.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.PointsTo.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.PostDominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Receiver.layoutInformation
@@ -109,7 +110,6 @@ object Call {
       "DOMINATE",
       "EVAL_TYPE",
       "IS_CALL_FOR_IMPORT",
-      "POINTS_TO",
       "POST_DOMINATE",
       "REACHING_DEF",
       "RECEIVER",
@@ -124,7 +124,6 @@ object Call {
       "CONDITION",
       "CONTAINS",
       "DOMINATE",
-      "POINTS_TO",
       "POST_DOMINATE",
       "REACHING_DEF",
       "RECEIVER"
@@ -154,6 +153,7 @@ trait CallBase extends AbstractNode with CallReprBase with ExpressionBase {
   def methodFullName: String
   def name: String
   def order: scala.Int
+  def possibleTypes: IndexedSeq[String]
   def signature: String
   def typeFullName: String
 
@@ -175,6 +175,7 @@ class Call(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
   override def methodFullName: String                      = get().methodFullName
   override def name: String                                = get().name
   override def order: scala.Int                            = get().order
+  override def possibleTypes: IndexedSeq[String]           = get().possibleTypes
   override def signature: String                           = get().signature
   override def typeFullName: String                        = get().typeFullName
   override def propertyDefaultValue(propertyKey: String) =
@@ -405,9 +406,6 @@ class Call(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
   /** Traverse to IMPORT via IS_CALL_FOR_IMPORT OUT edge.
     */
   def _importViaIsCallForImportOut: overflowdb.traversal.Traversal[Import] = get()._importViaIsCallForImportOut
-
-  def pointsToOut: Iterator[CfgNode] = get().pointsToOut
-  override def _pointsToOut          = get()._pointsToOut
 
   def postDominateOut: Iterator[CfgNode] = get().postDominateOut
   override def _postDominateOut          = get()._postDominateOut
@@ -694,9 +692,6 @@ class Call(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
     */
   def _unknownViaDominateIn: overflowdb.traversal.Traversal[Unknown] = get()._unknownViaDominateIn
 
-  def pointsToIn: Iterator[CfgNode] = get().pointsToIn
-  override def _pointsToIn          = get()._pointsToIn
-
   def postDominateIn: Iterator[CfgNode] = get().postDominateIn
   override def _postDominateIn          = get()._postDominateIn
 
@@ -837,8 +832,9 @@ class Call(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
       case 8  => "methodFullName"
       case 9  => "name"
       case 10 => "order"
-      case 11 => "signature"
-      case 12 => "typeFullName"
+      case 11 => "possibleTypes"
+      case 12 => "signature"
+      case 13 => "typeFullName"
     }
 
   override def productElement(n: Int): Any =
@@ -854,12 +850,13 @@ class Call(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
       case 8  => methodFullName
       case 9  => name
       case 10 => order
-      case 11 => signature
-      case 12 => typeFullName
+      case 11 => possibleTypes
+      case 12 => signature
+      case 13 => typeFullName
     }
 
   override def productPrefix = "Call"
-  override def productArity  = 13
+  override def productArity  = 14
 }
 
 class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with CallRepr with Expression with CallBase {
@@ -886,6 +883,8 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
   def name: String                                         = _name
   private var _order: scala.Int                            = Call.PropertyDefaults.Order
   def order: scala.Int                                     = _order
+  private var _possibleTypes: IndexedSeq[String]           = collection.immutable.ArraySeq.empty
+  def possibleTypes: IndexedSeq[String]                    = _possibleTypes
   private var _signature: String                           = Call.PropertyDefaults.Signature
   def signature: String                                    = _signature
   private var _typeFullName: String                        = Call.PropertyDefaults.TypeFullName
@@ -906,6 +905,7 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
     properties.put("METHOD_FULL_NAME", methodFullName)
     properties.put("NAME", name)
     properties.put("ORDER", order)
+    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) { properties.put("POSSIBLE_TYPES", possibleTypes) }
     properties.put("SIGNATURE", signature)
     properties.put("TYPE_FULL_NAME", typeFullName)
 
@@ -927,6 +927,7 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
     if (!(("<empty>") == methodFullName)) { properties.put("METHOD_FULL_NAME", methodFullName) }
     if (!(("<empty>") == name)) { properties.put("NAME", name) }
     if (!((-1: Int) == order)) { properties.put("ORDER", order) }
+    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) { properties.put("POSSIBLE_TYPES", possibleTypes) }
     if (!(("") == signature)) { properties.put("SIGNATURE", signature) }
     if (!(("<empty>") == typeFullName)) { properties.put("TYPE_FULL_NAME", typeFullName) }
 
@@ -1009,11 +1010,8 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
   override def _isCallForImportOut         = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
   def _importViaIsCallForImportOut: overflowdb.traversal.Traversal[Import] = isCallForImportOut.collectAll[Import]
 
-  def pointsToOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](8)
-  override def _pointsToOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
-
-  def postDominateOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](9)
-  override def _postDominateOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](9)
+  def postDominateOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](8)
+  override def _postDominateOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
   def _blockViaPostDominateOut: overflowdb.traversal.Traversal[Block] = postDominateOut.collectAll[Block]
   def _callViaPostDominateOut: overflowdb.traversal.Traversal[Call]   = postDominateOut.collectAll[Call]
   def _controlStructureViaPostDominateOut: overflowdb.traversal.Traversal[ControlStructure] =
@@ -1029,8 +1027,8 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
   def _typeRefViaPostDominateOut: overflowdb.traversal.Traversal[TypeRef]       = postDominateOut.collectAll[TypeRef]
   def _unknownViaPostDominateOut: overflowdb.traversal.Traversal[Unknown]       = postDominateOut.collectAll[Unknown]
 
-  def reachingDefOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](10)
-  override def _reachingDefOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](10)
+  def reachingDefOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](9)
+  override def _reachingDefOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](9)
   def _callViaReachingDefOut: overflowdb.traversal.Traversal[Call]             = reachingDefOut.collectAll[Call]
   def _identifierViaReachingDefOut: overflowdb.traversal.Traversal[Identifier] = reachingDefOut.collectAll[Identifier]
   def _literalViaReachingDefOut: overflowdb.traversal.Traversal[Literal]       = reachingDefOut.collectAll[Literal]
@@ -1040,8 +1038,8 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
   def _returnViaReachingDefOut: overflowdb.traversal.Traversal[Return]       = reachingDefOut.collectAll[Return]
   def _typeRefViaReachingDefOut: overflowdb.traversal.Traversal[TypeRef]     = reachingDefOut.collectAll[TypeRef]
 
-  def receiverOut: Iterator[Expression]   = createAdjacentNodeScalaIteratorByOffSet[Expression](11)
-  override def _receiverOut               = createAdjacentNodeScalaIteratorByOffSet[StoredNode](11)
+  def receiverOut: Iterator[Expression]   = createAdjacentNodeScalaIteratorByOffSet[Expression](10)
+  override def _receiverOut               = createAdjacentNodeScalaIteratorByOffSet[StoredNode](10)
   def _blockViaReceiverOut: Option[Block] = receiverOut.collectAll[Block].nextOption()
   def _callViaReceiverOut: Option[Call]   = receiverOut.collectAll[Call].nextOption()
   def _controlStructureViaReceiverOut: overflowdb.traversal.Traversal[ControlStructure] =
@@ -1052,21 +1050,21 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
   def _typeRefViaReceiverOut: overflowdb.traversal.Traversal[TypeRef] = receiverOut.collectAll[TypeRef]
   def _unknownViaReceiverOut: overflowdb.traversal.Traversal[Unknown] = receiverOut.collectAll[Unknown]
 
-  def refOut: Iterator[Member]                                 = createAdjacentNodeScalaIteratorByOffSet[Member](12)
-  override def _refOut                                         = createAdjacentNodeScalaIteratorByOffSet[StoredNode](12)
+  def refOut: Iterator[Member]                                 = createAdjacentNodeScalaIteratorByOffSet[Member](11)
+  override def _refOut                                         = createAdjacentNodeScalaIteratorByOffSet[StoredNode](11)
   def referencedMember: overflowdb.traversal.Traversal[Member] = refOut.collectAll[Member]
 
-  def taggedByOut: Iterator[Tag]                              = createAdjacentNodeScalaIteratorByOffSet[Tag](13)
-  override def _taggedByOut                                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](13)
+  def taggedByOut: Iterator[Tag]                              = createAdjacentNodeScalaIteratorByOffSet[Tag](12)
+  override def _taggedByOut                                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](12)
   def _tagViaTaggedByOut: overflowdb.traversal.Traversal[Tag] = taggedByOut.collectAll[Tag]
 
-  def argumentIn: Iterator[Expression]     = createAdjacentNodeScalaIteratorByOffSet[Expression](14)
-  override def _argumentIn                 = createAdjacentNodeScalaIteratorByOffSet[StoredNode](14)
+  def argumentIn: Iterator[Expression]     = createAdjacentNodeScalaIteratorByOffSet[Expression](13)
+  override def _argumentIn                 = createAdjacentNodeScalaIteratorByOffSet[StoredNode](13)
   def _callViaArgumentIn: Option[Call]     = argumentIn.collectAll[Call].nextOption()
   def _returnViaArgumentIn: Option[Return] = argumentIn.collectAll[Return].nextOption()
 
-  def astIn: Iterator[Expression]                           = createAdjacentNodeScalaIteratorByOffSet[Expression](15)
-  override def _astIn                                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](15)
+  def astIn: Iterator[Expression]                           = createAdjacentNodeScalaIteratorByOffSet[Expression](14)
+  override def _astIn                                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](14)
   def _blockViaAstIn: overflowdb.traversal.Traversal[Block] = astIn.collectAll[Block]
   def _callViaAstIn: overflowdb.traversal.Traversal[Call]   = astIn.collectAll[Call]
   def _controlStructureViaAstIn: ControlStructure = try { astIn.collectAll[ControlStructure].next() }
@@ -1080,8 +1078,8 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
   def _returnViaAstIn: overflowdb.traversal.Traversal[Return]   = astIn.collectAll[Return]
   def _unknownViaAstIn: overflowdb.traversal.Traversal[Unknown] = astIn.collectAll[Unknown]
 
-  def cdgIn: Iterator[CfgNode]                              = createAdjacentNodeScalaIteratorByOffSet[CfgNode](16)
-  override def _cdgIn                                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](16)
+  def cdgIn: Iterator[CfgNode]                              = createAdjacentNodeScalaIteratorByOffSet[CfgNode](15)
+  override def _cdgIn                                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](15)
   def _blockViaCdgIn: overflowdb.traversal.Traversal[Block] = cdgIn.collectAll[Block]
   def _callViaCdgIn: overflowdb.traversal.Traversal[Call]   = cdgIn.collectAll[Call]
   def _controlStructureViaCdgIn: overflowdb.traversal.Traversal[ControlStructure] = cdgIn.collectAll[ControlStructure]
@@ -1093,20 +1091,20 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
   def _typeRefViaCdgIn: overflowdb.traversal.Traversal[TypeRef]                   = cdgIn.collectAll[TypeRef]
   def _unknownViaCdgIn: overflowdb.traversal.Traversal[Unknown]                   = cdgIn.collectAll[Unknown]
 
-  def cfgIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](17)
-  override def _cfgIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](17)
+  def cfgIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](16)
+  override def _cfgIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](16)
 
-  def conditionIn: Iterator[ControlStructure] = createAdjacentNodeScalaIteratorByOffSet[ControlStructure](18)
-  override def _conditionIn                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](18)
+  def conditionIn: Iterator[ControlStructure] = createAdjacentNodeScalaIteratorByOffSet[ControlStructure](17)
+  override def _conditionIn                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](17)
   def _controlStructureViaConditionIn: overflowdb.traversal.Traversal[ControlStructure] =
     conditionIn.collectAll[ControlStructure]
 
-  def containsIn: Iterator[Method] = createAdjacentNodeScalaIteratorByOffSet[Method](19)
-  override def _containsIn         = createAdjacentNodeScalaIteratorByOffSet[StoredNode](19)
+  def containsIn: Iterator[Method] = createAdjacentNodeScalaIteratorByOffSet[Method](18)
+  override def _containsIn         = createAdjacentNodeScalaIteratorByOffSet[StoredNode](18)
   def _methodViaContainsIn: overflowdb.traversal.Traversal[Method] = containsIn.collectAll[Method]
 
-  def dominateIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](20)
-  override def _dominateIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](20)
+  def dominateIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](19)
+  override def _dominateIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](19)
   def _blockViaDominateIn: overflowdb.traversal.Traversal[Block] = dominateIn.collectAll[Block]
   def _callViaDominateIn: overflowdb.traversal.Traversal[Call]   = dominateIn.collectAll[Call]
   def _controlStructureViaDominateIn: overflowdb.traversal.Traversal[ControlStructure] =
@@ -1122,11 +1120,8 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
   def _typeRefViaDominateIn: overflowdb.traversal.Traversal[TypeRef]       = dominateIn.collectAll[TypeRef]
   def _unknownViaDominateIn: overflowdb.traversal.Traversal[Unknown]       = dominateIn.collectAll[Unknown]
 
-  def pointsToIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](21)
-  override def _pointsToIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](21)
-
-  def postDominateIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](22)
-  override def _postDominateIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](22)
+  def postDominateIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](20)
+  override def _postDominateIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](20)
   def _blockViaPostDominateIn: overflowdb.traversal.Traversal[Block] = postDominateIn.collectAll[Block]
   def _callViaPostDominateIn: overflowdb.traversal.Traversal[Call]   = postDominateIn.collectAll[Call]
   def _controlStructureViaPostDominateIn: overflowdb.traversal.Traversal[ControlStructure] =
@@ -1143,8 +1138,8 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
   def _typeRefViaPostDominateIn: overflowdb.traversal.Traversal[TypeRef] = postDominateIn.collectAll[TypeRef]
   def _unknownViaPostDominateIn: overflowdb.traversal.Traversal[Unknown] = postDominateIn.collectAll[Unknown]
 
-  def reachingDefIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](23)
-  override def _reachingDefIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](23)
+  def reachingDefIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](21)
+  override def _reachingDefIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](21)
   def _blockViaReachingDefIn: overflowdb.traversal.Traversal[Block] = reachingDefIn.collectAll[Block]
   def _callViaReachingDefIn: overflowdb.traversal.Traversal[Call]   = reachingDefIn.collectAll[Call]
   def _controlStructureViaReachingDefIn: overflowdb.traversal.Traversal[ControlStructure] =
@@ -1160,8 +1155,8 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
   def _typeRefViaReachingDefIn: overflowdb.traversal.Traversal[TypeRef]     = reachingDefIn.collectAll[TypeRef]
   def _unknownViaReachingDefIn: overflowdb.traversal.Traversal[Unknown]     = reachingDefIn.collectAll[Unknown]
 
-  def receiverIn: Iterator[Call]       = createAdjacentNodeScalaIteratorByOffSet[Call](24)
-  override def _receiverIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](24)
+  def receiverIn: Iterator[Call]       = createAdjacentNodeScalaIteratorByOffSet[Call](22)
+  override def _receiverIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](22)
   def _callViaReceiverIn: Option[Call] = receiverIn.collectAll[Call].nextOption()
 
   override def label: String = {
@@ -1181,8 +1176,9 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
       case 8  => "methodFullName"
       case 9  => "name"
       case 10 => "order"
-      case 11 => "signature"
-      case 12 => "typeFullName"
+      case 11 => "possibleTypes"
+      case 12 => "signature"
+      case 13 => "typeFullName"
     }
 
   override def productElement(n: Int): Any =
@@ -1198,12 +1194,13 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
       case 8  => methodFullName
       case 9  => name
       case 10 => order
-      case 11 => signature
-      case 12 => typeFullName
+      case 11 => possibleTypes
+      case 12 => signature
+      case 13 => typeFullName
     }
 
   override def productPrefix = "Call"
-  override def productArity  = 13
+  override def productArity  = 14
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[CallDb]
 
@@ -1219,6 +1216,7 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
       case "METHOD_FULL_NAME"            => this._methodFullName
       case "NAME"                        => this._name
       case "ORDER"                       => this._order
+      case "POSSIBLE_TYPES"              => this._possibleTypes
       case "SIGNATURE"                   => this._signature
       case "TYPE_FULL_NAME"              => this._typeFullName
 
@@ -1255,8 +1253,26 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
       case "METHOD_FULL_NAME" => this._methodFullName = value.asInstanceOf[String]
       case "NAME"             => this._name = value.asInstanceOf[String]
       case "ORDER"            => this._order = value.asInstanceOf[scala.Int]
-      case "SIGNATURE"        => this._signature = value.asInstanceOf[String]
-      case "TYPE_FULL_NAME"   => this._typeFullName = value.asInstanceOf[String]
+      case "POSSIBLE_TYPES" =>
+        this._possibleTypes = value match {
+          case null                                             => collection.immutable.ArraySeq.empty
+          case singleValue: String                              => collection.immutable.ArraySeq(singleValue)
+          case coll: IterableOnce[Any] if coll.iterator.isEmpty => collection.immutable.ArraySeq.empty
+          case arr: Array[_] if arr.isEmpty                     => collection.immutable.ArraySeq.empty
+          case arr: Array[_] => collection.immutable.ArraySeq.unsafeWrapArray(arr).asInstanceOf[IndexedSeq[String]]
+          case jCollection: java.lang.Iterable[_] =>
+            if (jCollection.iterator.hasNext) {
+              collection.immutable.ArraySeq.unsafeWrapArray(
+                jCollection.asInstanceOf[java.util.Collection[String]].iterator.asScala.toArray
+              )
+            } else collection.immutable.ArraySeq.empty
+          case iter: Iterable[_] =>
+            if (iter.nonEmpty) {
+              collection.immutable.ArraySeq.unsafeWrapArray(iter.asInstanceOf[Iterable[String]].toArray)
+            } else collection.immutable.ArraySeq.empty
+        }
+      case "SIGNATURE"      => this._signature = value.asInstanceOf[String]
+      case "TYPE_FULL_NAME" => this._typeFullName = value.asInstanceOf[String]
 
       case _ => PropertyErrorRegister.logPropertyErrorIfFirst(getClass, key)
     }
@@ -1285,6 +1301,9 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
     this._methodFullName = newNode.asInstanceOf[NewCall].methodFullName
     this._name = newNode.asInstanceOf[NewCall].name
     this._order = newNode.asInstanceOf[NewCall].order
+    this._possibleTypes =
+      if (newNode.asInstanceOf[NewCall].possibleTypes != null) newNode.asInstanceOf[NewCall].possibleTypes
+      else collection.immutable.ArraySeq.empty
     this._signature = newNode.asInstanceOf[NewCall].signature
     this._typeFullName = newNode.asInstanceOf[NewCall].typeFullName
 

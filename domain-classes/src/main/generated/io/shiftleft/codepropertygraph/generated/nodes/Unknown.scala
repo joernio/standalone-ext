@@ -18,6 +18,7 @@ object Unknown {
     val LineNumber              = "LINE_NUMBER"
     val Order                   = "ORDER"
     val ParserTypeName          = "PARSER_TYPE_NAME"
+    val PossibleTypes           = "POSSIBLE_TYPES"
     val TypeFullName            = "TYPE_FULL_NAME"
     val all: Set[String] = Set(
       ArgumentIndex,
@@ -29,6 +30,7 @@ object Unknown {
       LineNumber,
       Order,
       ParserTypeName,
+      PossibleTypes,
       TypeFullName
     )
     val allAsJava: java.util.Set[String] = all.asJava
@@ -44,6 +46,7 @@ object Unknown {
     val LineNumber              = new overflowdb.PropertyKey[Integer]("LINE_NUMBER")
     val Order                   = new overflowdb.PropertyKey[scala.Int]("ORDER")
     val ParserTypeName          = new overflowdb.PropertyKey[String]("PARSER_TYPE_NAME")
+    val PossibleTypes           = new overflowdb.PropertyKey[IndexedSeq[String]]("POSSIBLE_TYPES")
     val TypeFullName            = new overflowdb.PropertyKey[String]("TYPE_FULL_NAME")
 
   }
@@ -67,7 +70,6 @@ object Unknown {
       io.shiftleft.codepropertygraph.generated.edges.Cfg.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Dominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.EvalType.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.PointsTo.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.PostDominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.TaggedBy.layoutInformation
@@ -80,7 +82,6 @@ object Unknown {
       io.shiftleft.codepropertygraph.generated.edges.Condition.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Contains.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Dominate.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.PointsTo.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.PostDominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Receiver.layoutInformation
@@ -88,18 +89,8 @@ object Unknown {
   )
 
   object Edges {
-    val Out: Array[String] = Array(
-      "ARGUMENT",
-      "AST",
-      "CDG",
-      "CFG",
-      "DOMINATE",
-      "EVAL_TYPE",
-      "POINTS_TO",
-      "POST_DOMINATE",
-      "REACHING_DEF",
-      "TAGGED_BY"
-    )
+    val Out: Array[String] =
+      Array("ARGUMENT", "AST", "CDG", "CFG", "DOMINATE", "EVAL_TYPE", "POST_DOMINATE", "REACHING_DEF", "TAGGED_BY")
     val In: Array[String] = Array(
       "ARGUMENT",
       "AST",
@@ -108,7 +99,6 @@ object Unknown {
       "CONDITION",
       "CONTAINS",
       "DOMINATE",
-      "POINTS_TO",
       "POST_DOMINATE",
       "REACHING_DEF",
       "RECEIVER"
@@ -137,6 +127,7 @@ trait UnknownBase extends AbstractNode with ExpressionBase {
   def lineNumber: Option[Integer]
   def order: scala.Int
   def parserTypeName: String
+  def possibleTypes: IndexedSeq[String]
   def typeFullName: String
 
 }
@@ -155,6 +146,7 @@ class Unknown(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug
   override def lineNumber: Option[Integer]                 = get().lineNumber
   override def order: scala.Int                            = get().order
   override def parserTypeName: String                      = get().parserTypeName
+  override def possibleTypes: IndexedSeq[String]           = get().possibleTypes
   override def typeFullName: String                        = get().typeFullName
   override def propertyDefaultValue(propertyKey: String) =
     propertyKey match {
@@ -172,6 +164,10 @@ class Unknown(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug
 
   def astOut: Iterator[AstNode] = get().astOut
   override def _astOut          = get()._astOut
+
+  /** Traverse to ANNOTATION via AST OUT edge.
+    */
+  def _annotationViaAstOut: overflowdb.traversal.Traversal[Annotation] = get()._annotationViaAstOut
 
   /** Traverse to BLOCK via AST OUT edge.
     */
@@ -338,9 +334,6 @@ class Unknown(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug
   /** Traverse to TYPE via EVAL_TYPE OUT edge.
     */
   def _typeViaEvalTypeOut: overflowdb.traversal.Traversal[Type] = get()._typeViaEvalTypeOut
-
-  def pointsToOut: Iterator[CfgNode] = get().pointsToOut
-  override def _pointsToOut          = get()._pointsToOut
 
   def postDominateOut: Iterator[CfgNode] = get().postDominateOut
   override def _postDominateOut          = get()._postDominateOut
@@ -582,9 +575,6 @@ class Unknown(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug
     */
   def _unknownViaDominateIn: overflowdb.traversal.Traversal[Unknown] = get()._unknownViaDominateIn
 
-  def pointsToIn: Iterator[CfgNode] = get().pointsToIn
-  override def _pointsToIn          = get()._pointsToIn
-
   def postDominateIn: Iterator[CfgNode] = get().postDominateIn
   override def _postDominateIn          = get()._postDominateIn
 
@@ -677,7 +667,8 @@ class Unknown(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug
       case 7  => "lineNumber"
       case 8  => "order"
       case 9  => "parserTypeName"
-      case 10 => "typeFullName"
+      case 10 => "possibleTypes"
+      case 11 => "typeFullName"
     }
 
   override def productElement(n: Int): Any =
@@ -692,11 +683,12 @@ class Unknown(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug
       case 7  => lineNumber
       case 8  => order
       case 9  => parserTypeName
-      case 10 => typeFullName
+      case 10 => possibleTypes
+      case 11 => typeFullName
     }
 
   override def productPrefix = "Unknown"
-  override def productArity  = 11
+  override def productArity  = 12
 }
 
 class UnknownDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Expression with UnknownBase {
@@ -721,6 +713,8 @@ class UnknownDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def order: scala.Int                                     = _order
   private var _parserTypeName: String                      = Unknown.PropertyDefaults.ParserTypeName
   def parserTypeName: String                               = _parserTypeName
+  private var _possibleTypes: IndexedSeq[String]           = collection.immutable.ArraySeq.empty
+  def possibleTypes: IndexedSeq[String]                    = _possibleTypes
   private var _typeFullName: String                        = Unknown.PropertyDefaults.TypeFullName
   def typeFullName: String                                 = _typeFullName
 
@@ -738,6 +732,7 @@ class UnknownDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     properties.put("ORDER", order)
     properties.put("PARSER_TYPE_NAME", parserTypeName)
+    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) { properties.put("POSSIBLE_TYPES", possibleTypes) }
     properties.put("TYPE_FULL_NAME", typeFullName)
 
     properties
@@ -757,6 +752,7 @@ class UnknownDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     if (!((-1: Int) == order)) { properties.put("ORDER", order) }
     if (!(("<empty>") == parserTypeName)) { properties.put("PARSER_TYPE_NAME", parserTypeName) }
+    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) { properties.put("POSSIBLE_TYPES", possibleTypes) }
     if (!(("<empty>") == typeFullName)) { properties.put("TYPE_FULL_NAME", typeFullName) }
 
     properties
@@ -766,10 +762,11 @@ class UnknownDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def argumentOut: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](0)
   override def _argumentOut              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
 
-  def astOut: Iterator[AstNode]                              = createAdjacentNodeScalaIteratorByOffSet[AstNode](1)
-  override def _astOut                                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
-  def _blockViaAstOut: overflowdb.traversal.Traversal[Block] = astOut.collectAll[Block]
-  def _callViaAstOut: overflowdb.traversal.Traversal[Call]   = astOut.collectAll[Call]
+  def astOut: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](1)
+  override def _astOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
+  def _annotationViaAstOut: overflowdb.traversal.Traversal[Annotation]             = astOut.collectAll[Annotation]
+  def _blockViaAstOut: overflowdb.traversal.Traversal[Block]                       = astOut.collectAll[Block]
+  def _callViaAstOut: overflowdb.traversal.Traversal[Call]                         = astOut.collectAll[Call]
   def _controlStructureViaAstOut: overflowdb.traversal.Traversal[ControlStructure] = astOut.collectAll[ControlStructure]
   def _fieldIdentifierViaAstOut: overflowdb.traversal.Traversal[FieldIdentifier]   = astOut.collectAll[FieldIdentifier]
   def _identifierViaAstOut: overflowdb.traversal.Traversal[Identifier]             = astOut.collectAll[Identifier]
@@ -821,11 +818,8 @@ class UnknownDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   override def _evalTypeOut                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
   def _typeViaEvalTypeOut: overflowdb.traversal.Traversal[Type] = evalTypeOut.collectAll[Type]
 
-  def pointsToOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](6)
-  override def _pointsToOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
-
-  def postDominateOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](7)
-  override def _postDominateOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
+  def postDominateOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](6)
+  override def _postDominateOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
   def _blockViaPostDominateOut: overflowdb.traversal.Traversal[Block] = postDominateOut.collectAll[Block]
   def _callViaPostDominateOut: overflowdb.traversal.Traversal[Call]   = postDominateOut.collectAll[Call]
   def _controlStructureViaPostDominateOut: overflowdb.traversal.Traversal[ControlStructure] =
@@ -841,8 +835,8 @@ class UnknownDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def _typeRefViaPostDominateOut: overflowdb.traversal.Traversal[TypeRef]       = postDominateOut.collectAll[TypeRef]
   def _unknownViaPostDominateOut: overflowdb.traversal.Traversal[Unknown]       = postDominateOut.collectAll[Unknown]
 
-  def reachingDefOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](8)
-  override def _reachingDefOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
+  def reachingDefOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](7)
+  override def _reachingDefOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
   def _callViaReachingDefOut: overflowdb.traversal.Traversal[Call]             = reachingDefOut.collectAll[Call]
   def _identifierViaReachingDefOut: overflowdb.traversal.Traversal[Identifier] = reachingDefOut.collectAll[Identifier]
   def _literalViaReachingDefOut: overflowdb.traversal.Traversal[Literal]       = reachingDefOut.collectAll[Literal]
@@ -852,17 +846,17 @@ class UnknownDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def _returnViaReachingDefOut: overflowdb.traversal.Traversal[Return]       = reachingDefOut.collectAll[Return]
   def _typeRefViaReachingDefOut: overflowdb.traversal.Traversal[TypeRef]     = reachingDefOut.collectAll[TypeRef]
 
-  def taggedByOut: Iterator[Tag]                              = createAdjacentNodeScalaIteratorByOffSet[Tag](9)
-  override def _taggedByOut                                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](9)
+  def taggedByOut: Iterator[Tag]                              = createAdjacentNodeScalaIteratorByOffSet[Tag](8)
+  override def _taggedByOut                                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
   def _tagViaTaggedByOut: overflowdb.traversal.Traversal[Tag] = taggedByOut.collectAll[Tag]
 
-  def argumentIn: Iterator[Expression]                         = createAdjacentNodeScalaIteratorByOffSet[Expression](10)
-  override def _argumentIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](10)
+  def argumentIn: Iterator[Expression]                         = createAdjacentNodeScalaIteratorByOffSet[Expression](9)
+  override def _argumentIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](9)
   def _callViaArgumentIn: overflowdb.traversal.Traversal[Call] = argumentIn.collectAll[Call]
   def _returnViaArgumentIn: overflowdb.traversal.Traversal[Return] = argumentIn.collectAll[Return]
 
-  def astIn: Iterator[CfgNode]                              = createAdjacentNodeScalaIteratorByOffSet[CfgNode](11)
-  override def _astIn                                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](11)
+  def astIn: Iterator[CfgNode]                              = createAdjacentNodeScalaIteratorByOffSet[CfgNode](10)
+  override def _astIn                                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](10)
   def _blockViaAstIn: overflowdb.traversal.Traversal[Block] = astIn.collectAll[Block]
   def _controlStructureViaAstIn: overflowdb.traversal.Traversal[ControlStructure] = astIn.collectAll[ControlStructure]
   def _methodParameterInViaAstIn: overflowdb.traversal.Traversal[MethodParameterIn] =
@@ -870,8 +864,8 @@ class UnknownDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def _returnViaAstIn: overflowdb.traversal.Traversal[Return]   = astIn.collectAll[Return]
   def _unknownViaAstIn: overflowdb.traversal.Traversal[Unknown] = astIn.collectAll[Unknown]
 
-  def cdgIn: Iterator[CfgNode]                              = createAdjacentNodeScalaIteratorByOffSet[CfgNode](12)
-  override def _cdgIn                                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](12)
+  def cdgIn: Iterator[CfgNode]                              = createAdjacentNodeScalaIteratorByOffSet[CfgNode](11)
+  override def _cdgIn                                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](11)
   def _blockViaCdgIn: overflowdb.traversal.Traversal[Block] = cdgIn.collectAll[Block]
   def _callViaCdgIn: overflowdb.traversal.Traversal[Call]   = cdgIn.collectAll[Call]
   def _controlStructureViaCdgIn: overflowdb.traversal.Traversal[ControlStructure] = cdgIn.collectAll[ControlStructure]
@@ -883,20 +877,20 @@ class UnknownDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def _typeRefViaCdgIn: overflowdb.traversal.Traversal[TypeRef]                   = cdgIn.collectAll[TypeRef]
   def _unknownViaCdgIn: overflowdb.traversal.Traversal[Unknown]                   = cdgIn.collectAll[Unknown]
 
-  def cfgIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](13)
-  override def _cfgIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](13)
+  def cfgIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](12)
+  override def _cfgIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](12)
 
-  def conditionIn: Iterator[ControlStructure] = createAdjacentNodeScalaIteratorByOffSet[ControlStructure](14)
-  override def _conditionIn                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](14)
+  def conditionIn: Iterator[ControlStructure] = createAdjacentNodeScalaIteratorByOffSet[ControlStructure](13)
+  override def _conditionIn                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](13)
   def _controlStructureViaConditionIn: overflowdb.traversal.Traversal[ControlStructure] =
     conditionIn.collectAll[ControlStructure]
 
-  def containsIn: Iterator[Method] = createAdjacentNodeScalaIteratorByOffSet[Method](15)
-  override def _containsIn         = createAdjacentNodeScalaIteratorByOffSet[StoredNode](15)
+  def containsIn: Iterator[Method] = createAdjacentNodeScalaIteratorByOffSet[Method](14)
+  override def _containsIn         = createAdjacentNodeScalaIteratorByOffSet[StoredNode](14)
   def _methodViaContainsIn: overflowdb.traversal.Traversal[Method] = containsIn.collectAll[Method]
 
-  def dominateIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](16)
-  override def _dominateIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](16)
+  def dominateIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](15)
+  override def _dominateIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](15)
   def _blockViaDominateIn: overflowdb.traversal.Traversal[Block] = dominateIn.collectAll[Block]
   def _callViaDominateIn: overflowdb.traversal.Traversal[Call]   = dominateIn.collectAll[Call]
   def _controlStructureViaDominateIn: overflowdb.traversal.Traversal[ControlStructure] =
@@ -912,11 +906,8 @@ class UnknownDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def _typeRefViaDominateIn: overflowdb.traversal.Traversal[TypeRef]       = dominateIn.collectAll[TypeRef]
   def _unknownViaDominateIn: overflowdb.traversal.Traversal[Unknown]       = dominateIn.collectAll[Unknown]
 
-  def pointsToIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](17)
-  override def _pointsToIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](17)
-
-  def postDominateIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](18)
-  override def _postDominateIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](18)
+  def postDominateIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](16)
+  override def _postDominateIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](16)
   def _blockViaPostDominateIn: overflowdb.traversal.Traversal[Block] = postDominateIn.collectAll[Block]
   def _callViaPostDominateIn: overflowdb.traversal.Traversal[Call]   = postDominateIn.collectAll[Call]
   def _controlStructureViaPostDominateIn: overflowdb.traversal.Traversal[ControlStructure] =
@@ -933,11 +924,11 @@ class UnknownDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def _typeRefViaPostDominateIn: overflowdb.traversal.Traversal[TypeRef] = postDominateIn.collectAll[TypeRef]
   def _unknownViaPostDominateIn: overflowdb.traversal.Traversal[Unknown] = postDominateIn.collectAll[Unknown]
 
-  def reachingDefIn: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](19)
-  override def _reachingDefIn              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](19)
+  def reachingDefIn: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](17)
+  override def _reachingDefIn              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](17)
 
-  def receiverIn: Iterator[Call]                               = createAdjacentNodeScalaIteratorByOffSet[Call](20)
-  override def _receiverIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](20)
+  def receiverIn: Iterator[Call]                               = createAdjacentNodeScalaIteratorByOffSet[Call](18)
+  override def _receiverIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](18)
   def _callViaReceiverIn: overflowdb.traversal.Traversal[Call] = receiverIn.collectAll[Call]
 
   override def label: String = {
@@ -956,7 +947,8 @@ class UnknownDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
       case 7  => "lineNumber"
       case 8  => "order"
       case 9  => "parserTypeName"
-      case 10 => "typeFullName"
+      case 10 => "possibleTypes"
+      case 11 => "typeFullName"
     }
 
   override def productElement(n: Int): Any =
@@ -971,11 +963,12 @@ class UnknownDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
       case 7  => lineNumber
       case 8  => order
       case 9  => parserTypeName
-      case 10 => typeFullName
+      case 10 => possibleTypes
+      case 11 => typeFullName
     }
 
   override def productPrefix = "Unknown"
-  override def productArity  = 11
+  override def productArity  = 12
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[UnknownDb]
 
@@ -990,6 +983,7 @@ class UnknownDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
       case "LINE_NUMBER"                 => this._lineNumber
       case "ORDER"                       => this._order
       case "PARSER_TYPE_NAME"            => this._parserTypeName
+      case "POSSIBLE_TYPES"              => this._possibleTypes
       case "TYPE_FULL_NAME"              => this._typeFullName
 
       case _ => null
@@ -1024,7 +1018,25 @@ class UnknownDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
       case "LINE_NUMBER"      => this._lineNumber = value.asInstanceOf[Integer]
       case "ORDER"            => this._order = value.asInstanceOf[scala.Int]
       case "PARSER_TYPE_NAME" => this._parserTypeName = value.asInstanceOf[String]
-      case "TYPE_FULL_NAME"   => this._typeFullName = value.asInstanceOf[String]
+      case "POSSIBLE_TYPES" =>
+        this._possibleTypes = value match {
+          case null                                             => collection.immutable.ArraySeq.empty
+          case singleValue: String                              => collection.immutable.ArraySeq(singleValue)
+          case coll: IterableOnce[Any] if coll.iterator.isEmpty => collection.immutable.ArraySeq.empty
+          case arr: Array[_] if arr.isEmpty                     => collection.immutable.ArraySeq.empty
+          case arr: Array[_] => collection.immutable.ArraySeq.unsafeWrapArray(arr).asInstanceOf[IndexedSeq[String]]
+          case jCollection: java.lang.Iterable[_] =>
+            if (jCollection.iterator.hasNext) {
+              collection.immutable.ArraySeq.unsafeWrapArray(
+                jCollection.asInstanceOf[java.util.Collection[String]].iterator.asScala.toArray
+              )
+            } else collection.immutable.ArraySeq.empty
+          case iter: Iterable[_] =>
+            if (iter.nonEmpty) {
+              collection.immutable.ArraySeq.unsafeWrapArray(iter.asInstanceOf[Iterable[String]].toArray)
+            } else collection.immutable.ArraySeq.empty
+        }
+      case "TYPE_FULL_NAME" => this._typeFullName = value.asInstanceOf[String]
 
       case _ => PropertyErrorRegister.logPropertyErrorIfFirst(getClass, key)
     }
@@ -1052,6 +1064,9 @@ class UnknownDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
     this._lineNumber = newNode.asInstanceOf[NewUnknown].lineNumber.orNull
     this._order = newNode.asInstanceOf[NewUnknown].order
     this._parserTypeName = newNode.asInstanceOf[NewUnknown].parserTypeName
+    this._possibleTypes =
+      if (newNode.asInstanceOf[NewUnknown].possibleTypes != null) newNode.asInstanceOf[NewUnknown].possibleTypes
+      else collection.immutable.ArraySeq.empty
     this._typeFullName = newNode.asInstanceOf[NewUnknown].typeFullName
 
   }

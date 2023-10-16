@@ -1,11 +1,11 @@
 name := "standalone"
-ThisBuild/organization := "org.codeminers"
-ThisBuild/scalaVersion := "2.13.8"
+ThisBuild / organization := "org.codeminers"
+ThisBuild / scalaVersion := "3.3.1"
 
 // parsed by project/Versions.scala, updated by updateDependencies.sh
-val cpgVersion = "1.3.612"
-val joernVersion = "1.2.3"
-val overflowdbVersion = "1.179"
+val cpgVersion = "1.4.24"
+val joernVersion = "2.0.121"
+val overflowdbVersion = "1.181"
 
 lazy val schema = Projects.schema
 lazy val domainClasses = Projects.domainClasses
@@ -22,31 +22,27 @@ libraryDependencies ++= Seq(
   "io.joern" %% "joern-cli" % Versions.joern,
   "io.joern" %% "semanticcpg" % Versions.joern,
   "io.joern" %% "semanticcpg" % Versions.joern % Test classifier "tests",
-  "org.scalatest" %% "scalatest" % "3.2.15" % Test
+  "org.scalatest" %% "scalatest" % "3.2.16" % Test
 )
 
 // mostly so that `sbt assembly` works, but also to ensure that we don't end up
 // with unexpected shadowing in jar hell
-// example:we forked javaparser-core and use it (transitively) under the `io.joern` namespace...
 excludeDependencies ++= Seq(
-  ExclusionRule("com.github.javaparser", "javaparser-core"),
-  ExclusionRule("org.jline", "jline-reader"),
-  ExclusionRule("org.jline", "jline-terminal"),
-  ExclusionRule("org.jline", "jline-terminal-jna"),
-  ExclusionRule("io.shiftleft", "codepropertygraph-domain-classes_2.13"),
+  ExclusionRule("io.shiftleft", "codepropertygraph-domain-classes_3"),
 )
 
-assembly/assemblyMergeStrategy := {
+assembly / assemblyMergeStrategy := {
   case "log4j2.xml" => MergeStrategy.first
   case "module-info.class" => MergeStrategy.first
   case "META-INF/versions/9/module-info.class" => MergeStrategy.first
   case "io/github/retronym/java9rtexport/Export.class" => MergeStrategy.first
+  case PathList("scala", "collection", "internal", "pprint", _) => MergeStrategy.first
   case x =>
     val oldStrategy = (ThisBuild / assemblyMergeStrategy).value
     oldStrategy(x)
 }
 
-ThisBuild/Compile/scalacOptions ++= Seq(
+ThisBuild / Compile / scalacOptions ++= Seq(
   "-feature",
   "-deprecation",
   "-language:implicitConversions",
@@ -54,9 +50,9 @@ ThisBuild/Compile/scalacOptions ++= Seq(
 
 enablePlugins(JavaAppPackaging)
 
-ThisBuild/licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0"))
+ThisBuild / licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0"))
 
-Global/onChangedBuildSource := ReloadOnSourceChanges
+Global / onChangedBuildSource := ReloadOnSourceChanges
 
 ThisBuild / resolvers ++= Seq(
   Resolver.mavenLocal,
@@ -65,5 +61,5 @@ ThisBuild / resolvers ++= Seq(
   "Gradle Releases" at "https://repo.gradle.org/gradle/libs-releases/"
 )
 
-Compile/doc/sources := Seq.empty
-Compile/packageDoc/publishArtifact := false
+Compile / doc / sources := Seq.empty
+Compile / packageDoc / publishArtifact := false

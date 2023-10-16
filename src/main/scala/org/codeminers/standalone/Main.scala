@@ -4,7 +4,7 @@ import io.joern.javasrc2cpg.{Config, JavaSrc2Cpg}
 import io.joern.x2cpg.X2Cpg.applyDefaultOverlays
 import io.shiftleft.codepropertygraph.generated.Cpg
 import io.shiftleft.codepropertygraph.generated.nodes.NewMynodetype
-import io.shiftleft.passes.SimpleCpgPass
+import io.shiftleft.passes.CpgPass
 import io.shiftleft.semanticcpg.language._
 import overflowdb.BatchedUpdate
 
@@ -17,7 +17,7 @@ object Main extends App {
   println("Hello Joern")
   print("Creating CPG... ")
   val directory      = "testprogram"
-  val config         = Config(inputPath = directory)
+  val config         = Config().withInputPath(directory)
   val cpgOrException = JavaSrc2Cpg().createCpg(config)
 
   cpgOrException match {
@@ -42,7 +42,7 @@ object Main extends App {
 
 /** Example of a custom pass that creates and stores a node in the CPG.
   */
-class MyPass(cpg: Cpg) extends SimpleCpgPass(cpg) {
+class MyPass(cpg: Cpg) extends CpgPass(cpg) {
   override def run(builder: BatchedUpdate.DiffGraphBuilder): Unit = {
     val n = NewMynodetype().myproperty("foo")
     builder.addNode(n)
