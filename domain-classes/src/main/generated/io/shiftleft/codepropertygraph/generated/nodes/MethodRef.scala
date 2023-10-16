@@ -135,7 +135,6 @@ trait MethodRefBase extends AbstractNode with ExpressionBase {
   def lineNumber: Option[Integer]
   def methodFullName: String
   def order: scala.Int
-
   def possibleTypes: IndexedSeq[String]
   def typeFullName: String
 
@@ -154,9 +153,8 @@ class MethodRef(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/b
   override def lineNumber: Option[Integer]                 = get().lineNumber
   override def methodFullName: String                      = get().methodFullName
   override def order: scala.Int                            = get().order
-
-  override def possibleTypes: IndexedSeq[String] = get().possibleTypes
-  override def typeFullName: String              = get().typeFullName
+  override def possibleTypes: IndexedSeq[String]           = get().possibleTypes
+  override def typeFullName: String                        = get().typeFullName
   override def propertyDefaultValue(propertyKey: String) =
     propertyKey match {
       case "ARGUMENT_INDEX"   => MethodRef.PropertyDefaults.ArgumentIndex
@@ -171,8 +169,7 @@ class MethodRef(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/b
   override def _argumentOut              = get()._argumentOut
 
   def astOut: Iterator[Annotation] = get().astOut
-
-  override def _astOut = get()._astOut
+  override def _astOut             = get()._astOut
 
   /** Traverse to ANNOTATION via AST OUT edge.
     */
@@ -714,8 +711,7 @@ class MethodRef(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/b
     }
 
   override def productPrefix = "MethodRef"
-
-  override def productArity = 11
+  override def productArity  = 11
 }
 
 class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Expression with MethodRefBase {
@@ -738,12 +734,10 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   def methodFullName: String                               = _methodFullName
   private var _order: scala.Int                            = MethodRef.PropertyDefaults.Order
   def order: scala.Int                                     = _order
-
-  private var _possibleTypes: IndexedSeq[String] = collection.immutable.ArraySeq.empty
-
-  def possibleTypes: IndexedSeq[String] = _possibleTypes
-  private var _typeFullName: String     = MethodRef.PropertyDefaults.TypeFullName
-  def typeFullName: String              = _typeFullName
+  private var _possibleTypes: IndexedSeq[String]           = collection.immutable.ArraySeq.empty
+  def possibleTypes: IndexedSeq[String]                    = _possibleTypes
+  private var _typeFullName: String                        = MethodRef.PropertyDefaults.TypeFullName
+  def typeFullName: String                                 = _typeFullName
 
   /** faster than the default implementation */
   override def propertiesMap: java.util.Map[String, Any] = {
@@ -758,9 +752,7 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     properties.put("METHOD_FULL_NAME", methodFullName)
     properties.put("ORDER", order)
-    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) {
-      properties.put("POSSIBLE_TYPES", possibleTypes)
-    }
+    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) { properties.put("POSSIBLE_TYPES", possibleTypes) }
     properties.put("TYPE_FULL_NAME", typeFullName)
 
     properties
@@ -779,9 +771,7 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     if (!(("<empty>") == methodFullName)) { properties.put("METHOD_FULL_NAME", methodFullName) }
     if (!((-1: Int) == order)) { properties.put("ORDER", order) }
-    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) {
-      properties.put("POSSIBLE_TYPES", possibleTypes)
-    }
+    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) { properties.put("POSSIBLE_TYPES", possibleTypes) }
     if (!(("<empty>") == typeFullName)) { properties.put("TYPE_FULL_NAME", typeFullName) }
 
     properties
@@ -792,19 +782,15 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   override def _argumentOut              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
 
   def astOut: Iterator[Annotation] = createAdjacentNodeScalaIteratorByOffSet[Annotation](1)
-
-  override def _astOut = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
-
+  override def _astOut             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
   def _annotationViaAstOut: overflowdb.traversal.Traversal[Annotation] = astOut.collectAll[Annotation]
 
   def captureOut: Iterator[ClosureBinding] = createAdjacentNodeScalaIteratorByOffSet[ClosureBinding](2)
-
-  override def _captureOut = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
+  override def _captureOut                 = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
   def _closureBindingViaCaptureOut: overflowdb.traversal.Traversal[ClosureBinding] =
     captureOut.collectAll[ClosureBinding]
 
-  def cdgOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](3)
-
+  def cdgOut: Iterator[CfgNode]                              = createAdjacentNodeScalaIteratorByOffSet[CfgNode](3)
   override def _cdgOut                                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
   def _blockViaCdgOut: overflowdb.traversal.Traversal[Block] = cdgOut.collectAll[Block]
   def _callViaCdgOut: overflowdb.traversal.Traversal[Call]   = cdgOut.collectAll[Call]
@@ -820,14 +806,12 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   def _unknownViaCdgOut: overflowdb.traversal.Traversal[Unknown]                   = cdgOut.collectAll[Unknown]
 
   def cfgOut: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](4)
-
-  override def _cfgOut = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
+  override def _cfgOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
   def _cfgNodeViaCfgOut: overflowdb.traversal.Traversal[CfgNode]           = cfgOut.collectAll[CfgNode]
   def _methodReturnViaCfgOut: overflowdb.traversal.Traversal[MethodReturn] = cfgOut.collectAll[MethodReturn]
 
   def dominateOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](5)
-
-  override def _dominateOut = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
+  override def _dominateOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
   def _blockViaDominateOut: overflowdb.traversal.Traversal[Block] = dominateOut.collectAll[Block]
   def _callViaDominateOut: overflowdb.traversal.Traversal[Call]   = dominateOut.collectAll[Call]
   def _controlStructureViaDominateOut: overflowdb.traversal.Traversal[ControlStructure] =
@@ -843,8 +827,7 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   def _typeRefViaDominateOut: overflowdb.traversal.Traversal[TypeRef]           = dominateOut.collectAll[TypeRef]
   def _unknownViaDominateOut: overflowdb.traversal.Traversal[Unknown]           = dominateOut.collectAll[Unknown]
 
-  def evalTypeOut: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](6)
-
+  def evalTypeOut: Iterator[Type]                               = createAdjacentNodeScalaIteratorByOffSet[Type](6)
   override def _evalTypeOut                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
   def _typeViaEvalTypeOut: overflowdb.traversal.Traversal[Type] = evalTypeOut.collectAll[Type]
 
@@ -953,8 +936,7 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   def _unknownViaDominateIn: overflowdb.traversal.Traversal[Unknown]       = dominateIn.collectAll[Unknown]
 
   def postDominateIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](18)
-
-  override def _postDominateIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](18)
+  override def _postDominateIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](18)
   def _blockViaPostDominateIn: overflowdb.traversal.Traversal[Block] = postDominateIn.collectAll[Block]
   def _callViaPostDominateIn: overflowdb.traversal.Traversal[Call]   = postDominateIn.collectAll[Call]
   def _controlStructureViaPostDominateIn: overflowdb.traversal.Traversal[ControlStructure] =
@@ -972,8 +954,7 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   def _unknownViaPostDominateIn: overflowdb.traversal.Traversal[Unknown] = postDominateIn.collectAll[Unknown]
 
   def reachingDefIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](19)
-
-  override def _reachingDefIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](19)
+  override def _reachingDefIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](19)
   def _blockViaReachingDefIn: overflowdb.traversal.Traversal[Block] = reachingDefIn.collectAll[Block]
   def _callViaReachingDefIn: overflowdb.traversal.Traversal[Call]   = reachingDefIn.collectAll[Call]
   def _controlStructureViaReachingDefIn: overflowdb.traversal.Traversal[ControlStructure] =
@@ -990,8 +971,7 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   def _typeRefViaReachingDefIn: overflowdb.traversal.Traversal[TypeRef]     = reachingDefIn.collectAll[TypeRef]
   def _unknownViaReachingDefIn: overflowdb.traversal.Traversal[Unknown]     = reachingDefIn.collectAll[Unknown]
 
-  def receiverIn: Iterator[Call] = createAdjacentNodeScalaIteratorByOffSet[Call](20)
-
+  def receiverIn: Iterator[Call]       = createAdjacentNodeScalaIteratorByOffSet[Call](20)
   override def _receiverIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](20)
   def _callViaReceiverIn: Option[Call] = receiverIn.collectAll[Call].nextOption()
 
@@ -1030,8 +1010,7 @@ class MethodRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
     }
 
   override def productPrefix = "MethodRef"
-
-  override def productArity = 11
+  override def productArity  = 11
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[MethodRefDb]
 

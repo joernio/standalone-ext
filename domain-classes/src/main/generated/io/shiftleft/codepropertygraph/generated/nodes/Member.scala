@@ -90,7 +90,6 @@ trait MemberBase extends AbstractNode with AstNodeBase with DeclarationBase {
   def asStored: StoredNode = this.asInstanceOf[StoredNode]
 
   def astParentFullName: String
-
   def astParentType: String
   def code: String
   def columnNumber: Option[Integer]
@@ -98,7 +97,6 @@ trait MemberBase extends AbstractNode with AstNodeBase with DeclarationBase {
   def lineNumber: Option[Integer]
   def name: String
   def order: scala.Int
-
   def possibleTypes: IndexedSeq[String]
   def typeFullName: String
 
@@ -110,8 +108,7 @@ class Member(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/
     with StoredNode
     with AstNode
     with Declaration {
-  override def astParentFullName: String = get().astParentFullName
-
+  override def astParentFullName: String                   = get().astParentFullName
   override def astParentType: String                       = get().astParentType
   override def code: String                                = get().code
   override def columnNumber: Option[Integer]               = get().columnNumber
@@ -119,9 +116,8 @@ class Member(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/
   override def lineNumber: Option[Integer]                 = get().lineNumber
   override def name: String                                = get().name
   override def order: scala.Int                            = get().order
-
-  override def possibleTypes: IndexedSeq[String] = get().possibleTypes
-  override def typeFullName: String              = get().typeFullName
+  override def possibleTypes: IndexedSeq[String]           = get().possibleTypes
+  override def typeFullName: String                        = get().typeFullName
   override def propertyDefaultValue(propertyKey: String) =
     propertyKey match {
       case "AST_PARENT_FULL_NAME" => Member.PropertyDefaults.AstParentFullName
@@ -227,20 +223,16 @@ class Member(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/
     }
 
   override def productPrefix = "Member"
-
-  override def productArity = 11
+  override def productArity  = 11
 }
 
 class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with AstNode with Declaration with MemberBase {
 
   override def layoutInformation: NodeLayoutInformation = Member.layoutInformation
 
-  private var _astParentFullName: String = Member.PropertyDefaults.AstParentFullName
-
-  def astParentFullName: String = _astParentFullName
-
-  private var _astParentType: String = Member.PropertyDefaults.AstParentType
-
+  private var _astParentFullName: String                   = Member.PropertyDefaults.AstParentFullName
+  def astParentFullName: String                            = _astParentFullName
+  private var _astParentType: String                       = Member.PropertyDefaults.AstParentType
   def astParentType: String                                = _astParentType
   private var _code: String                                = Member.PropertyDefaults.Code
   def code: String                                         = _code
@@ -254,12 +246,10 @@ class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
   def name: String                                         = _name
   private var _order: scala.Int                            = Member.PropertyDefaults.Order
   def order: scala.Int                                     = _order
-
-  private var _possibleTypes: IndexedSeq[String] = collection.immutable.ArraySeq.empty
-
-  def possibleTypes: IndexedSeq[String] = _possibleTypes
-  private var _typeFullName: String     = Member.PropertyDefaults.TypeFullName
-  def typeFullName: String              = _typeFullName
+  private var _possibleTypes: IndexedSeq[String]           = collection.immutable.ArraySeq.empty
+  def possibleTypes: IndexedSeq[String]                    = _possibleTypes
+  private var _typeFullName: String                        = Member.PropertyDefaults.TypeFullName
+  def typeFullName: String                                 = _typeFullName
 
   /** faster than the default implementation */
   override def propertiesMap: java.util.Map[String, Any] = {
@@ -274,9 +264,7 @@ class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     properties.put("NAME", name)
     properties.put("ORDER", order)
-    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) {
-      properties.put("POSSIBLE_TYPES", possibleTypes)
-    }
+    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) { properties.put("POSSIBLE_TYPES", possibleTypes) }
     properties.put("TYPE_FULL_NAME", typeFullName)
 
     properties
@@ -285,12 +273,8 @@ class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
   /** faster than the default implementation */
   override def propertiesMapForStorage: java.util.Map[String, Any] = {
     val properties = new java.util.HashMap[String, Any]
-    if (!(("<empty>") == astParentFullName)) {
-      properties.put("AST_PARENT_FULL_NAME", astParentFullName)
-    }
-    if (!(("<empty>") == astParentType)) {
-      properties.put("AST_PARENT_TYPE", astParentType)
-    }
+    if (!(("<empty>") == astParentFullName)) { properties.put("AST_PARENT_FULL_NAME", astParentFullName) }
+    if (!(("<empty>") == astParentType)) { properties.put("AST_PARENT_TYPE", astParentType) }
     if (!(("<empty>") == code)) { properties.put("CODE", code) }
     columnNumber.map { value => properties.put("COLUMN_NUMBER", value) }
     if (this._dynamicTypeHintFullName != null && this._dynamicTypeHintFullName.nonEmpty) {
@@ -299,9 +283,7 @@ class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     if (!(("<empty>") == name)) { properties.put("NAME", name) }
     if (!((-1: Int) == order)) { properties.put("ORDER", order) }
-    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) {
-      properties.put("POSSIBLE_TYPES", possibleTypes)
-    }
+    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) { properties.put("POSSIBLE_TYPES", possibleTypes) }
     if (!(("<empty>") == typeFullName)) { properties.put("TYPE_FULL_NAME", typeFullName) }
 
     properties
@@ -372,8 +354,7 @@ class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
     }
 
   override def productPrefix = "Member"
-
-  override def productArity = 11
+  override def productArity  = 11
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[MemberDb]
 

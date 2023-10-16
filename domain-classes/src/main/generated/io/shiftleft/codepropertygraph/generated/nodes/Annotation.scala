@@ -272,34 +272,24 @@ class AnnotationDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode wit
     astOut.collectAll[AnnotationParameterAssign]
 
   def astIn: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](2)
-
-  override def _astIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
+  override def _astIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
   def _annotationParameterAssignViaAstIn: overflowdb.traversal.Traversal[AnnotationParameterAssign] =
     astIn.collectAll[AnnotationParameterAssign]
-
   def _identifierViaAstIn: overflowdb.traversal.Traversal[Identifier] = astIn.collectAll[Identifier]
-
-  def _literalViaAstIn: overflowdb.traversal.Traversal[Literal] = astIn.collectAll[Literal]
-
-  def _memberViaAstIn: overflowdb.traversal.Traversal[Member] = astIn.collectAll[Member]
-
-  def _methodViaAstIn: overflowdb.traversal.Traversal[Method] = astIn.collectAll[Method]
+  def _literalViaAstIn: overflowdb.traversal.Traversal[Literal]       = astIn.collectAll[Literal]
+  def _memberViaAstIn: overflowdb.traversal.Traversal[Member]         = astIn.collectAll[Member]
+  def _methodViaAstIn: overflowdb.traversal.Traversal[Method]         = astIn.collectAll[Method]
   def _methodParameterInViaAstIn: overflowdb.traversal.Traversal[MethodParameterIn] =
     astIn.collectAll[MethodParameterIn]
-
   def _methodRefViaAstIn: overflowdb.traversal.Traversal[MethodRef] = astIn.collectAll[MethodRef]
-
-  def _typeDeclViaAstIn: overflowdb.traversal.Traversal[TypeDecl] = astIn.collectAll[TypeDecl]
-
-  def _unknownViaAstIn: overflowdb.traversal.Traversal[Unknown] = astIn.collectAll[Unknown]
+  def _typeDeclViaAstIn: overflowdb.traversal.Traversal[TypeDecl]   = astIn.collectAll[TypeDecl]
+  def _unknownViaAstIn: overflowdb.traversal.Traversal[Unknown]     = astIn.collectAll[Unknown]
 
   def cfgIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](3)
-
-  override def _cfgIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
+  override def _cfgIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
 
   def reachingDefIn: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](4)
-
-  override def _reachingDefIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
+  override def _reachingDefIn              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
 
   override def label: String = {
     Annotation.Label

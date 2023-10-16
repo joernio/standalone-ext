@@ -231,18 +231,15 @@ class ArrayInitializerDb(ref: NodeRef[NodeDb])
   def _typeViaEvalTypeOut: overflowdb.traversal.Traversal[Type] = evalTypeOut.collectAll[Type]
 
   def astIn: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](3)
-
-  override def _astIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
+  override def _astIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
   def _annotationParameterAssignViaAstIn: overflowdb.traversal.Traversal[AnnotationParameterAssign] =
     astIn.collectAll[AnnotationParameterAssign]
 
   def cfgIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](4)
-
-  override def _cfgIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
+  override def _cfgIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
 
   def reachingDefIn: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](5)
-
-  override def _reachingDefIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
+  override def _reachingDefIn              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
 
   override def label: String = {
     ArrayInitializer.Label

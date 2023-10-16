@@ -91,7 +91,6 @@ trait LocalBase extends AbstractNode with AstNodeBase with DeclarationBase {
   def lineNumber: Option[Integer]
   def name: String
   def order: scala.Int
-
   def possibleTypes: IndexedSeq[String]
   def typeFullName: String
 
@@ -110,9 +109,8 @@ class Local(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/i
   override def lineNumber: Option[Integer]                 = get().lineNumber
   override def name: String                                = get().name
   override def order: scala.Int                            = get().order
-
-  override def possibleTypes: IndexedSeq[String] = get().possibleTypes
-  override def typeFullName: String              = get().typeFullName
+  override def possibleTypes: IndexedSeq[String]           = get().possibleTypes
+  override def typeFullName: String                        = get().typeFullName
   override def propertyDefaultValue(propertyKey: String) =
     propertyKey match {
       case "CODE"           => Local.PropertyDefaults.Code
@@ -225,8 +223,7 @@ class Local(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/i
     }
 
   override def productPrefix = "Local"
-
-  override def productArity = 10
+  override def productArity  = 10
 }
 
 class LocalDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with AstNode with Declaration with LocalBase {
@@ -247,12 +244,10 @@ class LocalDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Ast
   def name: String                                         = _name
   private var _order: scala.Int                            = Local.PropertyDefaults.Order
   def order: scala.Int                                     = _order
-
-  private var _possibleTypes: IndexedSeq[String] = collection.immutable.ArraySeq.empty
-
-  def possibleTypes: IndexedSeq[String] = _possibleTypes
-  private var _typeFullName: String     = Local.PropertyDefaults.TypeFullName
-  def typeFullName: String              = _typeFullName
+  private var _possibleTypes: IndexedSeq[String]           = collection.immutable.ArraySeq.empty
+  def possibleTypes: IndexedSeq[String]                    = _possibleTypes
+  private var _typeFullName: String                        = Local.PropertyDefaults.TypeFullName
+  def typeFullName: String                                 = _typeFullName
 
   /** faster than the default implementation */
   override def propertiesMap: java.util.Map[String, Any] = {
@@ -266,9 +261,7 @@ class LocalDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Ast
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     properties.put("NAME", name)
     properties.put("ORDER", order)
-    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) {
-      properties.put("POSSIBLE_TYPES", possibleTypes)
-    }
+    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) { properties.put("POSSIBLE_TYPES", possibleTypes) }
     properties.put("TYPE_FULL_NAME", typeFullName)
 
     properties
@@ -286,9 +279,7 @@ class LocalDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Ast
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     if (!(("<empty>") == name)) { properties.put("NAME", name) }
     if (!((-1: Int) == order)) { properties.put("ORDER", order) }
-    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) {
-      properties.put("POSSIBLE_TYPES", possibleTypes)
-    }
+    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) { properties.put("POSSIBLE_TYPES", possibleTypes) }
     if (!(("<empty>") == typeFullName)) { properties.put("TYPE_FULL_NAME", typeFullName) }
 
     properties
@@ -353,8 +344,7 @@ class LocalDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Ast
     }
 
   override def productPrefix = "Local"
-
-  override def productArity = 10
+  override def productArity  = 10
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[LocalDb]
 

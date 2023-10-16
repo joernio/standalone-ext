@@ -113,8 +113,7 @@ class Import(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/
   def _dependencyViaImportsOut: overflowdb.traversal.Traversal[Dependency] = get()._dependencyViaImportsOut
 
   def taggedByOut: Iterator[Tag] = get().taggedByOut
-
-  override def _taggedByOut = get()._taggedByOut
+  override def _taggedByOut      = get()._taggedByOut
 
   /** Traverse to TAG via TAGGED_BY OUT edge.
     */
@@ -250,22 +249,18 @@ class ImportDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
   override def _importsOut             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
   def _dependencyViaImportsOut: overflowdb.traversal.Traversal[Dependency] = importsOut.collectAll[Dependency]
 
-  def taggedByOut: Iterator[Tag] = createAdjacentNodeScalaIteratorByOffSet[Tag](1)
-
-  override def _taggedByOut = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
-
+  def taggedByOut: Iterator[Tag]                              = createAdjacentNodeScalaIteratorByOffSet[Tag](1)
+  override def _taggedByOut                                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
   def _tagViaTaggedByOut: overflowdb.traversal.Traversal[Tag] = taggedByOut.collectAll[Tag]
 
-  def astIn: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](2)
-
+  def astIn: Iterator[AstNode]                              = createAdjacentNodeScalaIteratorByOffSet[AstNode](2)
   override def _astIn                                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
   def _blockViaAstIn: overflowdb.traversal.Traversal[Block] = astIn.collectAll[Block]
   def _fileViaAstIn: overflowdb.traversal.Traversal[File]   = astIn.collectAll[File]
   def _typeDeclViaAstIn: overflowdb.traversal.Traversal[TypeDecl] = astIn.collectAll[TypeDecl]
 
   def isCallForImportIn: Iterator[Call] = createAdjacentNodeScalaIteratorByOffSet[Call](3)
-
-  override def _isCallForImportIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
+  override def _isCallForImportIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
   def _callViaIsCallForImportIn: overflowdb.traversal.Traversal[Call] = isCallForImportIn.collectAll[Call]
 
   override def label: String = {

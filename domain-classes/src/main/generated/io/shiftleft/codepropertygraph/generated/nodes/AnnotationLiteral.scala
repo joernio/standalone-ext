@@ -215,18 +215,15 @@ class AnnotationLiteralDb(ref: NodeRef[NodeDb])
   override def _argumentOut              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
 
   def astIn: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](1)
-
-  override def _astIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
+  override def _astIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
   def _annotationParameterAssignViaAstIn: overflowdb.traversal.Traversal[AnnotationParameterAssign] =
     astIn.collectAll[AnnotationParameterAssign]
 
   def cfgIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](2)
-
-  override def _cfgIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
+  override def _cfgIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
 
   def reachingDefIn: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](3)
-
-  override def _reachingDefIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
+  override def _reachingDefIn              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
 
   override def label: String = {
     AnnotationLiteral.Label

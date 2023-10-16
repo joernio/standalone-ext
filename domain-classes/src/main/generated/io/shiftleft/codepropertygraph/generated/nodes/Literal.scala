@@ -117,7 +117,6 @@ trait LiteralBase extends AbstractNode with ExpressionBase {
   def dynamicTypeHintFullName: IndexedSeq[String]
   def lineNumber: Option[Integer]
   def order: scala.Int
-
   def possibleTypes: IndexedSeq[String]
   def typeFullName: String
 
@@ -135,9 +134,8 @@ class Literal(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug
   override def dynamicTypeHintFullName: IndexedSeq[String] = get().dynamicTypeHintFullName
   override def lineNumber: Option[Integer]                 = get().lineNumber
   override def order: scala.Int                            = get().order
-
-  override def possibleTypes: IndexedSeq[String] = get().possibleTypes
-  override def typeFullName: String              = get().typeFullName
+  override def possibleTypes: IndexedSeq[String]           = get().possibleTypes
+  override def typeFullName: String                        = get().typeFullName
   override def propertyDefaultValue(propertyKey: String) =
     propertyKey match {
       case "ARGUMENT_INDEX" => Literal.PropertyDefaults.ArgumentIndex
@@ -151,8 +149,7 @@ class Literal(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug
   override def _argumentOut              = get()._argumentOut
 
   def astOut: Iterator[Annotation] = get().astOut
-
-  override def _astOut = get()._astOut
+  override def _astOut             = get()._astOut
 
   /** Traverse to ANNOTATION via AST OUT edge.
     */
@@ -676,8 +673,7 @@ class Literal(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug
     }
 
   override def productPrefix = "Literal"
-
-  override def productArity = 10
+  override def productArity  = 10
 }
 
 class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Expression with LiteralBase {
@@ -698,12 +694,10 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def lineNumber: Option[Integer]                          = Option(_lineNumber)
   private var _order: scala.Int                            = Literal.PropertyDefaults.Order
   def order: scala.Int                                     = _order
-
-  private var _possibleTypes: IndexedSeq[String] = collection.immutable.ArraySeq.empty
-
-  def possibleTypes: IndexedSeq[String] = _possibleTypes
-  private var _typeFullName: String     = Literal.PropertyDefaults.TypeFullName
-  def typeFullName: String              = _typeFullName
+  private var _possibleTypes: IndexedSeq[String]           = collection.immutable.ArraySeq.empty
+  def possibleTypes: IndexedSeq[String]                    = _possibleTypes
+  private var _typeFullName: String                        = Literal.PropertyDefaults.TypeFullName
+  def typeFullName: String                                 = _typeFullName
 
   /** faster than the default implementation */
   override def propertiesMap: java.util.Map[String, Any] = {
@@ -717,9 +711,7 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
     }
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     properties.put("ORDER", order)
-    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) {
-      properties.put("POSSIBLE_TYPES", possibleTypes)
-    }
+    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) { properties.put("POSSIBLE_TYPES", possibleTypes) }
     properties.put("TYPE_FULL_NAME", typeFullName)
 
     properties
@@ -737,9 +729,7 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
     }
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     if (!((-1: Int) == order)) { properties.put("ORDER", order) }
-    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) {
-      properties.put("POSSIBLE_TYPES", possibleTypes)
-    }
+    if (this._possibleTypes != null && this._possibleTypes.nonEmpty) { properties.put("POSSIBLE_TYPES", possibleTypes) }
     if (!(("<empty>") == typeFullName)) { properties.put("TYPE_FULL_NAME", typeFullName) }
 
     properties
@@ -750,13 +740,10 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   override def _argumentOut              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
 
   def astOut: Iterator[Annotation] = createAdjacentNodeScalaIteratorByOffSet[Annotation](1)
-
-  override def _astOut = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
-
+  override def _astOut             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
   def _annotationViaAstOut: overflowdb.traversal.Traversal[Annotation] = astOut.collectAll[Annotation]
 
-  def cdgOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](2)
-
+  def cdgOut: Iterator[CfgNode]                              = createAdjacentNodeScalaIteratorByOffSet[CfgNode](2)
   override def _cdgOut                                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
   def _blockViaCdgOut: overflowdb.traversal.Traversal[Block] = cdgOut.collectAll[Block]
   def _callViaCdgOut: overflowdb.traversal.Traversal[Call]   = cdgOut.collectAll[Call]
@@ -772,13 +759,11 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def _unknownViaCdgOut: overflowdb.traversal.Traversal[Unknown]                   = cdgOut.collectAll[Unknown]
 
   def cfgOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](3)
-
-  override def _cfgOut = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
+  override def _cfgOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
   def _cfgNodeViaCfgOut: overflowdb.traversal.Traversal[CfgNode] = cfgOut.collectAll[CfgNode]
 
   def dominateOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](4)
-
-  override def _dominateOut = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
+  override def _dominateOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
   def _blockViaDominateOut: overflowdb.traversal.Traversal[Block] = dominateOut.collectAll[Block]
   def _callViaDominateOut: overflowdb.traversal.Traversal[Call]   = dominateOut.collectAll[Call]
   def _controlStructureViaDominateOut: overflowdb.traversal.Traversal[ControlStructure] =
@@ -794,8 +779,7 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def _typeRefViaDominateOut: overflowdb.traversal.Traversal[TypeRef]           = dominateOut.collectAll[TypeRef]
   def _unknownViaDominateOut: overflowdb.traversal.Traversal[Unknown]           = dominateOut.collectAll[Unknown]
 
-  def evalTypeOut: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](5)
-
+  def evalTypeOut: Iterator[Type]                               = createAdjacentNodeScalaIteratorByOffSet[Type](5)
   override def _evalTypeOut                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
   def _typeViaEvalTypeOut: overflowdb.traversal.Traversal[Type] = evalTypeOut.collectAll[Type]
 
@@ -895,8 +879,7 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def _unknownViaDominateIn: overflowdb.traversal.Traversal[Unknown]       = dominateIn.collectAll[Unknown]
 
   def postDominateIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](16)
-
-  override def _postDominateIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](16)
+  override def _postDominateIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](16)
   def _blockViaPostDominateIn: overflowdb.traversal.Traversal[Block] = postDominateIn.collectAll[Block]
   def _callViaPostDominateIn: overflowdb.traversal.Traversal[Call]   = postDominateIn.collectAll[Call]
   def _controlStructureViaPostDominateIn: overflowdb.traversal.Traversal[ControlStructure] =
@@ -914,8 +897,7 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def _unknownViaPostDominateIn: overflowdb.traversal.Traversal[Unknown] = postDominateIn.collectAll[Unknown]
 
   def reachingDefIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](17)
-
-  override def _reachingDefIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](17)
+  override def _reachingDefIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](17)
   def _blockViaReachingDefIn: overflowdb.traversal.Traversal[Block] = reachingDefIn.collectAll[Block]
   def _callViaReachingDefIn: overflowdb.traversal.Traversal[Call]   = reachingDefIn.collectAll[Call]
   def _controlStructureViaReachingDefIn: overflowdb.traversal.Traversal[ControlStructure] =
@@ -931,8 +913,7 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def _typeRefViaReachingDefIn: overflowdb.traversal.Traversal[TypeRef]     = reachingDefIn.collectAll[TypeRef]
   def _unknownViaReachingDefIn: overflowdb.traversal.Traversal[Unknown]     = reachingDefIn.collectAll[Unknown]
 
-  def receiverIn: Iterator[Call] = createAdjacentNodeScalaIteratorByOffSet[Call](18)
-
+  def receiverIn: Iterator[Call]       = createAdjacentNodeScalaIteratorByOffSet[Call](18)
   override def _receiverIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](18)
   def _callViaReceiverIn: Option[Call] = receiverIn.collectAll[Call].nextOption()
 
@@ -969,8 +950,7 @@ class LiteralDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
     }
 
   override def productPrefix = "Literal"
-
-  override def productArity = 10
+  override def productArity  = 10
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[LiteralDb]
 

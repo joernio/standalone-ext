@@ -841,8 +841,7 @@ class ControlStructureDb(ref: NodeRef[NodeDb])
   def _typeViaEvalTypeOut: overflowdb.traversal.Traversal[Type] = evalTypeOut.collectAll[Type]
 
   def postDominateOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](7)
-
-  override def _postDominateOut = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
+  override def _postDominateOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
   def _blockViaPostDominateOut: overflowdb.traversal.Traversal[Block] = postDominateOut.collectAll[Block]
   def _callViaPostDominateOut: overflowdb.traversal.Traversal[Call]   = postDominateOut.collectAll[Call]
   def _controlStructureViaPostDominateOut: overflowdb.traversal.Traversal[ControlStructure] =
@@ -859,8 +858,7 @@ class ControlStructureDb(ref: NodeRef[NodeDb])
   def _unknownViaPostDominateOut: overflowdb.traversal.Traversal[Unknown]       = postDominateOut.collectAll[Unknown]
 
   def reachingDefOut: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](8)
-
-  override def _reachingDefOut = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
+  override def _reachingDefOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
   def _callViaReachingDefOut: overflowdb.traversal.Traversal[Call]             = reachingDefOut.collectAll[Call]
   def _identifierViaReachingDefOut: overflowdb.traversal.Traversal[Identifier] = reachingDefOut.collectAll[Identifier]
   def _literalViaReachingDefOut: overflowdb.traversal.Traversal[Literal]       = reachingDefOut.collectAll[Literal]
@@ -870,19 +868,16 @@ class ControlStructureDb(ref: NodeRef[NodeDb])
   def _returnViaReachingDefOut: overflowdb.traversal.Traversal[Return]       = reachingDefOut.collectAll[Return]
   def _typeRefViaReachingDefOut: overflowdb.traversal.Traversal[TypeRef]     = reachingDefOut.collectAll[TypeRef]
 
-  def taggedByOut: Iterator[Tag] = createAdjacentNodeScalaIteratorByOffSet[Tag](9)
-
+  def taggedByOut: Iterator[Tag]                              = createAdjacentNodeScalaIteratorByOffSet[Tag](9)
   override def _taggedByOut                                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](9)
   def _tagViaTaggedByOut: overflowdb.traversal.Traversal[Tag] = taggedByOut.collectAll[Tag]
 
-  def argumentIn: Iterator[Expression] = createAdjacentNodeScalaIteratorByOffSet[Expression](10)
-
+  def argumentIn: Iterator[Expression]                         = createAdjacentNodeScalaIteratorByOffSet[Expression](10)
   override def _argumentIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](10)
   def _callViaArgumentIn: overflowdb.traversal.Traversal[Call] = argumentIn.collectAll[Call]
   def _returnViaArgumentIn: overflowdb.traversal.Traversal[Return] = argumentIn.collectAll[Return]
 
-  def astIn: Iterator[Expression] = createAdjacentNodeScalaIteratorByOffSet[Expression](11)
-
+  def astIn: Iterator[Expression]                           = createAdjacentNodeScalaIteratorByOffSet[Expression](11)
   override def _astIn                                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](11)
   def _blockViaAstIn: overflowdb.traversal.Traversal[Block] = astIn.collectAll[Block]
   def _callViaAstIn: overflowdb.traversal.Traversal[Call]   = astIn.collectAll[Call]
@@ -890,8 +885,7 @@ class ControlStructureDb(ref: NodeRef[NodeDb])
   def _returnViaAstIn: overflowdb.traversal.Traversal[Return]                     = astIn.collectAll[Return]
   def _unknownViaAstIn: overflowdb.traversal.Traversal[Unknown]                   = astIn.collectAll[Unknown]
 
-  def cdgIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](12)
-
+  def cdgIn: Iterator[CfgNode]                              = createAdjacentNodeScalaIteratorByOffSet[CfgNode](12)
   override def _cdgIn                                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](12)
   def _blockViaCdgIn: overflowdb.traversal.Traversal[Block] = cdgIn.collectAll[Block]
   def _callViaCdgIn: overflowdb.traversal.Traversal[Call]   = cdgIn.collectAll[Call]
@@ -905,23 +899,19 @@ class ControlStructureDb(ref: NodeRef[NodeDb])
   def _unknownViaCdgIn: overflowdb.traversal.Traversal[Unknown]                   = cdgIn.collectAll[Unknown]
 
   def cfgIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](13)
-
-  override def _cfgIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](13)
+  override def _cfgIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](13)
 
   def conditionIn: Iterator[ControlStructure] = createAdjacentNodeScalaIteratorByOffSet[ControlStructure](14)
-
-  override def _conditionIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](14)
+  override def _conditionIn                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](14)
   def _controlStructureViaConditionIn: overflowdb.traversal.Traversal[ControlStructure] =
     conditionIn.collectAll[ControlStructure]
 
   def containsIn: Iterator[Method] = createAdjacentNodeScalaIteratorByOffSet[Method](15)
-
-  override def _containsIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](15)
+  override def _containsIn         = createAdjacentNodeScalaIteratorByOffSet[StoredNode](15)
   def _methodViaContainsIn: overflowdb.traversal.Traversal[Method] = containsIn.collectAll[Method]
 
   def dominateIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](16)
-
-  override def _dominateIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](16)
+  override def _dominateIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](16)
   def _blockViaDominateIn: overflowdb.traversal.Traversal[Block] = dominateIn.collectAll[Block]
   def _callViaDominateIn: overflowdb.traversal.Traversal[Call]   = dominateIn.collectAll[Call]
   def _controlStructureViaDominateIn: overflowdb.traversal.Traversal[ControlStructure] =
@@ -937,8 +927,7 @@ class ControlStructureDb(ref: NodeRef[NodeDb])
   def _unknownViaDominateIn: overflowdb.traversal.Traversal[Unknown]       = dominateIn.collectAll[Unknown]
 
   def postDominateIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](17)
-
-  override def _postDominateIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](17)
+  override def _postDominateIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](17)
   def _blockViaPostDominateIn: overflowdb.traversal.Traversal[Block] = postDominateIn.collectAll[Block]
   def _callViaPostDominateIn: overflowdb.traversal.Traversal[Call]   = postDominateIn.collectAll[Call]
   def _controlStructureViaPostDominateIn: overflowdb.traversal.Traversal[ControlStructure] =
@@ -956,11 +945,9 @@ class ControlStructureDb(ref: NodeRef[NodeDb])
   def _unknownViaPostDominateIn: overflowdb.traversal.Traversal[Unknown] = postDominateIn.collectAll[Unknown]
 
   def reachingDefIn: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](18)
+  override def _reachingDefIn              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](18)
 
-  override def _reachingDefIn = createAdjacentNodeScalaIteratorByOffSet[StoredNode](18)
-
-  def receiverIn: Iterator[Call] = createAdjacentNodeScalaIteratorByOffSet[Call](19)
-
+  def receiverIn: Iterator[Call]                               = createAdjacentNodeScalaIteratorByOffSet[Call](19)
   override def _receiverIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](19)
   def _callViaReceiverIn: overflowdb.traversal.Traversal[Call] = receiverIn.collectAll[Call]
 

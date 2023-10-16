@@ -10,9 +10,7 @@ abstract class NewNode extends AbstractNode with overflowdb.DetachedNodeData wit
   override def setRefOrId(r: Object): Unit = { this.refOrId = r }
   def stored: Option[StoredType] =
     if (refOrId != null && refOrId.isInstanceOf[StoredNode]) Some(refOrId).asInstanceOf[Option[StoredType]] else None
-
   def isValidOutNeighbor(edgeLabel: String, n: NewNode): Boolean
-
   def isValidInNeighbor(edgeLabel: String, n: NewNode): Boolean
 }
 
@@ -8135,9 +8133,7 @@ class NewBlock extends NewNode with BlockBase with ExpressionNew {
     }
     lineNumber.map { value => res += "LINE_NUMBER" -> value }
     if (!((-1: Int) == order)) { res += "ORDER" -> order }
-    if (possibleTypes != null && possibleTypes.nonEmpty) {
-      res += "POSSIBLE_TYPES" -> possibleTypes
-    }
+    if (possibleTypes != null && possibleTypes.nonEmpty) { res += "POSSIBLE_TYPES" -> possibleTypes }
     if (!(("<empty>") == typeFullName)) { res += "TYPE_FULL_NAME" -> typeFullName }
     res
   }
@@ -8179,8 +8175,7 @@ class NewBlock extends NewNode with BlockBase with ExpressionNew {
     }
 
   override def productPrefix = "NewBlock"
-
-  override def productArity = 9
+  override def productArity  = 9
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewBlock]
 }
@@ -9546,9 +9541,7 @@ class NewCall extends NewNode with CallBase with CallReprNew with ExpressionNew 
     if (!(("<empty>") == methodFullName)) { res += "METHOD_FULL_NAME" -> methodFullName }
     if (!(("<empty>") == name)) { res += "NAME" -> name }
     if (!((-1: Int) == order)) { res += "ORDER" -> order }
-    if (possibleTypes != null && possibleTypes.nonEmpty) {
-      res += "POSSIBLE_TYPES" -> possibleTypes
-    }
+    if (possibleTypes != null && possibleTypes.nonEmpty) { res += "POSSIBLE_TYPES" -> possibleTypes }
     if (!(("") == signature)) { res += "SIGNATURE" -> signature }
     if (!(("<empty>") == typeFullName)) { res += "TYPE_FULL_NAME" -> typeFullName }
     res
@@ -9599,8 +9592,7 @@ class NewCall extends NewNode with CallBase with CallReprNew with ExpressionNew 
     }
 
   override def productPrefix = "NewCall"
-
-  override def productArity = 13
+  override def productArity  = 13
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewCall]
 }
@@ -16640,9 +16632,7 @@ class NewIdentifier extends NewNode with IdentifierBase with ExpressionNew {
     lineNumber.map { value => res += "LINE_NUMBER" -> value }
     if (!(("<empty>") == name)) { res += "NAME" -> name }
     if (!((-1: Int) == order)) { res += "ORDER" -> order }
-    if (possibleTypes != null && possibleTypes.nonEmpty) {
-      res += "POSSIBLE_TYPES" -> possibleTypes
-    }
+    if (possibleTypes != null && possibleTypes.nonEmpty) { res += "POSSIBLE_TYPES" -> possibleTypes }
     if (!(("<empty>") == typeFullName)) { res += "TYPE_FULL_NAME" -> typeFullName }
     res
   }
@@ -16686,8 +16676,7 @@ class NewIdentifier extends NewNode with IdentifierBase with ExpressionNew {
     }
 
   override def productPrefix = "NewIdentifier"
-
-  override def productArity = 10
+  override def productArity  = 10
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewIdentifier]
 }
@@ -22169,9 +22158,7 @@ class NewLiteral extends NewNode with LiteralBase with ExpressionNew {
     }
     lineNumber.map { value => res += "LINE_NUMBER" -> value }
     if (!((-1: Int) == order)) { res += "ORDER" -> order }
-    if (possibleTypes != null && possibleTypes.nonEmpty) {
-      res += "POSSIBLE_TYPES" -> possibleTypes
-    }
+    if (possibleTypes != null && possibleTypes.nonEmpty) { res += "POSSIBLE_TYPES" -> possibleTypes }
     if (!(("<empty>") == typeFullName)) { res += "TYPE_FULL_NAME" -> typeFullName }
     res
   }
@@ -22213,8 +22200,7 @@ class NewLiteral extends NewNode with LiteralBase with ExpressionNew {
     }
 
   override def productPrefix = "NewLiteral"
-
-  override def productArity = 9
+  override def productArity  = 9
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewLiteral]
 }
@@ -23549,9 +23535,7 @@ class NewLocal extends NewNode with LocalBase with AstNodeNew with DeclarationNe
     lineNumber.map { value => res += "LINE_NUMBER" -> value }
     if (!(("<empty>") == name)) { res += "NAME" -> name }
     if (!((-1: Int) == order)) { res += "ORDER" -> order }
-    if (possibleTypes != null && possibleTypes.nonEmpty) {
-      res += "POSSIBLE_TYPES" -> possibleTypes
-    }
+    if (possibleTypes != null && possibleTypes.nonEmpty) { res += "POSSIBLE_TYPES" -> possibleTypes }
     if (!(("<empty>") == typeFullName)) { res += "TYPE_FULL_NAME" -> typeFullName }
     res
   }
@@ -23593,8 +23577,7 @@ class NewLocal extends NewNode with LocalBase with AstNodeNew with DeclarationNe
     }
 
   override def productPrefix = "NewLocal"
-
-  override def productArity = 9
+  override def productArity  = 9
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewLocal]
 }
@@ -25077,12 +25060,8 @@ class NewMember extends NewNode with MemberBase with AstNodeNew with Declaration
 
   override def properties: Map[String, Any] = {
     var res = Map[String, Any]()
-    if (!(("<empty>") == astParentFullName)) {
-      res += "AST_PARENT_FULL_NAME" -> astParentFullName
-    }
-    if (!(("<empty>") == astParentType)) {
-      res += "AST_PARENT_TYPE" -> astParentType
-    }
+    if (!(("<empty>") == astParentFullName)) { res += "AST_PARENT_FULL_NAME" -> astParentFullName }
+    if (!(("<empty>") == astParentType)) { res += "AST_PARENT_TYPE" -> astParentType }
     if (!(("<empty>") == code)) { res += "CODE" -> code }
     columnNumber.map { value => res += "COLUMN_NUMBER" -> value }
     if (dynamicTypeHintFullName != null && dynamicTypeHintFullName.nonEmpty) {
@@ -25091,9 +25070,7 @@ class NewMember extends NewNode with MemberBase with AstNodeNew with Declaration
     lineNumber.map { value => res += "LINE_NUMBER" -> value }
     if (!(("<empty>") == name)) { res += "NAME" -> name }
     if (!((-1: Int) == order)) { res += "ORDER" -> order }
-    if (possibleTypes != null && possibleTypes.nonEmpty) {
-      res += "POSSIBLE_TYPES" -> possibleTypes
-    }
+    if (possibleTypes != null && possibleTypes.nonEmpty) { res += "POSSIBLE_TYPES" -> possibleTypes }
     if (!(("<empty>") == typeFullName)) { res += "TYPE_FULL_NAME" -> typeFullName }
     res
   }
@@ -25137,8 +25114,7 @@ class NewMember extends NewNode with MemberBase with AstNodeNew with Declaration
     }
 
   override def productPrefix = "NewMember"
-
-  override def productArity = 10
+  override def productArity  = 10
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewMember]
 }
@@ -28021,9 +27997,7 @@ class NewMethodParameterIn
     lineNumber.map { value => res += "LINE_NUMBER" -> value }
     if (!(("<empty>") == name)) { res += "NAME" -> name }
     if (!((-1: Int) == order)) { res += "ORDER" -> order }
-    if (possibleTypes != null && possibleTypes.nonEmpty) {
-      res += "POSSIBLE_TYPES" -> possibleTypes
-    }
+    if (possibleTypes != null && possibleTypes.nonEmpty) { res += "POSSIBLE_TYPES" -> possibleTypes }
     if (!(("<empty>") == typeFullName)) { res += "TYPE_FULL_NAME" -> typeFullName }
     res
   }
@@ -28069,8 +28043,7 @@ class NewMethodParameterIn
     }
 
   override def productPrefix = "NewMethodParameterIn"
-
-  override def productArity = 11
+  override def productArity  = 11
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewMethodParameterIn]
 }
@@ -30791,9 +30764,7 @@ class NewMethodRef extends NewNode with MethodRefBase with ExpressionNew {
     lineNumber.map { value => res += "LINE_NUMBER" -> value }
     if (!(("<empty>") == methodFullName)) { res += "METHOD_FULL_NAME" -> methodFullName }
     if (!((-1: Int) == order)) { res += "ORDER" -> order }
-    if (possibleTypes != null && possibleTypes.nonEmpty) {
-      res += "POSSIBLE_TYPES" -> possibleTypes
-    }
+    if (possibleTypes != null && possibleTypes.nonEmpty) { res += "POSSIBLE_TYPES" -> possibleTypes }
     if (!(("<empty>") == typeFullName)) { res += "TYPE_FULL_NAME" -> typeFullName }
     res
   }
@@ -30837,8 +30808,7 @@ class NewMethodRef extends NewNode with MethodRefBase with ExpressionNew {
     }
 
   override def productPrefix = "NewMethodRef"
-
-  override def productArity = 10
+  override def productArity  = 10
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewMethodRef]
 }
@@ -32163,9 +32133,7 @@ class NewMethodReturn extends NewNode with MethodReturnBase with CfgNodeNew {
     if (!(("<empty>") == evaluationStrategy)) { res += "EVALUATION_STRATEGY" -> evaluationStrategy }
     lineNumber.map { value => res += "LINE_NUMBER" -> value }
     if (!((-1: Int) == order)) { res += "ORDER" -> order }
-    if (possibleTypes != null && possibleTypes.nonEmpty) {
-      res += "POSSIBLE_TYPES" -> possibleTypes
-    }
+    if (possibleTypes != null && possibleTypes.nonEmpty) { res += "POSSIBLE_TYPES" -> possibleTypes }
     if (!(("<empty>") == typeFullName)) { res += "TYPE_FULL_NAME" -> typeFullName }
     res
   }
@@ -32205,8 +32173,7 @@ class NewMethodReturn extends NewNode with MethodReturnBase with CfgNodeNew {
     }
 
   override def productPrefix = "NewMethodReturn"
-
-  override def productArity = 8
+  override def productArity  = 8
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewMethodReturn]
 }
@@ -44639,9 +44606,7 @@ class NewTypeRef extends NewNode with TypeRefBase with ExpressionNew {
     }
     lineNumber.map { value => res += "LINE_NUMBER" -> value }
     if (!((-1: Int) == order)) { res += "ORDER" -> order }
-    if (possibleTypes != null && possibleTypes.nonEmpty) {
-      res += "POSSIBLE_TYPES" -> possibleTypes
-    }
+    if (possibleTypes != null && possibleTypes.nonEmpty) { res += "POSSIBLE_TYPES" -> possibleTypes }
     if (!(("<empty>") == typeFullName)) { res += "TYPE_FULL_NAME" -> typeFullName }
     res
   }
@@ -44683,8 +44648,7 @@ class NewTypeRef extends NewNode with TypeRefBase with ExpressionNew {
     }
 
   override def productPrefix = "NewTypeRef"
-
-  override def productArity = 9
+  override def productArity  = 9
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewTypeRef]
 }
@@ -46035,9 +45999,7 @@ class NewUnknown extends NewNode with UnknownBase with ExpressionNew {
     lineNumber.map { value => res += "LINE_NUMBER" -> value }
     if (!((-1: Int) == order)) { res += "ORDER" -> order }
     if (!(("<empty>") == parserTypeName)) { res += "PARSER_TYPE_NAME" -> parserTypeName }
-    if (possibleTypes != null && possibleTypes.nonEmpty) {
-      res += "POSSIBLE_TYPES" -> possibleTypes
-    }
+    if (possibleTypes != null && possibleTypes.nonEmpty) { res += "POSSIBLE_TYPES" -> possibleTypes }
     if (!(("<empty>") == typeFullName)) { res += "TYPE_FULL_NAME" -> typeFullName }
     res
   }
@@ -46083,8 +46045,7 @@ class NewUnknown extends NewNode with UnknownBase with ExpressionNew {
     }
 
   override def productPrefix = "NewUnknown"
-
-  override def productArity = 11
+  override def productArity  = 11
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewUnknown]
 }
