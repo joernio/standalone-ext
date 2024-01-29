@@ -20,6 +20,8 @@ object TypeDecl {
     val IsExternal               = "IS_EXTERNAL"
     val LineNumber               = "LINE_NUMBER"
     val Name                     = "NAME"
+    val Offset                   = "OFFSET"
+    val OffsetEnd                = "OFFSET_END"
     val Order                    = "ORDER"
     val all: Set[String] = Set(
       AliasTypeFullName,
@@ -33,6 +35,8 @@ object TypeDecl {
       IsExternal,
       LineNumber,
       Name,
+      Offset,
+      OffsetEnd,
       Order
     )
     val allAsJava: java.util.Set[String] = all.asJava
@@ -50,6 +54,8 @@ object TypeDecl {
     val IsExternal               = new overflowdb.PropertyKey[Boolean]("IS_EXTERNAL")
     val LineNumber               = new overflowdb.PropertyKey[Integer]("LINE_NUMBER")
     val Name                     = new overflowdb.PropertyKey[String]("NAME")
+    val Offset                   = new overflowdb.PropertyKey[Integer]("OFFSET")
+    val OffsetEnd                = new overflowdb.PropertyKey[Integer]("OFFSET_END")
     val Order                    = new overflowdb.PropertyKey[scala.Int]("ORDER")
 
   }
@@ -74,7 +80,8 @@ object TypeDecl {
       io.shiftleft.codepropertygraph.generated.edges.Binds.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Contains.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.InheritsFrom.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.SourceFile.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.SourceFile.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.TaggedBy.layoutInformation
     ).asJava,
     List(
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
@@ -84,7 +91,7 @@ object TypeDecl {
   )
 
   object Edges {
-    val Out: Array[String] = Array("ALIAS_OF", "AST", "BINDS", "CONTAINS", "INHERITS_FROM", "SOURCE_FILE")
+    val Out: Array[String] = Array("ALIAS_OF", "AST", "BINDS", "CONTAINS", "INHERITS_FROM", "SOURCE_FILE", "TAGGED_BY")
     val In: Array[String]  = Array("AST", "CONTAINS", "REF")
   }
 
@@ -112,6 +119,8 @@ trait TypeDeclBase extends AbstractNode with AstNodeBase {
   def isExternal: Boolean
   def lineNumber: Option[Integer]
   def name: String
+  def offset: Option[Integer]
+  def offsetEnd: Option[Integer]
   def order: scala.Int
 
 }
@@ -132,6 +141,8 @@ class TypeDecl(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bu
   override def isExternal: Boolean                          = get().isExternal
   override def lineNumber: Option[Integer]                  = get().lineNumber
   override def name: String                                 = get().name
+  override def offset: Option[Integer]                      = get().offset
+  override def offsetEnd: Option[Integer]                   = get().offsetEnd
   override def order: scala.Int                             = get().order
   override def propertyDefaultValue(propertyKey: String) =
     propertyKey match {
@@ -212,6 +223,13 @@ class TypeDecl(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bu
     */
   def _fileViaSourceFileOut: overflowdb.traversal.Traversal[File] = get()._fileViaSourceFileOut
 
+  def taggedByOut: Iterator[Tag] = get().taggedByOut
+  override def _taggedByOut      = get()._taggedByOut
+
+  /** Traverse to TAG via TAGGED_BY OUT edge.
+    */
+  def _tagViaTaggedByOut: overflowdb.traversal.Traversal[Tag] = get()._tagViaTaggedByOut
+
   def astIn: Iterator[AstNode] = get().astIn
   override def _astIn          = get()._astIn
 
@@ -271,7 +289,9 @@ class TypeDecl(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bu
       case 9  => "isExternal"
       case 10 => "lineNumber"
       case 11 => "name"
-      case 12 => "order"
+      case 12 => "offset"
+      case 13 => "offsetEnd"
+      case 14 => "order"
     }
 
   override def productElement(n: Int): Any =
@@ -288,11 +308,13 @@ class TypeDecl(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bu
       case 9  => isExternal
       case 10 => lineNumber
       case 11 => name
-      case 12 => order
+      case 12 => offset
+      case 13 => offsetEnd
+      case 14 => order
     }
 
   override def productPrefix = "TypeDecl"
-  override def productArity  = 13
+  override def productArity  = 15
 }
 
 class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with AstNode with TypeDeclBase {
@@ -321,6 +343,10 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
   def lineNumber: Option[Integer]                           = Option(_lineNumber)
   private var _name: String                                 = TypeDecl.PropertyDefaults.Name
   def name: String                                          = _name
+  private var _offset: Integer                              = null
+  def offset: Option[Integer]                               = Option(_offset)
+  private var _offsetEnd: Integer                           = null
+  def offsetEnd: Option[Integer]                            = Option(_offsetEnd)
   private var _order: scala.Int                             = TypeDecl.PropertyDefaults.Order
   def order: scala.Int                                      = _order
 
@@ -340,6 +366,8 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
     properties.put("IS_EXTERNAL", isExternal)
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     properties.put("NAME", name)
+    offset.map { value => properties.put("OFFSET", value) }
+    offsetEnd.map { value => properties.put("OFFSET_END", value) }
     properties.put("ORDER", order)
 
     properties
@@ -361,6 +389,8 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
     if (!((false) == isExternal)) { properties.put("IS_EXTERNAL", isExternal) }
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     if (!(("<empty>") == name)) { properties.put("NAME", name) }
+    offset.map { value => properties.put("OFFSET", value) }
+    offsetEnd.map { value => properties.put("OFFSET_END", value) }
     if (!((-1: Int) == order)) { properties.put("ORDER", order) }
 
     properties
@@ -397,18 +427,22 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
   override def _sourceFileOut       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
   def _fileViaSourceFileOut: overflowdb.traversal.Traversal[File] = sourceFileOut.collectAll[File]
 
-  def astIn: Iterator[AstNode]               = createAdjacentNodeScalaIteratorByOffSet[AstNode](6)
-  override def _astIn                        = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
+  def taggedByOut: Iterator[Tag]                              = createAdjacentNodeScalaIteratorByOffSet[Tag](6)
+  override def _taggedByOut                                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
+  def _tagViaTaggedByOut: overflowdb.traversal.Traversal[Tag] = taggedByOut.collectAll[Tag]
+
+  def astIn: Iterator[AstNode]               = createAdjacentNodeScalaIteratorByOffSet[AstNode](7)
+  override def _astIn                        = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
   def _methodViaAstIn: Option[Method]        = astIn.collectAll[Method].nextOption()
   def namespaceBlock: Option[NamespaceBlock] = astIn.collectAll[NamespaceBlock].nextOption()
   def _typeDeclViaAstIn: Option[TypeDecl]    = astIn.collectAll[TypeDecl].nextOption()
 
-  def containsIn: Iterator[File]                               = createAdjacentNodeScalaIteratorByOffSet[File](7)
-  override def _containsIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
+  def containsIn: Iterator[File]                               = createAdjacentNodeScalaIteratorByOffSet[File](8)
+  override def _containsIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
   def _fileViaContainsIn: overflowdb.traversal.Traversal[File] = containsIn.collectAll[File]
 
-  def refIn: Iterator[Type]                               = createAdjacentNodeScalaIteratorByOffSet[Type](8)
-  override def _refIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
+  def refIn: Iterator[Type]                               = createAdjacentNodeScalaIteratorByOffSet[Type](9)
+  override def _refIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](9)
   def _typeViaRefIn: overflowdb.traversal.Traversal[Type] = refIn.collectAll[Type]
 
   override def label: String = {
@@ -429,7 +463,9 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
       case 9  => "isExternal"
       case 10 => "lineNumber"
       case 11 => "name"
-      case 12 => "order"
+      case 12 => "offset"
+      case 13 => "offsetEnd"
+      case 14 => "order"
     }
 
   override def productElement(n: Int): Any =
@@ -446,11 +482,13 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
       case 9  => isExternal
       case 10 => lineNumber
       case 11 => name
-      case 12 => order
+      case 12 => offset
+      case 13 => offsetEnd
+      case 14 => order
     }
 
   override def productPrefix = "TypeDecl"
-  override def productArity  = 13
+  override def productArity  = 15
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[TypeDeclDb]
 
@@ -467,6 +505,8 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
       case "IS_EXTERNAL"                  => this._isExternal
       case "LINE_NUMBER"                  => this._lineNumber
       case "NAME"                         => this._name
+      case "OFFSET"                       => this._offset
+      case "OFFSET_END"                   => this._offsetEnd
       case "ORDER"                        => this._order
 
       case _ => null
@@ -503,6 +543,8 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
       case "IS_EXTERNAL" => this._isExternal = value.asInstanceOf[Boolean]
       case "LINE_NUMBER" => this._lineNumber = value.asInstanceOf[Integer]
       case "NAME"        => this._name = value.asInstanceOf[String]
+      case "OFFSET"      => this._offset = value.asInstanceOf[Integer]
+      case "OFFSET_END"  => this._offsetEnd = value.asInstanceOf[Integer]
       case "ORDER"       => this._order = value.asInstanceOf[scala.Int]
 
       case _ => PropertyErrorRegister.logPropertyErrorIfFirst(getClass, key)
@@ -533,6 +575,8 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
     this._isExternal = newNode.asInstanceOf[NewTypeDecl].isExternal
     this._lineNumber = newNode.asInstanceOf[NewTypeDecl].lineNumber.orNull
     this._name = newNode.asInstanceOf[NewTypeDecl].name
+    this._offset = newNode.asInstanceOf[NewTypeDecl].offset.orNull
+    this._offsetEnd = newNode.asInstanceOf[NewTypeDecl].offsetEnd.orNull
     this._order = newNode.asInstanceOf[NewTypeDecl].order
 
     graph.indexManager.putIfIndexed("FULL_NAME", newNode.asInstanceOf[NewTypeDecl].fullName, this.ref)
