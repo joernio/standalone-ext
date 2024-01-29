@@ -9602,7 +9602,7 @@ object NewClosureBinding {
 
   private val outNeighbors: Map[String, Set[String]] = Map("REF" -> Set("LOCAL", "METHOD_PARAMETER_IN"))
   private val inNeighbors: Map[String, Set[String]] =
-    Map("CAPTURE" -> Set("METHOD_REF", "TYPE_REF"), "CAPTURED_BY" -> Set("LOCAL"))
+    Map("CAPTURE" -> Set("METHOD_REF", "TYPE_REF"), "CAPTURED_BY" -> Set("LOCAL", "METHOD_PARAMETER_IN"))
 
 }
 
@@ -27940,11 +27940,13 @@ class NewMethodParameterIn
   var dynamicTypeHintFullName: IndexedSeq[String] = collection.immutable.ArraySeq.empty
   var columnNumber: Option[Integer]               = None
   var code: String                                = "<empty>"
+  var closureBindingId: Option[String]            = None
 
   override def label: String = "METHOD_PARAMETER_IN"
 
   override def copy: this.type = {
     val newInstance = new NewMethodParameterIn
+    newInstance.closureBindingId = this.closureBindingId
     newInstance.code = this.code
     newInstance.columnNumber = this.columnNumber
     newInstance.dynamicTypeHintFullName = this.dynamicTypeHintFullName
@@ -27958,6 +27960,13 @@ class NewMethodParameterIn
     newInstance.typeFullName = this.typeFullName
     newInstance.asInstanceOf[this.type]
   }
+
+  def closureBindingId(value: String): this.type = {
+    this.closureBindingId = Option(value)
+    this
+  }
+
+  def closureBindingId(value: Option[String]): this.type = closureBindingId(value.orNull)
 
   def code(value: String): this.type = {
     this.code = value
@@ -28020,6 +28029,7 @@ class NewMethodParameterIn
 
   override def properties: Map[String, Any] = {
     var res = Map[String, Any]()
+    closureBindingId.map { value => res += "CLOSURE_BINDING_ID" -> value }
     if (!(("<empty>") == code)) { res += "CODE" -> code }
     columnNumber.map { value => res += "COLUMN_NUMBER" -> value }
     if (dynamicTypeHintFullName != null && dynamicTypeHintFullName.nonEmpty) {
@@ -28057,6 +28067,7 @@ class NewMethodParameterIn
       case 8  => this.dynamicTypeHintFullName
       case 9  => this.columnNumber
       case 10 => this.code
+      case 11 => this.closureBindingId
       case _  => null
     }
 
@@ -28073,11 +28084,12 @@ class NewMethodParameterIn
       case 8  => "dynamicTypeHintFullName"
       case 9  => "columnNumber"
       case 10 => "code"
+      case 11 => "closureBindingId"
       case _  => ""
     }
 
   override def productPrefix = "NewMethodParameterIn"
-  override def productArity  = 11
+  override def productArity  = 12
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewMethodParameterIn]
 }
@@ -37659,6 +37671,7 @@ object NewTag {
       "RETURN",
       "TAG",
       "TEMPLATE_DOM",
+      "TYPE_DECL",
       "TYPE_REF",
       "UNKNOWN"
     )
@@ -41813,6 +41826,8 @@ class NewTypeDecl extends NewNode with TypeDeclBase with AstNodeNew {
   type StoredType = TypeDecl
 
   var order: scala.Int                             = -1: Int
+  var offsetEnd: Option[Integer]                   = None
+  var offset: Option[Integer]                      = None
   var name: String                                 = "<empty>"
   var lineNumber: Option[Integer]                  = None
   var isExternal: Boolean                          = false
@@ -41840,6 +41855,8 @@ class NewTypeDecl extends NewNode with TypeDeclBase with AstNodeNew {
     newInstance.isExternal = this.isExternal
     newInstance.lineNumber = this.lineNumber
     newInstance.name = this.name
+    newInstance.offset = this.offset
+    newInstance.offsetEnd = this.offsetEnd
     newInstance.order = this.order
     newInstance.asInstanceOf[this.type]
   }
@@ -41905,6 +41922,20 @@ class NewTypeDecl extends NewNode with TypeDeclBase with AstNodeNew {
     this
   }
 
+  def offset(value: Integer): this.type = {
+    this.offset = Option(value)
+    this
+  }
+
+  def offset(value: Option[Integer]): this.type = offset(value.orNull)
+
+  def offsetEnd(value: Integer): this.type = {
+    this.offsetEnd = Option(value)
+    this
+  }
+
+  def offsetEnd(value: Option[Integer]): this.type = offsetEnd(value.orNull)
+
   def order(value: scala.Int): this.type = {
     this.order = value
     this
@@ -41925,6 +41956,8 @@ class NewTypeDecl extends NewNode with TypeDeclBase with AstNodeNew {
     if (!((false) == isExternal)) { res += "IS_EXTERNAL" -> isExternal }
     lineNumber.map { value => res += "LINE_NUMBER" -> value }
     if (!(("<empty>") == name)) { res += "NAME" -> name }
+    offset.map { value => res += "OFFSET" -> value }
+    offsetEnd.map { value => res += "OFFSET_END" -> value }
     if (!((-1: Int) == order)) { res += "ORDER" -> order }
     res
   }
@@ -41940,39 +41973,43 @@ class NewTypeDecl extends NewNode with TypeDeclBase with AstNodeNew {
   override def productElement(n: Int): Any =
     n match {
       case 0  => this.order
-      case 1  => this.name
-      case 2  => this.lineNumber
-      case 3  => this.isExternal
-      case 4  => this.inheritsFromTypeFullName
-      case 5  => this.fullName
-      case 6  => this.filename
-      case 7  => this.columnNumber
-      case 8  => this.code
-      case 9  => this.astParentType
-      case 10 => this.astParentFullName
-      case 11 => this.aliasTypeFullName
+      case 1  => this.offsetEnd
+      case 2  => this.offset
+      case 3  => this.name
+      case 4  => this.lineNumber
+      case 5  => this.isExternal
+      case 6  => this.inheritsFromTypeFullName
+      case 7  => this.fullName
+      case 8  => this.filename
+      case 9  => this.columnNumber
+      case 10 => this.code
+      case 11 => this.astParentType
+      case 12 => this.astParentFullName
+      case 13 => this.aliasTypeFullName
       case _  => null
     }
 
   override def productElementName(n: Int): String =
     n match {
       case 0  => "order"
-      case 1  => "name"
-      case 2  => "lineNumber"
-      case 3  => "isExternal"
-      case 4  => "inheritsFromTypeFullName"
-      case 5  => "fullName"
-      case 6  => "filename"
-      case 7  => "columnNumber"
-      case 8  => "code"
-      case 9  => "astParentType"
-      case 10 => "astParentFullName"
-      case 11 => "aliasTypeFullName"
+      case 1  => "offsetEnd"
+      case 2  => "offset"
+      case 3  => "name"
+      case 4  => "lineNumber"
+      case 5  => "isExternal"
+      case 6  => "inheritsFromTypeFullName"
+      case 7  => "fullName"
+      case 8  => "filename"
+      case 9  => "columnNumber"
+      case 10 => "code"
+      case 11 => "astParentType"
+      case 12 => "astParentFullName"
+      case 13 => "aliasTypeFullName"
       case _  => ""
     }
 
   override def productPrefix = "NewTypeDecl"
-  override def productArity  = 12
+  override def productArity  = 14
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewTypeDecl]
 }
