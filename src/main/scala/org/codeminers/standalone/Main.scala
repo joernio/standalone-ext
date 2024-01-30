@@ -10,34 +10,36 @@ import overflowdb.BatchedUpdate
 
 import scala.util.{Failure, Success}
 
-/** Example program that makes use of Joern as a library
-  */
-object Main extends App {
+/** Example program that makes use of Joern as a library */
+object Main {
 
-  println("Hello Joern")
-  print("Creating CPG... ")
-  val directory      = "testprogram"
-  val config         = Config().withInputPath(directory)
-  val cpgOrException = JavaSrc2Cpg().createCpg(config)
+  def main(args: Array[String]): Unit = {
+    println("Hello Joern")
+    print("Creating CPG... ")
+    val directory      = "testprogram"
+    val config         = Config().withInputPath(directory)
+    val cpgOrException = JavaSrc2Cpg().createCpg(config)
 
-  cpgOrException match {
-    case Success(cpg) =>
-      println("[DONE]")
-      println("Applying default overlays")
-      applyDefaultOverlays(cpg)
-      println("Printing all methods:")
-      println("=====================")
-      cpg.method.name.foreach(println)
-      println("=====================")
-      println("Running a custom pass to add some custom nodes")
-      new MyPass(cpg).createAndApply()
-      println("Running custom queries")
-      cpg.mynodetype.foreach(println)
-      cpg.mynodetype.myCustomStep.l
-    case Failure(exception) =>
-      println("[FAILED]")
-      println(exception)
+    cpgOrException match {
+      case Success(cpg) =>
+        println("[DONE]")
+        println("Applying default overlays")
+        applyDefaultOverlays(cpg)
+        println("Printing all methods:")
+        println("=====================")
+        cpg.method.name.foreach(println)
+        println("=====================")
+        println("Running a custom pass to add some custom nodes")
+        new MyPass(cpg).createAndApply()
+        println("Running custom queries")
+        cpg.mynodetype.foreach(println)
+        cpg.mynodetype.myCustomStep.l
+      case Failure(exception) =>
+        println("[FAILED]")
+        println(exception)
+    }
   }
+
 }
 
 /** Example of a custom pass that creates and stores a node in the CPG.
