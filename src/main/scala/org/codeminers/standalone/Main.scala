@@ -6,7 +6,7 @@ import io.shiftleft.codepropertygraph.generated.Cpg
 import io.shiftleft.codepropertygraph.generated.nodes.NewMynodetype
 import io.shiftleft.passes.CpgPass
 import io.shiftleft.semanticcpg.language._
-import overflowdb.BatchedUpdate
+import flatgraph.DiffGraphBuilder
 
 import scala.util.{Failure, Success}
 
@@ -45,7 +45,7 @@ object Main {
 /** Example of a custom pass that creates and stores a node in the CPG.
   */
 class MyPass(cpg: Cpg) extends CpgPass(cpg) {
-  override def run(builder: BatchedUpdate.DiffGraphBuilder): Unit = {
+  override def run(builder: DiffGraphBuilder): Unit = {
     val n = NewMynodetype().myproperty("foo")
     builder.addNode(n)
   }
