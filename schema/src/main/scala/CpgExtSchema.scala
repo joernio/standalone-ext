@@ -1,6 +1,6 @@
 import io.shiftleft.codepropertygraph.schema._
-import overflowdb.schema.SchemaBuilder
-import overflowdb.schema.Property.ValueType
+import flatgraph.schema.SchemaBuilder
+import flatgraph.schema.Property.ValueType
 
 class CpgExtSchema(builder: SchemaBuilder, cpgSchema: CpgSchema) {
 
