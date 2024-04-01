@@ -1,6 +1,6 @@
 package org.codeminers.standalone
 
-import io.joern.console.{BridgeBase, JoernProduct}
+import io.joern.console.BridgeBase
 import io.joern.joerncli.console.Predefined
 
 /** Extend/use joern as a REPL application */
@@ -19,5 +19,5 @@ object ReplMain extends BridgeBase {
   override protected def promptStr = "joern-sample-ext"
   override protected def greeting = "Welcome to the wonderful world of this sample joern extension!"
   override protected def onExitCode = """println("goodbye!")"""
-  override def slProduct = JoernProduct
+  override def applicationName = "joern-sample-ext"
 }
