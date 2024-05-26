@@ -1,11 +1,11 @@
 name := "standalone"
 ThisBuild / organization := "org.codeminers"
-ThisBuild / scalaVersion := "3.3.1"
+ThisBuild / scalaVersion := "3.4.2"
 
 // parsed by project/Versions.scala, updated by updateDependencies.sh
-val cpgVersion = "1.6.10"
-val joernVersion = "2.0.310"
-val overflowdbVersion = "1.190"
+val cpgVersion = "1.6.13"
+val joernVersion = "2.0.385"
+val overflowdbVersion = "1.192"
 
 lazy val schema = Projects.schema
 lazy val domainClasses = Projects.domainClasses
