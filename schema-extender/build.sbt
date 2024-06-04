@@ -10,7 +10,8 @@ replaceDomainClassesInJoern := {
   import java.nio.file.*
   val newDomainClassesJar = (Projects.domainClasses/Compile/packageBin).value
 
-  val targetFile = joernInstallPath.value / "lib" / s"io.shiftleft.codepropertygraph-domain-classes_2.13-${Versions.cpg}.jar"
+// TODO change organization back from temporary `com.michaelpollmeier`
+  val targetFile = joernInstallPath.value / "lib" / s"com.michaelpollmeier.codepropertygraph-domain-classes_3-${Versions.cpg}.jar"
   assert(targetFile.exists, s"target jar assumed to be $targetFile, but that file doesn't exist...")
 
   println(s"copying $newDomainClassesJar to $targetFile")
