@@ -52,11 +52,12 @@ class Mynodetype(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/
     with MynodetypeBase
     with StoredNode {
   override def myproperty: String = get().myproperty
-  override def propertyDefaultValue(propertyKey: String) =
+  override def propertyDefaultValue(propertyKey: String) = {
     propertyKey match {
       case "MYPROPERTY" => Mynodetype.PropertyDefaults.Myproperty
       case _            => super.propertyDefaultValue(propertyKey)
     }
+  }
 
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
