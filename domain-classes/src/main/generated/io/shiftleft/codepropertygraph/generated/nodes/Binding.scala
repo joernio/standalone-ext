@@ -2,6 +2,7 @@ package io.shiftleft.codepropertygraph.generated.nodes
 
 import io.shiftleft.codepropertygraph.generated.language.*
 import scala.collection.immutable.{IndexedSeq, ArraySeq}
+import scala.collection.mutable
 
 /** Node base type for compiletime-only checks to improve type safety. EMT stands for: "erased marker trait", i.e. it is
   * erased at runtime
@@ -11,7 +12,7 @@ trait BindingEMT extends AnyRef with HasMethodFullNameEMT with HasNameEMT with H
 trait BindingBase extends AbstractNode with StaticType[BindingEMT] {
 
   override def propertiesMap: java.util.Map[String, Any] = {
-    import io.shiftleft.codepropertygraph.generated.accessors.Lang.*
+    import io.shiftleft.codepropertygraph.generated.accessors.languagebootstrap.*
     val res = new java.util.HashMap[String, Any]()
     if (("<empty>": String) != this.methodFullName) res.put("METHOD_FULL_NAME", this.methodFullName)
     if (("<empty>": String) != this.name) res.put("NAME", this.name)
@@ -39,7 +40,7 @@ object Binding {
       */
     val Signature = "SIGNATURE"
   }
-  object PropertyKeys {
+  object Properties {
 
     /** The FULL_NAME of a method. Used to link CALL and METHOD nodes. It is required to have exactly one METHOD node
       * for each METHOD_FULL_NAME
@@ -94,7 +95,86 @@ object NewBinding {
   def apply(): NewBinding                            = new NewBinding
   private val outNeighbors: Map[String, Set[String]] = Map("REF" -> Set("METHOD"))
   private val inNeighbors: Map[String, Set[String]]  = Map("BINDS" -> Set("TYPE_DECL"))
+
+  object InsertionHelpers {
+    object NewNodeInserter_Binding_methodFullName extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[String]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewBinding =>
+              dstCast(offset) = generated.methodFullName
+              offset += 1
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+    object NewNodeInserter_Binding_name extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[String]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewBinding =>
+              dstCast(offset) = generated.name
+              offset += 1
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+    object NewNodeInserter_Binding_signature extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[String]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewBinding =>
+              dstCast(offset) = generated.signature
+              offset += 1
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+  }
 }
+
 class NewBinding extends NewNode(5.toShort) with BindingBase {
   override type StoredNodeType = Binding
   override def label: String = "BINDING"
@@ -112,13 +192,13 @@ class NewBinding extends NewNode(5.toShort) with BindingBase {
   def methodFullName(value: String): this.type = { this.methodFullName = value; this }
   def name(value: String): this.type           = { this.name = value; this }
   def signature(value: String): this.type      = { this.signature = value; this }
-  override def flattenProperties(interface: flatgraph.BatchedUpdateInterface): Unit = {
-    interface.insertProperty(this, 36, Iterator(this.methodFullName))
-    interface.insertProperty(this, 40, Iterator(this.name))
-    interface.insertProperty(this, 50, Iterator(this.signature))
+  override def countAndVisitProperties(interface: flatgraph.BatchedUpdateInterface): Unit = {
+    interface.countProperty(this, 36, 1)
+    interface.countProperty(this, 40, 1)
+    interface.countProperty(this, 50, 1)
   }
 
-  override def copy(): this.type = {
+  override def copy: this.type = {
     val newInstance = new NewBinding
     newInstance.methodFullName = this.methodFullName
     newInstance.name = this.name

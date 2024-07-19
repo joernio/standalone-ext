@@ -17,20 +17,17 @@ libraryDependencies ++= Seq(
   "com.github.pathikrit" %% "better-files" % "3.9.2",
   "com.github.scopt" %% "scopt" % "4.1.0",
   "org.apache.logging.log4j" % "log4j-slf4j2-impl" % "2.20.0" % Optional,
-// TODO change organization back from temporary `com.michaelpollmeier`
-  "com.michaelpollmeier" %% "x2cpg" % Versions.joern,
-  "com.michaelpollmeier" %% "javasrc2cpg" % Versions.joern,
-  "com.michaelpollmeier" %% "joern-cli" % Versions.joern,
-  "com.michaelpollmeier" %% "semanticcpg" % Versions.joern,
-  "com.michaelpollmeier" %% "semanticcpg" % Versions.joern % Test classifier "tests",
+  "io.joern" %% "x2cpg" % Versions.joern,
+  "io.joern" %% "javasrc2cpg" % Versions.joern,
+  "io.joern" %% "joern-cli" % Versions.joern,
+  "io.joern" %% "semanticcpg" % Versions.joern,
+  "io.joern" %% "semanticcpg" % Versions.joern % Test classifier "tests",
   "org.scalatest" %% "scalatest" % "3.2.16" % Test
 )
 
 // mostly so that `sbt assembly` works, but also to ensure that we don't end up
 // with unexpected shadowing in jar hell
 excludeDependencies ++= Seq(
-// TODO remove temporary rule for `com.michaelpollmeier`
-  ExclusionRule("com.michaelpollmeier", "codepropertygraph-domain-classes_3"),
   ExclusionRule("io.shiftleft", "codepropertygraph-domain-classes_3"),
 )
 

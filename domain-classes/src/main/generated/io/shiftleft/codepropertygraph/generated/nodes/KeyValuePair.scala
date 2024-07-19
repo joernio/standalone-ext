@@ -2,6 +2,7 @@ package io.shiftleft.codepropertygraph.generated.nodes
 
 import io.shiftleft.codepropertygraph.generated.language.*
 import scala.collection.immutable.{IndexedSeq, ArraySeq}
+import scala.collection.mutable
 
 /** Node base type for compiletime-only checks to improve type safety. EMT stands for: "erased marker trait", i.e. it is
   * erased at runtime
@@ -11,7 +12,7 @@ trait KeyValuePairEMT extends AnyRef with HasKeyEMT with HasValueEMT
 trait KeyValuePairBase extends AbstractNode with StaticType[KeyValuePairEMT] {
 
   override def propertiesMap: java.util.Map[String, Any] = {
-    import io.shiftleft.codepropertygraph.generated.accessors.Lang.*
+    import io.shiftleft.codepropertygraph.generated.accessors.languagebootstrap.*
     val res = new java.util.HashMap[String, Any]()
     if (("<empty>": String) != this.key) res.put("KEY", this.key)
     if (("": String) != this.value) res.put("VALUE", this.value)
@@ -29,7 +30,7 @@ object KeyValuePair {
     /** This property denotes a string value as used in a key-value pair. */
     val Value = "VALUE"
   }
-  object PropertyKeys {
+  object Properties {
 
     /** This property denotes a key of a key-value pair. */
     val Key = flatgraph.SinglePropertyKey[String](kind = 32, name = "KEY", default = "<empty>")
@@ -72,7 +73,61 @@ object NewKeyValuePair {
   def apply(): NewKeyValuePair                       = new NewKeyValuePair
   private val outNeighbors: Map[String, Set[String]] = Map()
   private val inNeighbors: Map[String, Set[String]]  = Map()
+
+  object InsertionHelpers {
+    object NewNodeInserter_KeyValuePair_key extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[String]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewKeyValuePair =>
+              dstCast(offset) = generated.key
+              offset += 1
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+    object NewNodeInserter_KeyValuePair_value extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[String]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewKeyValuePair =>
+              dstCast(offset) = generated.value
+              offset += 1
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+  }
 }
+
 class NewKeyValuePair extends NewNode(20.toShort) with KeyValuePairBase {
   override type StoredNodeType = KeyValuePair
   override def label: String = "KEY_VALUE_PAIR"
@@ -88,12 +143,12 @@ class NewKeyValuePair extends NewNode(20.toShort) with KeyValuePairBase {
   var value: String                   = "": String
   def key(value: String): this.type   = { this.key = value; this }
   def value(value: String): this.type = { this.value = value; this }
-  override def flattenProperties(interface: flatgraph.BatchedUpdateInterface): Unit = {
-    interface.insertProperty(this, 32, Iterator(this.key))
-    interface.insertProperty(this, 54, Iterator(this.value))
+  override def countAndVisitProperties(interface: flatgraph.BatchedUpdateInterface): Unit = {
+    interface.countProperty(this, 32, 1)
+    interface.countProperty(this, 54, 1)
   }
 
-  override def copy(): this.type = {
+  override def copy: this.type = {
     val newInstance = new NewKeyValuePair
     newInstance.key = this.key
     newInstance.value = this.value

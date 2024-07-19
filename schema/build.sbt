@@ -1,8 +1,7 @@
 name := "standalone-schema"
 
-// TODO change organization back from temporary `com.michaelpollmeier`
 libraryDependencies ++= Seq(
-  "com.michaelpollmeier" %% "codepropertygraph-schema" % Versions.cpg,
+  "io.shiftleft" %% "codepropertygraph-schema" % Versions.cpg,
   "io.joern" %% "flatgraph-domain-classes-generator" % Versions.flatgraph,
 )
 

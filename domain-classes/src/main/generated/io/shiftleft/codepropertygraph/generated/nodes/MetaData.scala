@@ -2,6 +2,7 @@ package io.shiftleft.codepropertygraph.generated.nodes
 
 import io.shiftleft.codepropertygraph.generated.language.*
 import scala.collection.immutable.{IndexedSeq, ArraySeq}
+import scala.collection.mutable
 
 /** Node base type for compiletime-only checks to improve type safety. EMT stands for: "erased marker trait", i.e. it is
   * erased at runtime
@@ -17,7 +18,7 @@ trait MetaDataEMT
 trait MetaDataBase extends AbstractNode with StaticType[MetaDataEMT] {
 
   override def propertiesMap: java.util.Map[String, Any] = {
-    import io.shiftleft.codepropertygraph.generated.accessors.Lang.*
+    import io.shiftleft.codepropertygraph.generated.accessors.languagebootstrap.*
     val res = new java.util.HashMap[String, Any]()
     this.hash.foreach { p => res.put("HASH", p) }
     if (("<empty>": String) != this.language) res.put("LANGUAGE", this.language)
@@ -59,7 +60,7 @@ object MetaData {
       */
     val Version = "VERSION"
   }
-  object PropertyKeys {
+  object Properties {
 
     /** This property contains a hash value in the form of a string. Hashes can be used to summarize data, e.g., to
       * summarize the contents of source files or sub graphs. Such summaries are useful to determine whether code has
@@ -130,7 +131,142 @@ object NewMetaData {
   def apply(): NewMetaData                           = new NewMetaData
   private val outNeighbors: Map[String, Set[String]] = Map()
   private val inNeighbors: Map[String, Set[String]]  = Map()
+
+  object InsertionHelpers {
+    object NewNodeInserter_MetaData_hash extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[String]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewMetaData =>
+              generated.hash match {
+                case Some(item) =>
+                  dstCast(offset) = item
+                  offset += 1
+                case _ =>
+              }
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+    object NewNodeInserter_MetaData_language extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[String]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewMetaData =>
+              dstCast(offset) = generated.language
+              offset += 1
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+    object NewNodeInserter_MetaData_overlays extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[String]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewMetaData =>
+              for (item <- generated.overlays) {
+                dstCast(offset) = item
+                offset += 1
+              }
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+    object NewNodeInserter_MetaData_root extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[String]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewMetaData =>
+              dstCast(offset) = generated.root
+              offset += 1
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+    object NewNodeInserter_MetaData_version extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[String]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewMetaData =>
+              dstCast(offset) = generated.version
+              offset += 1
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+  }
 }
+
 class NewMetaData extends NewNode(25.toShort) with MetaDataBase {
   override type StoredNodeType = MetaData
   override def label: String = "META_DATA"
@@ -153,15 +289,15 @@ class NewMetaData extends NewNode(25.toShort) with MetaDataBase {
   def overlays(value: IterableOnce[String]): this.type = { this.overlays = value.iterator.to(ArraySeq); this }
   def root(value: String): this.type                   = { this.root = value; this }
   def version(value: String): this.type                = { this.version = value; this }
-  override def flattenProperties(interface: flatgraph.BatchedUpdateInterface): Unit = {
-    if (hash.nonEmpty) interface.insertProperty(this, 23, this.hash)
-    interface.insertProperty(this, 33, Iterator(this.language))
-    if (overlays.nonEmpty) interface.insertProperty(this, 45, this.overlays)
-    interface.insertProperty(this, 49, Iterator(this.root))
-    interface.insertProperty(this, 55, Iterator(this.version))
+  override def countAndVisitProperties(interface: flatgraph.BatchedUpdateInterface): Unit = {
+    interface.countProperty(this, 23, hash.size)
+    interface.countProperty(this, 33, 1)
+    interface.countProperty(this, 45, overlays.size)
+    interface.countProperty(this, 49, 1)
+    interface.countProperty(this, 55, 1)
   }
 
-  override def copy(): this.type = {
+  override def copy: this.type = {
     val newInstance = new NewMetaData
     newInstance.hash = this.hash
     newInstance.language = this.language

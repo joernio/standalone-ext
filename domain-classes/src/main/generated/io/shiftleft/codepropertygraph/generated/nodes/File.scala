@@ -2,6 +2,7 @@ package io.shiftleft.codepropertygraph.generated.nodes
 
 import io.shiftleft.codepropertygraph.generated.language.*
 import scala.collection.immutable.{IndexedSeq, ArraySeq}
+import scala.collection.mutable
 
 /** Node base type for compiletime-only checks to improve type safety. EMT stands for: "erased marker trait", i.e. it is
   * erased at runtime
@@ -11,7 +12,7 @@ trait FileEMT extends AnyRef with AstNodeEMT with HasContentEMT with HasHashEMT 
 trait FileBase extends AbstractNode with AstNodeBase with StaticType[FileEMT] {
 
   override def propertiesMap: java.util.Map[String, Any] = {
-    import io.shiftleft.codepropertygraph.generated.accessors.Lang.*
+    import io.shiftleft.codepropertygraph.generated.accessors.languagebootstrap.*
     val res = new java.util.HashMap[String, Any]()
     if (("<empty>": String) != this.code) res.put("CODE", this.code)
     this.columnNumber.foreach { p => res.put("COLUMN_NUMBER", p) }
@@ -59,7 +60,7 @@ object File {
       */
     val Order = "ORDER"
   }
-  object PropertyKeys {
+  object Properties {
 
     /** This field holds the code snippet that the node represents. */
     val Code = flatgraph.SinglePropertyKey[String](kind = 10, name = "CODE", default = "<empty>")
@@ -1371,7 +1372,198 @@ object NewFile {
       "UNKNOWN"
     )
   )
+
+  object InsertionHelpers {
+    object NewNodeInserter_File_code extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[String]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewFile =>
+              dstCast(offset) = generated.code
+              offset += 1
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+    object NewNodeInserter_File_columnNumber extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[Int]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewFile =>
+              generated.columnNumber match {
+                case Some(item) =>
+                  dstCast(offset) = item
+                  offset += 1
+                case _ =>
+              }
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+    object NewNodeInserter_File_content extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[String]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewFile =>
+              dstCast(offset) = generated.content
+              offset += 1
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+    object NewNodeInserter_File_hash extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[String]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewFile =>
+              generated.hash match {
+                case Some(item) =>
+                  dstCast(offset) = item
+                  offset += 1
+                case _ =>
+              }
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+    object NewNodeInserter_File_lineNumber extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[Int]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewFile =>
+              generated.lineNumber match {
+                case Some(item) =>
+                  dstCast(offset) = item
+                  offset += 1
+                case _ =>
+              }
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+    object NewNodeInserter_File_name extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[String]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewFile =>
+              dstCast(offset) = generated.name
+              offset += 1
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+    object NewNodeInserter_File_order extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[Int]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewFile =>
+              dstCast(offset) = generated.order
+              offset += 1
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+  }
 }
+
 class NewFile extends NewNode(14.toShort) with FileBase with AstNodeNew {
   override type StoredNodeType = File
   override def label: String = "FILE"
@@ -1400,17 +1592,17 @@ class NewFile extends NewNode(14.toShort) with FileBase with AstNodeNew {
   def lineNumber(value: Option[Int]): this.type   = { this.lineNumber = value; this }
   def name(value: String): this.type              = { this.name = value; this }
   def order(value: Int): this.type                = { this.order = value; this }
-  override def flattenProperties(interface: flatgraph.BatchedUpdateInterface): Unit = {
-    interface.insertProperty(this, 10, Iterator(this.code))
-    if (columnNumber.nonEmpty) interface.insertProperty(this, 11, this.columnNumber)
-    interface.insertProperty(this, 14, Iterator(this.content))
-    if (hash.nonEmpty) interface.insertProperty(this, 23, this.hash)
-    if (lineNumber.nonEmpty) interface.insertProperty(this, 34, this.lineNumber)
-    interface.insertProperty(this, 40, Iterator(this.name))
-    interface.insertProperty(this, 44, Iterator(this.order))
+  override def countAndVisitProperties(interface: flatgraph.BatchedUpdateInterface): Unit = {
+    interface.countProperty(this, 10, 1)
+    interface.countProperty(this, 11, columnNumber.size)
+    interface.countProperty(this, 14, 1)
+    interface.countProperty(this, 23, hash.size)
+    interface.countProperty(this, 34, lineNumber.size)
+    interface.countProperty(this, 40, 1)
+    interface.countProperty(this, 44, 1)
   }
 
-  override def copy(): this.type = {
+  override def copy: this.type = {
     val newInstance = new NewFile
     newInstance.code = this.code
     newInstance.columnNumber = this.columnNumber

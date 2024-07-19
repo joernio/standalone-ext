@@ -1,7 +1,5 @@
 package io.shiftleft.codepropertygraph.generated
 
-import io.shiftleft.codepropertygraph.generated.nodes
-import io.shiftleft.codepropertygraph.generated.edges
 import flatgraph.FormalQtyType
 
 object GraphSchema extends flatgraph.Schema {
@@ -922,6 +920,329 @@ object GraphSchema extends flatgraph.Schema {
     nodePropertyDescriptors(4859) = FormalQtyType.QtyOne
     nodePropertyDescriptors
   }
+  private val newNodeInsertionHelpers: Array[flatgraph.NewNodePropertyInsertionHelper] = {
+    val _newNodeInserters = new Array[flatgraph.NewNodePropertyInsertionHelper](5400)
+    _newNodeInserters(90) = nodes.NewAnnotation.InsertionHelpers.NewNodeInserter_Annotation_argumentIndex
+    _newNodeInserters(180) = nodes.NewAnnotation.InsertionHelpers.NewNodeInserter_Annotation_argumentName
+    _newNodeInserters(900) = nodes.NewAnnotation.InsertionHelpers.NewNodeInserter_Annotation_code
+    _newNodeInserters(990) = nodes.NewAnnotation.InsertionHelpers.NewNodeInserter_Annotation_columnNumber
+    _newNodeInserters(1980) = nodes.NewAnnotation.InsertionHelpers.NewNodeInserter_Annotation_fullName
+    _newNodeInserters(3060) = nodes.NewAnnotation.InsertionHelpers.NewNodeInserter_Annotation_lineNumber
+    _newNodeInserters(3600) = nodes.NewAnnotation.InsertionHelpers.NewNodeInserter_Annotation_name
+    _newNodeInserters(3960) = nodes.NewAnnotation.InsertionHelpers.NewNodeInserter_Annotation_order
+    _newNodeInserters(92) = nodes.NewAnnotationLiteral.InsertionHelpers.NewNodeInserter_AnnotationLiteral_argumentIndex
+    _newNodeInserters(182) = nodes.NewAnnotationLiteral.InsertionHelpers.NewNodeInserter_AnnotationLiteral_argumentName
+    _newNodeInserters(902) = nodes.NewAnnotationLiteral.InsertionHelpers.NewNodeInserter_AnnotationLiteral_code
+    _newNodeInserters(992) = nodes.NewAnnotationLiteral.InsertionHelpers.NewNodeInserter_AnnotationLiteral_columnNumber
+    _newNodeInserters(3062) = nodes.NewAnnotationLiteral.InsertionHelpers.NewNodeInserter_AnnotationLiteral_lineNumber
+    _newNodeInserters(3602) = nodes.NewAnnotationLiteral.InsertionHelpers.NewNodeInserter_AnnotationLiteral_name
+    _newNodeInserters(3962) = nodes.NewAnnotationLiteral.InsertionHelpers.NewNodeInserter_AnnotationLiteral_order
+    _newNodeInserters(904) = nodes.NewAnnotationParameter.InsertionHelpers.NewNodeInserter_AnnotationParameter_code
+    _newNodeInserters(994) =
+      nodes.NewAnnotationParameter.InsertionHelpers.NewNodeInserter_AnnotationParameter_columnNumber
+    _newNodeInserters(3064) =
+      nodes.NewAnnotationParameter.InsertionHelpers.NewNodeInserter_AnnotationParameter_lineNumber
+    _newNodeInserters(3964) = nodes.NewAnnotationParameter.InsertionHelpers.NewNodeInserter_AnnotationParameter_order
+    _newNodeInserters(906) =
+      nodes.NewAnnotationParameterAssign.InsertionHelpers.NewNodeInserter_AnnotationParameterAssign_code
+    _newNodeInserters(996) =
+      nodes.NewAnnotationParameterAssign.InsertionHelpers.NewNodeInserter_AnnotationParameterAssign_columnNumber
+    _newNodeInserters(3066) =
+      nodes.NewAnnotationParameterAssign.InsertionHelpers.NewNodeInserter_AnnotationParameterAssign_lineNumber
+    _newNodeInserters(3966) =
+      nodes.NewAnnotationParameterAssign.InsertionHelpers.NewNodeInserter_AnnotationParameterAssign_order
+    _newNodeInserters(98) = nodes.NewArrayInitializer.InsertionHelpers.NewNodeInserter_ArrayInitializer_argumentIndex
+    _newNodeInserters(188) = nodes.NewArrayInitializer.InsertionHelpers.NewNodeInserter_ArrayInitializer_argumentName
+    _newNodeInserters(908) = nodes.NewArrayInitializer.InsertionHelpers.NewNodeInserter_ArrayInitializer_code
+    _newNodeInserters(998) = nodes.NewArrayInitializer.InsertionHelpers.NewNodeInserter_ArrayInitializer_columnNumber
+    _newNodeInserters(3068) = nodes.NewArrayInitializer.InsertionHelpers.NewNodeInserter_ArrayInitializer_lineNumber
+    _newNodeInserters(3968) = nodes.NewArrayInitializer.InsertionHelpers.NewNodeInserter_ArrayInitializer_order
+    _newNodeInserters(3250) = nodes.NewBinding.InsertionHelpers.NewNodeInserter_Binding_methodFullName
+    _newNodeInserters(3610) = nodes.NewBinding.InsertionHelpers.NewNodeInserter_Binding_name
+    _newNodeInserters(4510) = nodes.NewBinding.InsertionHelpers.NewNodeInserter_Binding_signature
+    _newNodeInserters(102) = nodes.NewBlock.InsertionHelpers.NewNodeInserter_Block_argumentIndex
+    _newNodeInserters(192) = nodes.NewBlock.InsertionHelpers.NewNodeInserter_Block_argumentName
+    _newNodeInserters(912) = nodes.NewBlock.InsertionHelpers.NewNodeInserter_Block_code
+    _newNodeInserters(1002) = nodes.NewBlock.InsertionHelpers.NewNodeInserter_Block_columnNumber
+    _newNodeInserters(1632) = nodes.NewBlock.InsertionHelpers.NewNodeInserter_Block_dynamicTypeHintFullName
+    _newNodeInserters(3072) = nodes.NewBlock.InsertionHelpers.NewNodeInserter_Block_lineNumber
+    _newNodeInserters(3972) = nodes.NewBlock.InsertionHelpers.NewNodeInserter_Block_order
+    _newNodeInserters(4332) = nodes.NewBlock.InsertionHelpers.NewNodeInserter_Block_possibleTypes
+    _newNodeInserters(4782) = nodes.NewBlock.InsertionHelpers.NewNodeInserter_Block_typeFullName
+    _newNodeInserters(104) = nodes.NewCall.InsertionHelpers.NewNodeInserter_Call_argumentIndex
+    _newNodeInserters(194) = nodes.NewCall.InsertionHelpers.NewNodeInserter_Call_argumentName
+    _newNodeInserters(914) = nodes.NewCall.InsertionHelpers.NewNodeInserter_Call_code
+    _newNodeInserters(1004) = nodes.NewCall.InsertionHelpers.NewNodeInserter_Call_columnNumber
+    _newNodeInserters(1544) = nodes.NewCall.InsertionHelpers.NewNodeInserter_Call_dispatchType
+    _newNodeInserters(1634) = nodes.NewCall.InsertionHelpers.NewNodeInserter_Call_dynamicTypeHintFullName
+    _newNodeInserters(3074) = nodes.NewCall.InsertionHelpers.NewNodeInserter_Call_lineNumber
+    _newNodeInserters(3254) = nodes.NewCall.InsertionHelpers.NewNodeInserter_Call_methodFullName
+    _newNodeInserters(3614) = nodes.NewCall.InsertionHelpers.NewNodeInserter_Call_name
+    _newNodeInserters(3974) = nodes.NewCall.InsertionHelpers.NewNodeInserter_Call_order
+    _newNodeInserters(4334) = nodes.NewCall.InsertionHelpers.NewNodeInserter_Call_possibleTypes
+    _newNodeInserters(4514) = nodes.NewCall.InsertionHelpers.NewNodeInserter_Call_signature
+    _newNodeInserters(4784) = nodes.NewCall.InsertionHelpers.NewNodeInserter_Call_typeFullName
+    _newNodeInserters(736) = nodes.NewClosureBinding.InsertionHelpers.NewNodeInserter_ClosureBinding_closureBindingId
+    _newNodeInserters(826) = nodes.NewClosureBinding.InsertionHelpers.NewNodeInserter_ClosureBinding_closureOriginalName
+    _newNodeInserters(1726) = nodes.NewClosureBinding.InsertionHelpers.NewNodeInserter_ClosureBinding_evaluationStrategy
+    _newNodeInserters(918) = nodes.NewComment.InsertionHelpers.NewNodeInserter_Comment_code
+    _newNodeInserters(1008) = nodes.NewComment.InsertionHelpers.NewNodeInserter_Comment_columnNumber
+    _newNodeInserters(1908) = nodes.NewComment.InsertionHelpers.NewNodeInserter_Comment_filename
+    _newNodeInserters(3078) = nodes.NewComment.InsertionHelpers.NewNodeInserter_Comment_lineNumber
+    _newNodeInserters(3978) = nodes.NewComment.InsertionHelpers.NewNodeInserter_Comment_order
+    _newNodeInserters(1280) = nodes.NewConfigFile.InsertionHelpers.NewNodeInserter_ConfigFile_content
+    _newNodeInserters(3620) = nodes.NewConfigFile.InsertionHelpers.NewNodeInserter_ConfigFile_name
+    _newNodeInserters(112) = nodes.NewControlStructure.InsertionHelpers.NewNodeInserter_ControlStructure_argumentIndex
+    _newNodeInserters(202) = nodes.NewControlStructure.InsertionHelpers.NewNodeInserter_ControlStructure_argumentName
+    _newNodeInserters(922) = nodes.NewControlStructure.InsertionHelpers.NewNodeInserter_ControlStructure_code
+    _newNodeInserters(1012) = nodes.NewControlStructure.InsertionHelpers.NewNodeInserter_ControlStructure_columnNumber
+    _newNodeInserters(1372) =
+      nodes.NewControlStructure.InsertionHelpers.NewNodeInserter_ControlStructure_controlStructureType
+    _newNodeInserters(3082) = nodes.NewControlStructure.InsertionHelpers.NewNodeInserter_ControlStructure_lineNumber
+    _newNodeInserters(3982) = nodes.NewControlStructure.InsertionHelpers.NewNodeInserter_ControlStructure_order
+    _newNodeInserters(4252) = nodes.NewControlStructure.InsertionHelpers.NewNodeInserter_ControlStructure_parserTypeName
+    _newNodeInserters(1464) = nodes.NewDependency.InsertionHelpers.NewNodeInserter_Dependency_dependencyGroupId
+    _newNodeInserters(3624) = nodes.NewDependency.InsertionHelpers.NewNodeInserter_Dependency_name
+    _newNodeInserters(4974) = nodes.NewDependency.InsertionHelpers.NewNodeInserter_Dependency_version
+    _newNodeInserters(116) = nodes.NewFieldIdentifier.InsertionHelpers.NewNodeInserter_FieldIdentifier_argumentIndex
+    _newNodeInserters(206) = nodes.NewFieldIdentifier.InsertionHelpers.NewNodeInserter_FieldIdentifier_argumentName
+    _newNodeInserters(476) = nodes.NewFieldIdentifier.InsertionHelpers.NewNodeInserter_FieldIdentifier_canonicalName
+    _newNodeInserters(926) = nodes.NewFieldIdentifier.InsertionHelpers.NewNodeInserter_FieldIdentifier_code
+    _newNodeInserters(1016) = nodes.NewFieldIdentifier.InsertionHelpers.NewNodeInserter_FieldIdentifier_columnNumber
+    _newNodeInserters(3086) = nodes.NewFieldIdentifier.InsertionHelpers.NewNodeInserter_FieldIdentifier_lineNumber
+    _newNodeInserters(3986) = nodes.NewFieldIdentifier.InsertionHelpers.NewNodeInserter_FieldIdentifier_order
+    _newNodeInserters(928) = nodes.NewFile.InsertionHelpers.NewNodeInserter_File_code
+    _newNodeInserters(1018) = nodes.NewFile.InsertionHelpers.NewNodeInserter_File_columnNumber
+    _newNodeInserters(1288) = nodes.NewFile.InsertionHelpers.NewNodeInserter_File_content
+    _newNodeInserters(2098) = nodes.NewFile.InsertionHelpers.NewNodeInserter_File_hash
+    _newNodeInserters(3088) = nodes.NewFile.InsertionHelpers.NewNodeInserter_File_lineNumber
+    _newNodeInserters(3628) = nodes.NewFile.InsertionHelpers.NewNodeInserter_File_name
+    _newNodeInserters(3988) = nodes.NewFile.InsertionHelpers.NewNodeInserter_File_order
+    _newNodeInserters(5070) = nodes.NewFinding.InsertionHelpers.NewNodeInserter_Finding_evidence
+    _newNodeInserters(5160) = nodes.NewFinding.InsertionHelpers.NewNodeInserter_Finding_keyValuePairs
+    _newNodeInserters(122) = nodes.NewIdentifier.InsertionHelpers.NewNodeInserter_Identifier_argumentIndex
+    _newNodeInserters(212) = nodes.NewIdentifier.InsertionHelpers.NewNodeInserter_Identifier_argumentName
+    _newNodeInserters(932) = nodes.NewIdentifier.InsertionHelpers.NewNodeInserter_Identifier_code
+    _newNodeInserters(1022) = nodes.NewIdentifier.InsertionHelpers.NewNodeInserter_Identifier_columnNumber
+    _newNodeInserters(1652) = nodes.NewIdentifier.InsertionHelpers.NewNodeInserter_Identifier_dynamicTypeHintFullName
+    _newNodeInserters(3092) = nodes.NewIdentifier.InsertionHelpers.NewNodeInserter_Identifier_lineNumber
+    _newNodeInserters(3632) = nodes.NewIdentifier.InsertionHelpers.NewNodeInserter_Identifier_name
+    _newNodeInserters(3992) = nodes.NewIdentifier.InsertionHelpers.NewNodeInserter_Identifier_order
+    _newNodeInserters(4352) = nodes.NewIdentifier.InsertionHelpers.NewNodeInserter_Identifier_possibleTypes
+    _newNodeInserters(4802) = nodes.NewIdentifier.InsertionHelpers.NewNodeInserter_Identifier_typeFullName
+    _newNodeInserters(934) = nodes.NewImport.InsertionHelpers.NewNodeInserter_Import_code
+    _newNodeInserters(1024) = nodes.NewImport.InsertionHelpers.NewNodeInserter_Import_columnNumber
+    _newNodeInserters(1834) = nodes.NewImport.InsertionHelpers.NewNodeInserter_Import_explicitAs
+    _newNodeInserters(2194) = nodes.NewImport.InsertionHelpers.NewNodeInserter_Import_importedAs
+    _newNodeInserters(2284) = nodes.NewImport.InsertionHelpers.NewNodeInserter_Import_importedEntity
+    _newNodeInserters(2554) = nodes.NewImport.InsertionHelpers.NewNodeInserter_Import_isExplicit
+    _newNodeInserters(2824) = nodes.NewImport.InsertionHelpers.NewNodeInserter_Import_isWildcard
+    _newNodeInserters(3094) = nodes.NewImport.InsertionHelpers.NewNodeInserter_Import_lineNumber
+    _newNodeInserters(3994) = nodes.NewImport.InsertionHelpers.NewNodeInserter_Import_order
+    _newNodeInserters(936) = nodes.NewJumpLabel.InsertionHelpers.NewNodeInserter_JumpLabel_code
+    _newNodeInserters(1026) = nodes.NewJumpLabel.InsertionHelpers.NewNodeInserter_JumpLabel_columnNumber
+    _newNodeInserters(3096) = nodes.NewJumpLabel.InsertionHelpers.NewNodeInserter_JumpLabel_lineNumber
+    _newNodeInserters(3636) = nodes.NewJumpLabel.InsertionHelpers.NewNodeInserter_JumpLabel_name
+    _newNodeInserters(3996) = nodes.NewJumpLabel.InsertionHelpers.NewNodeInserter_JumpLabel_order
+    _newNodeInserters(4266) = nodes.NewJumpLabel.InsertionHelpers.NewNodeInserter_JumpLabel_parserTypeName
+    _newNodeInserters(128) = nodes.NewJumpTarget.InsertionHelpers.NewNodeInserter_JumpTarget_argumentIndex
+    _newNodeInserters(938) = nodes.NewJumpTarget.InsertionHelpers.NewNodeInserter_JumpTarget_code
+    _newNodeInserters(1028) = nodes.NewJumpTarget.InsertionHelpers.NewNodeInserter_JumpTarget_columnNumber
+    _newNodeInserters(3098) = nodes.NewJumpTarget.InsertionHelpers.NewNodeInserter_JumpTarget_lineNumber
+    _newNodeInserters(3638) = nodes.NewJumpTarget.InsertionHelpers.NewNodeInserter_JumpTarget_name
+    _newNodeInserters(3998) = nodes.NewJumpTarget.InsertionHelpers.NewNodeInserter_JumpTarget_order
+    _newNodeInserters(4268) = nodes.NewJumpTarget.InsertionHelpers.NewNodeInserter_JumpTarget_parserTypeName
+    _newNodeInserters(2920) = nodes.NewKeyValuePair.InsertionHelpers.NewNodeInserter_KeyValuePair_key
+    _newNodeInserters(4900) = nodes.NewKeyValuePair.InsertionHelpers.NewNodeInserter_KeyValuePair_value
+    _newNodeInserters(132) = nodes.NewLiteral.InsertionHelpers.NewNodeInserter_Literal_argumentIndex
+    _newNodeInserters(222) = nodes.NewLiteral.InsertionHelpers.NewNodeInserter_Literal_argumentName
+    _newNodeInserters(942) = nodes.NewLiteral.InsertionHelpers.NewNodeInserter_Literal_code
+    _newNodeInserters(1032) = nodes.NewLiteral.InsertionHelpers.NewNodeInserter_Literal_columnNumber
+    _newNodeInserters(1662) = nodes.NewLiteral.InsertionHelpers.NewNodeInserter_Literal_dynamicTypeHintFullName
+    _newNodeInserters(3102) = nodes.NewLiteral.InsertionHelpers.NewNodeInserter_Literal_lineNumber
+    _newNodeInserters(4002) = nodes.NewLiteral.InsertionHelpers.NewNodeInserter_Literal_order
+    _newNodeInserters(4362) = nodes.NewLiteral.InsertionHelpers.NewNodeInserter_Literal_possibleTypes
+    _newNodeInserters(4812) = nodes.NewLiteral.InsertionHelpers.NewNodeInserter_Literal_typeFullName
+    _newNodeInserters(764) = nodes.NewLocal.InsertionHelpers.NewNodeInserter_Local_closureBindingId
+    _newNodeInserters(944) = nodes.NewLocal.InsertionHelpers.NewNodeInserter_Local_code
+    _newNodeInserters(1034) = nodes.NewLocal.InsertionHelpers.NewNodeInserter_Local_columnNumber
+    _newNodeInserters(1664) = nodes.NewLocal.InsertionHelpers.NewNodeInserter_Local_dynamicTypeHintFullName
+    _newNodeInserters(3104) = nodes.NewLocal.InsertionHelpers.NewNodeInserter_Local_lineNumber
+    _newNodeInserters(3644) = nodes.NewLocal.InsertionHelpers.NewNodeInserter_Local_name
+    _newNodeInserters(4004) = nodes.NewLocal.InsertionHelpers.NewNodeInserter_Local_order
+    _newNodeInserters(4364) = nodes.NewLocal.InsertionHelpers.NewNodeInserter_Local_possibleTypes
+    _newNodeInserters(4814) = nodes.NewLocal.InsertionHelpers.NewNodeInserter_Local_typeFullName
+    _newNodeInserters(586) = nodes.NewLocation.InsertionHelpers.NewNodeInserter_Location_className
+    _newNodeInserters(676) = nodes.NewLocation.InsertionHelpers.NewNodeInserter_Location_classShortName
+    _newNodeInserters(1936) = nodes.NewLocation.InsertionHelpers.NewNodeInserter_Location_filename
+    _newNodeInserters(3106) = nodes.NewLocation.InsertionHelpers.NewNodeInserter_Location_lineNumber
+    _newNodeInserters(3286) = nodes.NewLocation.InsertionHelpers.NewNodeInserter_Location_methodFullName
+    _newNodeInserters(3376) = nodes.NewLocation.InsertionHelpers.NewNodeInserter_Location_methodShortName
+    _newNodeInserters(3736) = nodes.NewLocation.InsertionHelpers.NewNodeInserter_Location_nodeLabel
+    _newNodeInserters(4186) = nodes.NewLocation.InsertionHelpers.NewNodeInserter_Location_packageName
+    _newNodeInserters(4636) = nodes.NewLocation.InsertionHelpers.NewNodeInserter_Location_symbol
+    _newNodeInserters(5266) = nodes.NewLocation.InsertionHelpers.NewNodeInserter_Location_node
+    _newNodeInserters(318) = nodes.NewMember.InsertionHelpers.NewNodeInserter_Member_astParentFullName
+    _newNodeInserters(408) = nodes.NewMember.InsertionHelpers.NewNodeInserter_Member_astParentType
+    _newNodeInserters(948) = nodes.NewMember.InsertionHelpers.NewNodeInserter_Member_code
+    _newNodeInserters(1038) = nodes.NewMember.InsertionHelpers.NewNodeInserter_Member_columnNumber
+    _newNodeInserters(1668) = nodes.NewMember.InsertionHelpers.NewNodeInserter_Member_dynamicTypeHintFullName
+    _newNodeInserters(3108) = nodes.NewMember.InsertionHelpers.NewNodeInserter_Member_lineNumber
+    _newNodeInserters(3648) = nodes.NewMember.InsertionHelpers.NewNodeInserter_Member_name
+    _newNodeInserters(4008) = nodes.NewMember.InsertionHelpers.NewNodeInserter_Member_order
+    _newNodeInserters(4368) = nodes.NewMember.InsertionHelpers.NewNodeInserter_Member_possibleTypes
+    _newNodeInserters(4818) = nodes.NewMember.InsertionHelpers.NewNodeInserter_Member_typeFullName
+    _newNodeInserters(2120) = nodes.NewMetaData.InsertionHelpers.NewNodeInserter_MetaData_hash
+    _newNodeInserters(3020) = nodes.NewMetaData.InsertionHelpers.NewNodeInserter_MetaData_language
+    _newNodeInserters(4100) = nodes.NewMetaData.InsertionHelpers.NewNodeInserter_MetaData_overlays
+    _newNodeInserters(4460) = nodes.NewMetaData.InsertionHelpers.NewNodeInserter_MetaData_root
+    _newNodeInserters(5000) = nodes.NewMetaData.InsertionHelpers.NewNodeInserter_MetaData_version
+    _newNodeInserters(322) = nodes.NewMethod.InsertionHelpers.NewNodeInserter_Method_astParentFullName
+    _newNodeInserters(412) = nodes.NewMethod.InsertionHelpers.NewNodeInserter_Method_astParentType
+    _newNodeInserters(952) = nodes.NewMethod.InsertionHelpers.NewNodeInserter_Method_code
+    _newNodeInserters(1042) = nodes.NewMethod.InsertionHelpers.NewNodeInserter_Method_columnNumber
+    _newNodeInserters(1132) = nodes.NewMethod.InsertionHelpers.NewNodeInserter_Method_columnNumberEnd
+    _newNodeInserters(1942) = nodes.NewMethod.InsertionHelpers.NewNodeInserter_Method_filename
+    _newNodeInserters(2032) = nodes.NewMethod.InsertionHelpers.NewNodeInserter_Method_fullName
+    _newNodeInserters(2122) = nodes.NewMethod.InsertionHelpers.NewNodeInserter_Method_hash
+    _newNodeInserters(2662) = nodes.NewMethod.InsertionHelpers.NewNodeInserter_Method_isExternal
+    _newNodeInserters(3112) = nodes.NewMethod.InsertionHelpers.NewNodeInserter_Method_lineNumber
+    _newNodeInserters(3202) = nodes.NewMethod.InsertionHelpers.NewNodeInserter_Method_lineNumberEnd
+    _newNodeInserters(3652) = nodes.NewMethod.InsertionHelpers.NewNodeInserter_Method_name
+    _newNodeInserters(3832) = nodes.NewMethod.InsertionHelpers.NewNodeInserter_Method_offset
+    _newNodeInserters(3922) = nodes.NewMethod.InsertionHelpers.NewNodeInserter_Method_offsetEnd
+    _newNodeInserters(4012) = nodes.NewMethod.InsertionHelpers.NewNodeInserter_Method_order
+    _newNodeInserters(4552) = nodes.NewMethod.InsertionHelpers.NewNodeInserter_Method_signature
+    _newNodeInserters(774) =
+      nodes.NewMethodParameterIn.InsertionHelpers.NewNodeInserter_MethodParameterIn_closureBindingId
+    _newNodeInserters(954) = nodes.NewMethodParameterIn.InsertionHelpers.NewNodeInserter_MethodParameterIn_code
+    _newNodeInserters(1044) = nodes.NewMethodParameterIn.InsertionHelpers.NewNodeInserter_MethodParameterIn_columnNumber
+    _newNodeInserters(1674) =
+      nodes.NewMethodParameterIn.InsertionHelpers.NewNodeInserter_MethodParameterIn_dynamicTypeHintFullName
+    _newNodeInserters(1764) =
+      nodes.NewMethodParameterIn.InsertionHelpers.NewNodeInserter_MethodParameterIn_evaluationStrategy
+    _newNodeInserters(2394) = nodes.NewMethodParameterIn.InsertionHelpers.NewNodeInserter_MethodParameterIn_index
+    _newNodeInserters(2754) = nodes.NewMethodParameterIn.InsertionHelpers.NewNodeInserter_MethodParameterIn_isVariadic
+    _newNodeInserters(3114) = nodes.NewMethodParameterIn.InsertionHelpers.NewNodeInserter_MethodParameterIn_lineNumber
+    _newNodeInserters(3654) = nodes.NewMethodParameterIn.InsertionHelpers.NewNodeInserter_MethodParameterIn_name
+    _newNodeInserters(4014) = nodes.NewMethodParameterIn.InsertionHelpers.NewNodeInserter_MethodParameterIn_order
+    _newNodeInserters(4374) =
+      nodes.NewMethodParameterIn.InsertionHelpers.NewNodeInserter_MethodParameterIn_possibleTypes
+    _newNodeInserters(4824) = nodes.NewMethodParameterIn.InsertionHelpers.NewNodeInserter_MethodParameterIn_typeFullName
+    _newNodeInserters(956) = nodes.NewMethodParameterOut.InsertionHelpers.NewNodeInserter_MethodParameterOut_code
+    _newNodeInserters(1046) =
+      nodes.NewMethodParameterOut.InsertionHelpers.NewNodeInserter_MethodParameterOut_columnNumber
+    _newNodeInserters(1766) =
+      nodes.NewMethodParameterOut.InsertionHelpers.NewNodeInserter_MethodParameterOut_evaluationStrategy
+    _newNodeInserters(2396) = nodes.NewMethodParameterOut.InsertionHelpers.NewNodeInserter_MethodParameterOut_index
+    _newNodeInserters(2756) = nodes.NewMethodParameterOut.InsertionHelpers.NewNodeInserter_MethodParameterOut_isVariadic
+    _newNodeInserters(3116) = nodes.NewMethodParameterOut.InsertionHelpers.NewNodeInserter_MethodParameterOut_lineNumber
+    _newNodeInserters(3656) = nodes.NewMethodParameterOut.InsertionHelpers.NewNodeInserter_MethodParameterOut_name
+    _newNodeInserters(4016) = nodes.NewMethodParameterOut.InsertionHelpers.NewNodeInserter_MethodParameterOut_order
+    _newNodeInserters(4826) =
+      nodes.NewMethodParameterOut.InsertionHelpers.NewNodeInserter_MethodParameterOut_typeFullName
+    _newNodeInserters(148) = nodes.NewMethodRef.InsertionHelpers.NewNodeInserter_MethodRef_argumentIndex
+    _newNodeInserters(238) = nodes.NewMethodRef.InsertionHelpers.NewNodeInserter_MethodRef_argumentName
+    _newNodeInserters(958) = nodes.NewMethodRef.InsertionHelpers.NewNodeInserter_MethodRef_code
+    _newNodeInserters(1048) = nodes.NewMethodRef.InsertionHelpers.NewNodeInserter_MethodRef_columnNumber
+    _newNodeInserters(1678) = nodes.NewMethodRef.InsertionHelpers.NewNodeInserter_MethodRef_dynamicTypeHintFullName
+    _newNodeInserters(3118) = nodes.NewMethodRef.InsertionHelpers.NewNodeInserter_MethodRef_lineNumber
+    _newNodeInserters(3298) = nodes.NewMethodRef.InsertionHelpers.NewNodeInserter_MethodRef_methodFullName
+    _newNodeInserters(4018) = nodes.NewMethodRef.InsertionHelpers.NewNodeInserter_MethodRef_order
+    _newNodeInserters(4378) = nodes.NewMethodRef.InsertionHelpers.NewNodeInserter_MethodRef_possibleTypes
+    _newNodeInserters(4828) = nodes.NewMethodRef.InsertionHelpers.NewNodeInserter_MethodRef_typeFullName
+    _newNodeInserters(960) = nodes.NewMethodReturn.InsertionHelpers.NewNodeInserter_MethodReturn_code
+    _newNodeInserters(1050) = nodes.NewMethodReturn.InsertionHelpers.NewNodeInserter_MethodReturn_columnNumber
+    _newNodeInserters(1680) =
+      nodes.NewMethodReturn.InsertionHelpers.NewNodeInserter_MethodReturn_dynamicTypeHintFullName
+    _newNodeInserters(1770) = nodes.NewMethodReturn.InsertionHelpers.NewNodeInserter_MethodReturn_evaluationStrategy
+    _newNodeInserters(3120) = nodes.NewMethodReturn.InsertionHelpers.NewNodeInserter_MethodReturn_lineNumber
+    _newNodeInserters(4020) = nodes.NewMethodReturn.InsertionHelpers.NewNodeInserter_MethodReturn_order
+    _newNodeInserters(4380) = nodes.NewMethodReturn.InsertionHelpers.NewNodeInserter_MethodReturn_possibleTypes
+    _newNodeInserters(4830) = nodes.NewMethodReturn.InsertionHelpers.NewNodeInserter_MethodReturn_typeFullName
+    _newNodeInserters(962) = nodes.NewModifier.InsertionHelpers.NewNodeInserter_Modifier_code
+    _newNodeInserters(1052) = nodes.NewModifier.InsertionHelpers.NewNodeInserter_Modifier_columnNumber
+    _newNodeInserters(3122) = nodes.NewModifier.InsertionHelpers.NewNodeInserter_Modifier_lineNumber
+    _newNodeInserters(3482) = nodes.NewModifier.InsertionHelpers.NewNodeInserter_Modifier_modifierType
+    _newNodeInserters(4022) = nodes.NewModifier.InsertionHelpers.NewNodeInserter_Modifier_order
+    _newNodeInserters(3574) = nodes.NewMynodetype.InsertionHelpers.NewNodeInserter_Mynodetype_myproperty
+    _newNodeInserters(966) = nodes.NewNamespace.InsertionHelpers.NewNodeInserter_Namespace_code
+    _newNodeInserters(1056) = nodes.NewNamespace.InsertionHelpers.NewNodeInserter_Namespace_columnNumber
+    _newNodeInserters(3126) = nodes.NewNamespace.InsertionHelpers.NewNodeInserter_Namespace_lineNumber
+    _newNodeInserters(3666) = nodes.NewNamespace.InsertionHelpers.NewNodeInserter_Namespace_name
+    _newNodeInserters(4026) = nodes.NewNamespace.InsertionHelpers.NewNodeInserter_Namespace_order
+    _newNodeInserters(968) = nodes.NewNamespaceBlock.InsertionHelpers.NewNodeInserter_NamespaceBlock_code
+    _newNodeInserters(1058) = nodes.NewNamespaceBlock.InsertionHelpers.NewNodeInserter_NamespaceBlock_columnNumber
+    _newNodeInserters(1958) = nodes.NewNamespaceBlock.InsertionHelpers.NewNodeInserter_NamespaceBlock_filename
+    _newNodeInserters(2048) = nodes.NewNamespaceBlock.InsertionHelpers.NewNodeInserter_NamespaceBlock_fullName
+    _newNodeInserters(3128) = nodes.NewNamespaceBlock.InsertionHelpers.NewNodeInserter_NamespaceBlock_lineNumber
+    _newNodeInserters(3668) = nodes.NewNamespaceBlock.InsertionHelpers.NewNodeInserter_NamespaceBlock_name
+    _newNodeInserters(4028) = nodes.NewNamespaceBlock.InsertionHelpers.NewNodeInserter_NamespaceBlock_order
+    _newNodeInserters(160) = nodes.NewReturn.InsertionHelpers.NewNodeInserter_Return_argumentIndex
+    _newNodeInserters(250) = nodes.NewReturn.InsertionHelpers.NewNodeInserter_Return_argumentName
+    _newNodeInserters(970) = nodes.NewReturn.InsertionHelpers.NewNodeInserter_Return_code
+    _newNodeInserters(1060) = nodes.NewReturn.InsertionHelpers.NewNodeInserter_Return_columnNumber
+    _newNodeInserters(3130) = nodes.NewReturn.InsertionHelpers.NewNodeInserter_Return_lineNumber
+    _newNodeInserters(4030) = nodes.NewReturn.InsertionHelpers.NewNodeInserter_Return_order
+    _newNodeInserters(3672) = nodes.NewTag.InsertionHelpers.NewNodeInserter_Tag_name
+    _newNodeInserters(4932) = nodes.NewTag.InsertionHelpers.NewNodeInserter_Tag_value
+    _newNodeInserters(5294) = nodes.NewTagNodePair.InsertionHelpers.NewNodeInserter_TagNodePair_node
+    _newNodeInserters(5384) = nodes.NewTagNodePair.InsertionHelpers.NewNodeInserter_TagNodePair_tag
+    _newNodeInserters(166) = nodes.NewTemplateDom.InsertionHelpers.NewNodeInserter_TemplateDom_argumentIndex
+    _newNodeInserters(256) = nodes.NewTemplateDom.InsertionHelpers.NewNodeInserter_TemplateDom_argumentName
+    _newNodeInserters(976) = nodes.NewTemplateDom.InsertionHelpers.NewNodeInserter_TemplateDom_code
+    _newNodeInserters(1066) = nodes.NewTemplateDom.InsertionHelpers.NewNodeInserter_TemplateDom_columnNumber
+    _newNodeInserters(3136) = nodes.NewTemplateDom.InsertionHelpers.NewNodeInserter_TemplateDom_lineNumber
+    _newNodeInserters(3676) = nodes.NewTemplateDom.InsertionHelpers.NewNodeInserter_TemplateDom_name
+    _newNodeInserters(4036) = nodes.NewTemplateDom.InsertionHelpers.NewNodeInserter_TemplateDom_order
+    _newNodeInserters(2058) = nodes.NewType.InsertionHelpers.NewNodeInserter_Type_fullName
+    _newNodeInserters(3678) = nodes.NewType.InsertionHelpers.NewNodeInserter_Type_name
+    _newNodeInserters(4758) = nodes.NewType.InsertionHelpers.NewNodeInserter_Type_typeDeclFullName
+    _newNodeInserters(980) = nodes.NewTypeArgument.InsertionHelpers.NewNodeInserter_TypeArgument_code
+    _newNodeInserters(1070) = nodes.NewTypeArgument.InsertionHelpers.NewNodeInserter_TypeArgument_columnNumber
+    _newNodeInserters(3140) = nodes.NewTypeArgument.InsertionHelpers.NewNodeInserter_TypeArgument_lineNumber
+    _newNodeInserters(4040) = nodes.NewTypeArgument.InsertionHelpers.NewNodeInserter_TypeArgument_order
+    _newNodeInserters(82) = nodes.NewTypeDecl.InsertionHelpers.NewNodeInserter_TypeDecl_aliasTypeFullName
+    _newNodeInserters(352) = nodes.NewTypeDecl.InsertionHelpers.NewNodeInserter_TypeDecl_astParentFullName
+    _newNodeInserters(442) = nodes.NewTypeDecl.InsertionHelpers.NewNodeInserter_TypeDecl_astParentType
+    _newNodeInserters(982) = nodes.NewTypeDecl.InsertionHelpers.NewNodeInserter_TypeDecl_code
+    _newNodeInserters(1072) = nodes.NewTypeDecl.InsertionHelpers.NewNodeInserter_TypeDecl_columnNumber
+    _newNodeInserters(1972) = nodes.NewTypeDecl.InsertionHelpers.NewNodeInserter_TypeDecl_filename
+    _newNodeInserters(2062) = nodes.NewTypeDecl.InsertionHelpers.NewNodeInserter_TypeDecl_fullName
+    _newNodeInserters(2512) = nodes.NewTypeDecl.InsertionHelpers.NewNodeInserter_TypeDecl_inheritsFromTypeFullName
+    _newNodeInserters(2692) = nodes.NewTypeDecl.InsertionHelpers.NewNodeInserter_TypeDecl_isExternal
+    _newNodeInserters(3142) = nodes.NewTypeDecl.InsertionHelpers.NewNodeInserter_TypeDecl_lineNumber
+    _newNodeInserters(3682) = nodes.NewTypeDecl.InsertionHelpers.NewNodeInserter_TypeDecl_name
+    _newNodeInserters(3862) = nodes.NewTypeDecl.InsertionHelpers.NewNodeInserter_TypeDecl_offset
+    _newNodeInserters(3952) = nodes.NewTypeDecl.InsertionHelpers.NewNodeInserter_TypeDecl_offsetEnd
+    _newNodeInserters(4042) = nodes.NewTypeDecl.InsertionHelpers.NewNodeInserter_TypeDecl_order
+    _newNodeInserters(984) = nodes.NewTypeParameter.InsertionHelpers.NewNodeInserter_TypeParameter_code
+    _newNodeInserters(1074) = nodes.NewTypeParameter.InsertionHelpers.NewNodeInserter_TypeParameter_columnNumber
+    _newNodeInserters(3144) = nodes.NewTypeParameter.InsertionHelpers.NewNodeInserter_TypeParameter_lineNumber
+    _newNodeInserters(3684) = nodes.NewTypeParameter.InsertionHelpers.NewNodeInserter_TypeParameter_name
+    _newNodeInserters(4044) = nodes.NewTypeParameter.InsertionHelpers.NewNodeInserter_TypeParameter_order
+    _newNodeInserters(176) = nodes.NewTypeRef.InsertionHelpers.NewNodeInserter_TypeRef_argumentIndex
+    _newNodeInserters(266) = nodes.NewTypeRef.InsertionHelpers.NewNodeInserter_TypeRef_argumentName
+    _newNodeInserters(986) = nodes.NewTypeRef.InsertionHelpers.NewNodeInserter_TypeRef_code
+    _newNodeInserters(1076) = nodes.NewTypeRef.InsertionHelpers.NewNodeInserter_TypeRef_columnNumber
+    _newNodeInserters(1706) = nodes.NewTypeRef.InsertionHelpers.NewNodeInserter_TypeRef_dynamicTypeHintFullName
+    _newNodeInserters(3146) = nodes.NewTypeRef.InsertionHelpers.NewNodeInserter_TypeRef_lineNumber
+    _newNodeInserters(4046) = nodes.NewTypeRef.InsertionHelpers.NewNodeInserter_TypeRef_order
+    _newNodeInserters(4406) = nodes.NewTypeRef.InsertionHelpers.NewNodeInserter_TypeRef_possibleTypes
+    _newNodeInserters(4856) = nodes.NewTypeRef.InsertionHelpers.NewNodeInserter_TypeRef_typeFullName
+    _newNodeInserters(178) = nodes.NewUnknown.InsertionHelpers.NewNodeInserter_Unknown_argumentIndex
+    _newNodeInserters(268) = nodes.NewUnknown.InsertionHelpers.NewNodeInserter_Unknown_argumentName
+    _newNodeInserters(988) = nodes.NewUnknown.InsertionHelpers.NewNodeInserter_Unknown_code
+    _newNodeInserters(1078) = nodes.NewUnknown.InsertionHelpers.NewNodeInserter_Unknown_columnNumber
+    _newNodeInserters(1258) = nodes.NewUnknown.InsertionHelpers.NewNodeInserter_Unknown_containedRef
+    _newNodeInserters(1708) = nodes.NewUnknown.InsertionHelpers.NewNodeInserter_Unknown_dynamicTypeHintFullName
+    _newNodeInserters(3148) = nodes.NewUnknown.InsertionHelpers.NewNodeInserter_Unknown_lineNumber
+    _newNodeInserters(4048) = nodes.NewUnknown.InsertionHelpers.NewNodeInserter_Unknown_order
+    _newNodeInserters(4318) = nodes.NewUnknown.InsertionHelpers.NewNodeInserter_Unknown_parserTypeName
+    _newNodeInserters(4408) = nodes.NewUnknown.InsertionHelpers.NewNodeInserter_Unknown_possibleTypes
+    _newNodeInserters(4858) = nodes.NewUnknown.InsertionHelpers.NewNodeInserter_Unknown_typeFullName
+    _newNodeInserters
+  }
   override def getNumberOfNodeKinds: Int              = 45
   override def getNumberOfEdgeKinds: Int              = 24
   override def getNodeLabel(nodeKind: Int): String    = nodeLabels(nodeKind)
@@ -1233,4 +1554,7 @@ object GraphSchema extends flatgraph.Schema {
   override def getNodePropertyFormalQuantity(nodeKind: Int, propertyKind: Int): FormalQtyType.FormalQuantity =
     nodePropertyDescriptors(1 + propertyOffsetArrayIndex(nodeKind, propertyKind))
       .asInstanceOf[FormalQtyType.FormalQuantity]
+
+  override def getNewNodePropertyInserter(nodeKind: Int, propertyKind: Int): flatgraph.NewNodePropertyInsertionHelper =
+    newNodeInsertionHelpers(propertyOffsetArrayIndex(nodeKind, propertyKind))
 }

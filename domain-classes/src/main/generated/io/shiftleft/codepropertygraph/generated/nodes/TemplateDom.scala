@@ -2,6 +2,7 @@ package io.shiftleft.codepropertygraph.generated.nodes
 
 import io.shiftleft.codepropertygraph.generated.language.*
 import scala.collection.immutable.{IndexedSeq, ArraySeq}
+import scala.collection.mutable
 
 /** Node base type for compiletime-only checks to improve type safety. EMT stands for: "erased marker trait", i.e. it is
   * erased at runtime
@@ -11,7 +12,7 @@ trait TemplateDomEMT extends AnyRef with ExpressionEMT with HasNameEMT
 trait TemplateDomBase extends AbstractNode with ExpressionBase with StaticType[TemplateDomEMT] {
 
   override def propertiesMap: java.util.Map[String, Any] = {
-    import io.shiftleft.codepropertygraph.generated.accessors.Lang.*
+    import io.shiftleft.codepropertygraph.generated.accessors.languagebootstrap.*
     val res = new java.util.HashMap[String, Any]()
     if ((-1: Int) != this.argumentIndex) res.put("ARGUMENT_INDEX", this.argumentIndex)
     this.argumentName.foreach { p => res.put("ARGUMENT_NAME", p) }
@@ -61,7 +62,7 @@ object TemplateDom {
       */
     val Order = "ORDER"
   }
-  object PropertyKeys {
+  object Properties {
 
     /** AST-children of CALL nodes have an argument index, that is used to match call-site arguments with callee
       * parameters. Explicit parameters are numbered from 1 to N, while index 0 is reserved for implicit self / this
@@ -1375,7 +1376,198 @@ object NewTemplateDom {
       "UNKNOWN"
     )
   )
+
+  object InsertionHelpers {
+    object NewNodeInserter_TemplateDom_argumentIndex extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[Int]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewTemplateDom =>
+              dstCast(offset) = generated.argumentIndex
+              offset += 1
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+    object NewNodeInserter_TemplateDom_argumentName extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[String]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewTemplateDom =>
+              generated.argumentName match {
+                case Some(item) =>
+                  dstCast(offset) = item
+                  offset += 1
+                case _ =>
+              }
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+    object NewNodeInserter_TemplateDom_code extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[String]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewTemplateDom =>
+              dstCast(offset) = generated.code
+              offset += 1
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+    object NewNodeInserter_TemplateDom_columnNumber extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[Int]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewTemplateDom =>
+              generated.columnNumber match {
+                case Some(item) =>
+                  dstCast(offset) = item
+                  offset += 1
+                case _ =>
+              }
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+    object NewNodeInserter_TemplateDom_lineNumber extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[Int]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewTemplateDom =>
+              generated.lineNumber match {
+                case Some(item) =>
+                  dstCast(offset) = item
+                  offset += 1
+                case _ =>
+              }
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+    object NewNodeInserter_TemplateDom_name extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[String]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewTemplateDom =>
+              dstCast(offset) = generated.name
+              offset += 1
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+    object NewNodeInserter_TemplateDom_order extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[Int]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewTemplateDom =>
+              dstCast(offset) = generated.order
+              offset += 1
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
+    }
+  }
 }
+
 class NewTemplateDom extends NewNode(38.toShort) with TemplateDomBase with ExpressionNew {
   override type StoredNodeType = TemplateDom
   override def label: String = "TEMPLATE_DOM"
@@ -1404,17 +1596,17 @@ class NewTemplateDom extends NewNode(38.toShort) with TemplateDomBase with Expre
   def lineNumber(value: Option[Int]): this.type      = { this.lineNumber = value; this }
   def name(value: String): this.type                 = { this.name = value; this }
   def order(value: Int): this.type                   = { this.order = value; this }
-  override def flattenProperties(interface: flatgraph.BatchedUpdateInterface): Unit = {
-    interface.insertProperty(this, 1, Iterator(this.argumentIndex))
-    if (argumentName.nonEmpty) interface.insertProperty(this, 2, this.argumentName)
-    interface.insertProperty(this, 10, Iterator(this.code))
-    if (columnNumber.nonEmpty) interface.insertProperty(this, 11, this.columnNumber)
-    if (lineNumber.nonEmpty) interface.insertProperty(this, 34, this.lineNumber)
-    interface.insertProperty(this, 40, Iterator(this.name))
-    interface.insertProperty(this, 44, Iterator(this.order))
+  override def countAndVisitProperties(interface: flatgraph.BatchedUpdateInterface): Unit = {
+    interface.countProperty(this, 1, 1)
+    interface.countProperty(this, 2, argumentName.size)
+    interface.countProperty(this, 10, 1)
+    interface.countProperty(this, 11, columnNumber.size)
+    interface.countProperty(this, 34, lineNumber.size)
+    interface.countProperty(this, 40, 1)
+    interface.countProperty(this, 44, 1)
   }
 
-  override def copy(): this.type = {
+  override def copy: this.type = {
     val newInstance = new NewTemplateDom
     newInstance.argumentIndex = this.argumentIndex
     newInstance.argumentName = this.argumentName
