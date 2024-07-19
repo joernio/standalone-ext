@@ -1,10 +1,12 @@
 name := "standalone-schema"
 
-libraryDependencies += "io.shiftleft" %% "overflowdb-codegen" % "2.104"
-libraryDependencies += "io.shiftleft" %% "codepropertygraph-schema" % Versions.cpg
+libraryDependencies ++= Seq(
+  "io.shiftleft" %% "codepropertygraph-schema" % Versions.cpg,
+  "io.joern" %% "flatgraph-domain-classes-generator" % Versions.flatgraph,
+)
 
 lazy val generatedSrcDir = settingKey[File]("root for generated sources - we want to check those in")
-enablePlugins(OdbCodegenSbtPlugin)
+enablePlugins(FlatgraphCodegenSbtPlugin)
 generateDomainClasses / classWithSchema := "CpgExtSchema$"
-generateDomainClasses / fieldName := "instance"
-generateDomainClasses/outputDir       := (Projects.domainClasses / generatedSrcDir).value
+generateDomainClasses / fieldName       := "instance"
+generateDomainClasses/outputDir         := (Projects.domainClasses / generatedSrcDir).value

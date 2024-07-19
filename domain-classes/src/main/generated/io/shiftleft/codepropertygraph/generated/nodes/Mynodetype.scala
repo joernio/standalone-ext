@@ -1,170 +1,131 @@
 package io.shiftleft.codepropertygraph.generated.nodes
 
-import overflowdb._
-import scala.jdk.CollectionConverters._
+import io.shiftleft.codepropertygraph.generated.language.*
+import scala.collection.immutable.{IndexedSeq, ArraySeq}
+import scala.collection.mutable
+
+/** Node base type for compiletime-only checks to improve type safety. EMT stands for: "erased marker trait", i.e. it is
+  * erased at runtime
+  */
+trait MynodetypeEMT extends AnyRef with HasMypropertyEMT
+
+trait MynodetypeBase extends AbstractNode with StaticType[MynodetypeEMT] {
+
+  override def propertiesMap: java.util.Map[String, Any] = {
+    import io.shiftleft.codepropertygraph.generated.accessors.languagebootstrap.*
+    val res = new java.util.HashMap[String, Any]()
+    if (("": String) != this.myproperty) res.put("MYPROPERTY", this.myproperty)
+    res
+  }
+}
 
 object Mynodetype {
-  def apply(graph: Graph, id: Long) = new Mynodetype(graph, id)
-
   val Label = "MYNODETYPE"
-
   object PropertyNames {
-    val Myproperty                       = "MYPROPERTY"
-    val all: Set[String]                 = Set(Myproperty)
-    val allAsJava: java.util.Set[String] = all.asJava
-  }
 
+    val Myproperty = "MYPROPERTY"
+  }
   object Properties {
-    val Myproperty = new overflowdb.PropertyKey[String]("MYPROPERTY")
-
+    val Myproperty = flatgraph.SinglePropertyKey[String](kind = 39, name = "MYPROPERTY", default = "")
   }
-
   object PropertyDefaults {
     val Myproperty = ""
   }
-
-  val layoutInformation = new NodeLayoutInformation(Label, PropertyNames.allAsJava, List().asJava, List().asJava)
-
-  object Edges {
-    val Out: Array[String] = Array()
-    val In: Array[String]  = Array()
-  }
-
-  val factory = new NodeFactory[MynodetypeDb] {
-    override val forLabel = Mynodetype.Label
-
-    override def createNode(ref: NodeRef[MynodetypeDb]) =
-      new MynodetypeDb(ref.asInstanceOf[NodeRef[NodeDb]])
-
-    override def createNodeRef(graph: Graph, id: Long) = Mynodetype(graph, id)
-  }
 }
 
-trait MynodetypeBase extends AbstractNode {
-  def asStored: StoredNode = this.asInstanceOf[StoredNode]
-
-  def myproperty: String
-
-}
-
-class Mynodetype(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/issues/4762 */ )
-    extends NodeRef[MynodetypeDb](graph_4762, id_4762)
+class Mynodetype(graph_4762: flatgraph.Graph, seq_4762: Int)
+    extends StoredNode(graph_4762, 32.toShort, seq_4762)
     with MynodetypeBase
-    with StoredNode {
-  override def myproperty: String = get().myproperty
-  override def propertyDefaultValue(propertyKey: String) = {
-    propertyKey match {
-      case "MYPROPERTY" => Mynodetype.PropertyDefaults.Myproperty
-      case _            => super.propertyDefaultValue(propertyKey)
-    }
-  }
-
-  // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
-  // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
-  // This must become `class Derived(x_4762:Int) extends Base(x_4762)`.
-  // Otherwise, it is very hard to figure out whether uses of the identifier `x` refer to the base class x
-  // or the derived class x.
-  // When using that pattern, the class parameter `x_47672` should only be used in the `extends Base(x_4762)`
-  // clause and nowhere else. Otherwise, the compiler may well decide that this is not just a constructor
-  // parameter but also a field of the class, and we end up with two `x` fields. At best, this wastes memory;
-  // at worst both fields go out-of-sync for hard-to-debug correctness bugs.
-
-  override def fromNewNode(newNode: NewNode, mapping: NewNode => StoredNode): Unit = get().fromNewNode(newNode, mapping)
-  override def canEqual(that: Any): Boolean                                        = get.canEqual(that)
-  override def label: String = {
-    Mynodetype.Label
-  }
+    with StaticType[MynodetypeEMT] {
 
   override def productElementName(n: Int): String =
     n match {
-      case 0 => "id"
-      case 1 => "myproperty"
+      case 0 => "myproperty"
+      case _ => ""
     }
 
   override def productElement(n: Int): Any =
     n match {
-      case 0 => id
-      case 1 => myproperty
-    }
-
-  override def productPrefix = "Mynodetype"
-  override def productArity  = 2
-}
-
-class MynodetypeDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with MynodetypeBase {
-
-  override def layoutInformation: NodeLayoutInformation = Mynodetype.layoutInformation
-
-  private var _myproperty: String = Mynodetype.PropertyDefaults.Myproperty
-  def myproperty: String          = _myproperty
-
-  /** faster than the default implementation */
-  override def propertiesMap: java.util.Map[String, Any] = {
-    val properties = new java.util.HashMap[String, Any]
-    properties.put("MYPROPERTY", myproperty)
-
-    properties
-  }
-
-  /** faster than the default implementation */
-  override def propertiesMapForStorage: java.util.Map[String, Any] = {
-    val properties = new java.util.HashMap[String, Any]
-    if (!(("") == myproperty)) { properties.put("MYPROPERTY", myproperty) }
-
-    properties
-  }
-
-  import overflowdb.traversal._
-
-  override def label: String = {
-    Mynodetype.Label
-  }
-
-  override def productElementName(n: Int): String =
-    n match {
-      case 0 => "id"
-      case 1 => "myproperty"
-    }
-
-  override def productElement(n: Int): Any =
-    n match {
-      case 0 => id
-      case 1 => myproperty
-    }
-
-  override def productPrefix = "Mynodetype"
-  override def productArity  = 2
-
-  override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[MynodetypeDb]
-
-  override def property(key: String): Any = {
-    key match {
-      case "MYPROPERTY" => this._myproperty
-
+      case 0 => this.myproperty
       case _ => null
     }
-  }
 
-  override protected def updateSpecificProperty(key: String, value: Object): Unit = {
-    key match {
-      case "MYPROPERTY" => this._myproperty = value.asInstanceOf[String]
+  override def productPrefix = "Mynodetype"
+  override def productArity  = 1
 
-      case _ => PropertyErrorRegister.logPropertyErrorIfFirst(getClass, key)
+  override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[Mynodetype]
+}
+
+object NewMynodetype {
+  def apply(): NewMynodetype                         = new NewMynodetype
+  private val outNeighbors: Map[String, Set[String]] = Map()
+  private val inNeighbors: Map[String, Set[String]]  = Map()
+
+  object InsertionHelpers {
+    object NewNodeInserter_Mynodetype_myproperty extends flatgraph.NewNodePropertyInsertionHelper {
+      override def insertNewNodeProperties(
+        newNodes: mutable.ArrayBuffer[flatgraph.DNode],
+        dst: AnyRef,
+        offsets: Array[Int]
+      ): Unit = {
+        if (newNodes.isEmpty) return
+        val dstCast = dst.asInstanceOf[Array[String]]
+        val seq     = newNodes.head.storedRef.get.seq()
+        var offset  = offsets(seq)
+        var idx     = 0
+        while (idx < newNodes.length) {
+          val nn = newNodes(idx)
+          nn match {
+            case generated: NewMynodetype =>
+              dstCast(offset) = generated.myproperty
+              offset += 1
+            case _ =>
+          }
+          assert(seq + idx == nn.storedRef.get.seq(), "internal consistency check")
+          idx += 1
+          offsets(idx + seq) = offset
+        }
+      }
     }
   }
+}
 
-  override def removeSpecificProperty(key: String): Unit =
-    this.updateSpecificProperty(key, null)
+class NewMynodetype extends NewNode(32.toShort) with MynodetypeBase {
+  override type StoredNodeType = Mynodetype
+  override def label: String = "MYNODETYPE"
 
-  override def _initializeFromDetached(
-    data: overflowdb.DetachedNodeData,
-    mapper: java.util.function.Function[overflowdb.DetachedNodeData, Node]
-  ) =
-    fromNewNode(data.asInstanceOf[NewNode], nn => mapper.apply(nn).asInstanceOf[StoredNode])
-
-  override def fromNewNode(newNode: NewNode, mapping: NewNode => StoredNode): Unit = {
-    this._myproperty = newNode.asInstanceOf[NewMynodetype].myproperty
-
+  override def isValidOutNeighbor(edgeLabel: String, n: NewNode): Boolean = {
+    NewMynodetype.outNeighbors.getOrElse(edgeLabel, Set.empty).contains(n.label)
+  }
+  override def isValidInNeighbor(edgeLabel: String, n: NewNode): Boolean = {
+    NewMynodetype.inNeighbors.getOrElse(edgeLabel, Set.empty).contains(n.label)
   }
 
+  var myproperty: String                   = "": String
+  def myproperty(value: String): this.type = { this.myproperty = value; this }
+  override def countAndVisitProperties(interface: flatgraph.BatchedUpdateInterface): Unit = {
+    interface.countProperty(this, 39, 1)
+  }
+
+  override def copy: this.type = {
+    val newInstance = new NewMynodetype
+    newInstance.myproperty = this.myproperty
+    newInstance.asInstanceOf[this.type]
+  }
+
+  override def productElementName(n: Int): String =
+    n match {
+      case 0 => "myproperty"
+      case _ => ""
+    }
+
+  override def productElement(n: Int): Any =
+    n match {
+      case 0 => this.myproperty
+      case _ => null
+    }
+
+  override def productPrefix                = "NewMynodetype"
+  override def productArity                 = 1
+  override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewMynodetype]
 }

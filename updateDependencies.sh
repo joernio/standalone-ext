@@ -44,7 +44,7 @@ fi
 declare -A repos=(
   [cpg]=https://repo1.maven.org/maven2/io/shiftleft/codepropertygraph-schema_3
   [joern]=https://repo1.maven.org/maven2/io/joern/console_3
-  [overflowdb]=https://repo1.maven.org/maven2/io/shiftleft/overflowdb-core_3
+  [flatgraph]=https://repo1.maven.org/maven2/io/joern/flatgraph-core_3
 )
 
 function latest_version {
@@ -96,7 +96,7 @@ function update {
 if [ "$DEPENDENCY" == "" ]; then
   update cpg
   update joern
-  update overflowdb
+  update flatgraph
 else
   DEPENDENCY="${DEPENDENCY#--only=}"
   update $DEPENDENCY
