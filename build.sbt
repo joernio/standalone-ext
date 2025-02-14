@@ -1,52 +1,45 @@
-name := "standalone"
+name                     := "standalone"
 ThisBuild / organization := "org.codeminers"
-ThisBuild / scalaVersion := "3.4.2"
+ThisBuild / scalaVersion := "3.5.2"
 
 // parsed by project/Versions.scala, updated by updateDependencies.sh
-val cpgVersion = "1.7.1"
-val joernVersion = "4.0.3"
-val flatgraphVersion = "0.0.81"
+val cpgVersion       = "1.7.26"
+val joernVersion     = "4.0.250"
+val flatgraphVersion = "0.1.9"
 
-lazy val schema = Projects.schema
-lazy val domainClasses = Projects.domainClasses
+lazy val schema         = Projects.schema
+lazy val domainClasses  = Projects.domainClasses
 lazy val schemaExtender = Projects.schemaExtender
 
 dependsOn(domainClasses)
 
 libraryDependencies ++= Seq(
-  "com.github.pathikrit" %% "better-files" % "3.9.2",
-  "com.github.scopt" %% "scopt" % "4.1.0",
-  "org.apache.logging.log4j" % "log4j-slf4j2-impl" % "2.20.0" % Optional,
-  "io.joern" %% "x2cpg" % Versions.joern,
-  "io.joern" %% "javasrc2cpg" % Versions.joern,
-  "io.joern" %% "joern-cli" % Versions.joern,
-  "io.joern" %% "semanticcpg" % Versions.joern,
-  "io.joern" %% "semanticcpg" % Versions.joern % Test classifier "tests",
-  "org.scalatest" %% "scalatest" % "3.2.16" % Test
+  "com.github.scopt"        %% "scopt"             % Versions.scopt,
+  "org.apache.logging.log4j" % "log4j-slf4j2-impl" % Versions.log4j     % Optional,
+  "io.joern"                %% "x2cpg"             % Versions.joern,
+  "io.joern"                %% "javasrc2cpg"       % Versions.joern,
+  "io.joern"                %% "joern-cli"         % Versions.joern,
+  "io.joern"                %% "semanticcpg"       % Versions.joern,
+  "io.joern"                %% "semanticcpg"       % Versions.joern     % Test classifier "tests",
+  "org.scalatest"           %% "scalatest"         % Versions.scalatest % Test
 )
 
 // mostly so that `sbt assembly` works, but also to ensure that we don't end up
 // with unexpected shadowing in jar hell
-excludeDependencies ++= Seq(
-  ExclusionRule("io.shiftleft", "codepropertygraph-domain-classes_3"),
-)
+excludeDependencies ++= Seq(ExclusionRule("io.shiftleft", "codepropertygraph-domain-classes_3"))
 
 assembly / assemblyMergeStrategy := {
-  case "log4j2.xml" => MergeStrategy.first
-  case "module-info.class" => MergeStrategy.first
-  case "META-INF/versions/9/module-info.class" => MergeStrategy.first
-  case "io/github/retronym/java9rtexport/Export.class" => MergeStrategy.first
+  case "log4j2.xml"                                             => MergeStrategy.first
+  case "module-info.class"                                      => MergeStrategy.first
+  case "META-INF/versions/9/module-info.class"                  => MergeStrategy.first
+  case "io/github/retronym/java9rtexport/Export.class"          => MergeStrategy.first
   case PathList("scala", "collection", "internal", "pprint", _) => MergeStrategy.first
   case x =>
     val oldStrategy = (ThisBuild / assemblyMergeStrategy).value
     oldStrategy(x)
 }
 
-ThisBuild / Compile / scalacOptions ++= Seq(
-  "-feature",
-  "-deprecation",
-  "-language:implicitConversions",
-)
+ThisBuild / Compile / scalacOptions ++= Seq("-feature", "-deprecation", "-language:implicitConversions")
 
 enablePlugins(JavaAppPackaging)
 
@@ -61,5 +54,5 @@ ThisBuild / resolvers ++= Seq(
   "Gradle Releases" at "https://repo.gradle.org/gradle/libs-releases/"
 )
 
-Compile / doc / sources := Seq.empty
+Compile / doc / sources                := Seq.empty
 Compile / packageDoc / publishArtifact := false
