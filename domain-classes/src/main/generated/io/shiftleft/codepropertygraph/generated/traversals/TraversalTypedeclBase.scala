@@ -112,12 +112,21 @@ final class TraversalTypedeclBase[NodeType <: nodes.TypeDeclBase](val traversal:
 
   /** Traverse to nodes where astParentFullName matches one of the elements in `values` exactly.
     */
-  def astParentFullNameExact(values: String*): Iterator[NodeType] =
-    if (values.length == 1) astParentFullNameExact(values.head)
-    else {
-      val valueSet = values.toSet
-      traversal.filter { item => valueSet.contains(item.astParentFullName) }
+  def astParentFullNameExact(values: String*): Iterator[NodeType] = {
+    if (values.length == 1) return astParentFullNameExact(values.head)
+    traversal match {
+      case init: flatgraph.misc.InitNodeIterator[flatgraph.GNode @unchecked] if init.isVirgin && init.hasNext =>
+        val someNode = init.next
+        values.iterator.flatMap { value =>
+          flatgraph.Accessors
+            .getWithInverseIndex(someNode.graph, someNode.nodeKind, 3, value)
+            .asInstanceOf[Iterator[NodeType]]
+        }
+      case _ =>
+        val valueSet = values.toSet
+        traversal.filter { item => valueSet.contains(item.astParentFullName) }
     }
+  }
 
   /** Traverse to nodes where astParentFullName does not match the regular expression `value`.
     */
@@ -171,12 +180,21 @@ final class TraversalTypedeclBase[NodeType <: nodes.TypeDeclBase](val traversal:
 
   /** Traverse to nodes where astParentType matches one of the elements in `values` exactly.
     */
-  def astParentTypeExact(values: String*): Iterator[NodeType] =
-    if (values.length == 1) astParentTypeExact(values.head)
-    else {
-      val valueSet = values.toSet
-      traversal.filter { item => valueSet.contains(item.astParentType) }
+  def astParentTypeExact(values: String*): Iterator[NodeType] = {
+    if (values.length == 1) return astParentTypeExact(values.head)
+    traversal match {
+      case init: flatgraph.misc.InitNodeIterator[flatgraph.GNode @unchecked] if init.isVirgin && init.hasNext =>
+        val someNode = init.next
+        values.iterator.flatMap { value =>
+          flatgraph.Accessors
+            .getWithInverseIndex(someNode.graph, someNode.nodeKind, 4, value)
+            .asInstanceOf[Iterator[NodeType]]
+        }
+      case _ =>
+        val valueSet = values.toSet
+        traversal.filter { item => valueSet.contains(item.astParentType) }
     }
+  }
 
   /** Traverse to nodes where astParentType does not match the regular expression `value`.
     */
@@ -230,12 +248,21 @@ final class TraversalTypedeclBase[NodeType <: nodes.TypeDeclBase](val traversal:
 
   /** Traverse to nodes where filename matches one of the elements in `values` exactly.
     */
-  def filenameExact(values: String*): Iterator[NodeType] =
-    if (values.length == 1) filenameExact(values.head)
-    else {
-      val valueSet = values.toSet
-      traversal.filter { item => valueSet.contains(item.filename) }
+  def filenameExact(values: String*): Iterator[NodeType] = {
+    if (values.length == 1) return filenameExact(values.head)
+    traversal match {
+      case init: flatgraph.misc.InitNodeIterator[flatgraph.GNode @unchecked] if init.isVirgin && init.hasNext =>
+        val someNode = init.next
+        values.iterator.flatMap { value =>
+          flatgraph.Accessors
+            .getWithInverseIndex(someNode.graph, someNode.nodeKind, 21, value)
+            .asInstanceOf[Iterator[NodeType]]
+        }
+      case _ =>
+        val valueSet = values.toSet
+        traversal.filter { item => valueSet.contains(item.filename) }
     }
+  }
 
   /** Traverse to nodes where filename does not match the regular expression `value`.
     */
@@ -289,12 +316,21 @@ final class TraversalTypedeclBase[NodeType <: nodes.TypeDeclBase](val traversal:
 
   /** Traverse to nodes where fullName matches one of the elements in `values` exactly.
     */
-  def fullNameExact(values: String*): Iterator[NodeType] =
-    if (values.length == 1) fullNameExact(values.head)
-    else {
-      val valueSet = values.toSet
-      traversal.filter { item => valueSet.contains(item.fullName) }
+  def fullNameExact(values: String*): Iterator[NodeType] = {
+    if (values.length == 1) return fullNameExact(values.head)
+    traversal match {
+      case init: flatgraph.misc.InitNodeIterator[flatgraph.GNode @unchecked] if init.isVirgin && init.hasNext =>
+        val someNode = init.next
+        values.iterator.flatMap { value =>
+          flatgraph.Accessors
+            .getWithInverseIndex(someNode.graph, someNode.nodeKind, 22, value)
+            .asInstanceOf[Iterator[NodeType]]
+        }
+      case _ =>
+        val valueSet = values.toSet
+        traversal.filter { item => valueSet.contains(item.fullName) }
     }
+  }
 
   /** Traverse to nodes where fullName does not match the regular expression `value`.
     */
@@ -312,6 +348,74 @@ final class TraversalTypedeclBase[NodeType <: nodes.TypeDeclBase](val traversal:
   def fullNameNot(patterns: String*): Iterator[NodeType] = {
     val matchers = patterns.map(flatgraph.misc.Regex.multilineMatcher)
     traversal.filter { item => matchers.find { _.reset(item.fullName).matches }.isEmpty }
+  }
+
+  /** Traverse to genericSignature property */
+  def genericSignature: Iterator[String] =
+    traversal.map(_.genericSignature)
+
+  /** Traverse to nodes where the genericSignature matches the regular expression `value`
+    */
+  def genericSignature(pattern: String): Iterator[NodeType] =
+    if (!flatgraph.misc.Regex.isRegex(pattern)) {
+      genericSignatureExact(pattern)
+    } else {
+      val matcher = flatgraph.misc.Regex.multilineMatcher(pattern)
+      traversal.filter { item => matcher.reset(item.genericSignature).matches }
+    }
+
+  /** Traverse to nodes where the genericSignature matches at least one of the regular expressions in `values`
+    */
+  def genericSignature(patterns: String*): Iterator[NodeType] = {
+    val matchers = patterns.map(flatgraph.misc.Regex.multilineMatcher)
+    traversal.filter { item => matchers.exists { _.reset(item.genericSignature).matches } }
+  }
+
+  /** Traverse to nodes where genericSignature matches `value` exactly.
+    */
+  def genericSignatureExact(value: String): Iterator[NodeType] = traversal match {
+    case init: flatgraph.misc.InitNodeIterator[flatgraph.GNode @unchecked] if init.isVirgin && init.hasNext =>
+      val someNode = init.next
+      flatgraph.Accessors
+        .getWithInverseIndex(someNode.graph, someNode.nodeKind, 23, value)
+        .asInstanceOf[Iterator[NodeType]]
+    case _ => traversal.filter { _.genericSignature == value }
+  }
+
+  /** Traverse to nodes where genericSignature matches one of the elements in `values` exactly.
+    */
+  def genericSignatureExact(values: String*): Iterator[NodeType] = {
+    if (values.length == 1) return genericSignatureExact(values.head)
+    traversal match {
+      case init: flatgraph.misc.InitNodeIterator[flatgraph.GNode @unchecked] if init.isVirgin && init.hasNext =>
+        val someNode = init.next
+        values.iterator.flatMap { value =>
+          flatgraph.Accessors
+            .getWithInverseIndex(someNode.graph, someNode.nodeKind, 23, value)
+            .asInstanceOf[Iterator[NodeType]]
+        }
+      case _ =>
+        val valueSet = values.toSet
+        traversal.filter { item => valueSet.contains(item.genericSignature) }
+    }
+  }
+
+  /** Traverse to nodes where genericSignature does not match the regular expression `value`.
+    */
+  def genericSignatureNot(pattern: String): Iterator[NodeType] = {
+    if (!flatgraph.misc.Regex.isRegex(pattern)) {
+      traversal.filter { node => node.genericSignature != pattern }
+    } else {
+      val matcher = flatgraph.misc.Regex.multilineMatcher(pattern)
+      traversal.filterNot { item => matcher.reset(item.genericSignature).matches }
+    }
+  }
+
+  /** Traverse to nodes where genericSignature does not match any of the regular expressions in `values`.
+    */
+  def genericSignatureNot(patterns: String*): Iterator[NodeType] = {
+    val matchers = patterns.map(flatgraph.misc.Regex.multilineMatcher)
+    traversal.filter { item => matchers.find { _.reset(item.genericSignature).matches }.isEmpty }
   }
 
   /** Traverse to inheritsFromTypeFullName property */
@@ -354,19 +458,28 @@ final class TraversalTypedeclBase[NodeType <: nodes.TypeDeclBase](val traversal:
     case init: flatgraph.misc.InitNodeIterator[flatgraph.GNode @unchecked] if init.isVirgin && init.hasNext =>
       val someNode = init.next
       flatgraph.Accessors
-        .getWithInverseIndex(someNode.graph, someNode.nodeKind, 40, value)
+        .getWithInverseIndex(someNode.graph, someNode.nodeKind, 41, value)
         .asInstanceOf[Iterator[NodeType]]
     case _ => traversal.filter { _.name == value }
   }
 
   /** Traverse to nodes where name matches one of the elements in `values` exactly.
     */
-  def nameExact(values: String*): Iterator[NodeType] =
-    if (values.length == 1) nameExact(values.head)
-    else {
-      val valueSet = values.toSet
-      traversal.filter { item => valueSet.contains(item.name) }
+  def nameExact(values: String*): Iterator[NodeType] = {
+    if (values.length == 1) return nameExact(values.head)
+    traversal match {
+      case init: flatgraph.misc.InitNodeIterator[flatgraph.GNode @unchecked] if init.isVirgin && init.hasNext =>
+        val someNode = init.next
+        values.iterator.flatMap { value =>
+          flatgraph.Accessors
+            .getWithInverseIndex(someNode.graph, someNode.nodeKind, 41, value)
+            .asInstanceOf[Iterator[NodeType]]
+        }
+      case _ =>
+        val valueSet = values.toSet
+        traversal.filter { item => valueSet.contains(item.name) }
     }
+  }
 
   /** Traverse to nodes where name does not match the regular expression `value`.
     */

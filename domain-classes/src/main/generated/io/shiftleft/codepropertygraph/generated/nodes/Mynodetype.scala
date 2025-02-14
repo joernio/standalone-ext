@@ -26,7 +26,7 @@ object Mynodetype {
     val Myproperty = "MYPROPERTY"
   }
   object Properties {
-    val Myproperty = flatgraph.SinglePropertyKey[String](kind = 39, name = "MYPROPERTY", default = "")
+    val Myproperty = flatgraph.SinglePropertyKey[String](kind = 40, name = "MYPROPERTY", default = "")
   }
   object PropertyDefaults {
     val Myproperty = ""
@@ -104,7 +104,7 @@ class NewMynodetype extends NewNode(32.toShort) with MynodetypeBase {
   var myproperty: String                   = "": String
   def myproperty(value: String): this.type = { this.myproperty = value; this }
   override def countAndVisitProperties(interface: flatgraph.BatchedUpdateInterface): Unit = {
-    interface.countProperty(this, 39, 1)
+    interface.countProperty(this, 40, 1)
   }
 
   override def copy: this.type = {
